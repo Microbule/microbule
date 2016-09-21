@@ -21,9 +21,11 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
 
+        <cdi.version>1.2</cdi.version>
         <cxf.version>3.1.7</cxf.version>
         <eos.version>1.1.0</eos.version>
         <osgi.version>5.0.0</osgi.version>
+        <pax.cdi.version>0.11.0</pax.cdi.version>
         <slf4j.version>1.7.21</slf4j.version>
 
         <!--
@@ -48,6 +50,8 @@
         <osgi.embed.dir>lib</osgi.embed.dir>
         <osgi.activator />
         <osgi.dynamic />
+
+
     </properties>
 
     <scm>
