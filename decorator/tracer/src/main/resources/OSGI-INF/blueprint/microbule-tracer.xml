@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0">
+
+    <cm:property-placeholder persistent-id="org.microbule.decorator.tracer" update-strategy="reload">
+        <cm:default-properties>
+            <cm:property name="traceIdHeader" value="Microbule-Trace-ID"/>
+        </cm:default-properties>
+    </cm:property-placeholder>
+
+    <bean id="decorator" class="org.microbule.decorator.tracer.TracerDecorator">
+        <argument ref="blueprintBundleContext" />
+        <argument value="${traceIdHeader}" />
+    </bean>
+
+    <service ref="decorator" interface="org.microbule.spi.JaxrsServerDecorator">
+        <service-properties>
+            <entry key="name" value="tracer" />
+        </service-properties>
+    </service>
+
+</blueprint>

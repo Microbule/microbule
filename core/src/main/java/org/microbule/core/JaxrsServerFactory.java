@@ -89,7 +89,7 @@ public class JaxrsServerFactory extends KeyedWhiteboard<String, JaxrsServerDecor
                 if (serviceInterface.isAnnotationPresent(Path.class)) {
                     final Long serviceId = serviceId(ref);
                     final String address = (String) ref.getProperty(ADDRESS_PROP);
-                    LOGGER.info("Detected JAX-RS resource {} ({}) from bundle {} ({}).", serviceInterfaceName, serviceId, ref.getBundle().getSymbolicName(), ref.getBundle().getBundleId());
+                    LOGGER.info("Detected JAX-RS resource {} ({}) at address {} from bundle {} ({}).", serviceInterfaceName, serviceId, address, ref.getBundle().getSymbolicName(), ref.getBundle().getBundleId());
                     final Object serviceImplementation = bundleContext.getService(ref);
                     final JAXRSServerFactoryBean sf = new JAXRSServerFactoryBean();
                     sf.setBus(BusFactory.getDefaultBus(true));
@@ -102,6 +102,7 @@ public class JaxrsServerFactory extends KeyedWhiteboard<String, JaxrsServerDecor
                         final String enabledProperty = String.format(ENABLED_PROP_PATTERN, name);
                         final Boolean enabled = serverProperties.getProperty(enabledProperty, Boolean::parseBoolean, true);
                         if (enabled) {
+                            LOGGER.info("Decorating JAX-RS service using \"{}\" decorator...", name);
                             decorator.decorate(jaxrsServer, serverProperties);
                         }
                     });

@@ -17,6 +17,7 @@
         <module>errormap</module>
         <module>cors</module>
         <module>validation</module>
+        <module>tracer</module>
     </modules>
 
     <dependencies>
