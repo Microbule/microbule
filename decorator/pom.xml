@@ -18,6 +18,7 @@
         <module>cors</module>
         <module>validation</module>
         <module>tracer</module>
+        <module>requestlog</module>
     </modules>
 
     <dependencies>
