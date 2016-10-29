@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -19,13 +20,17 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
 import org.microbule.spi.JaxrsServerProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Provider
 @PreMatching
 public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilter {
-//----------------------------------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
+    private static final Logger LOGGER = LoggerFactory.getLogger(CorsFilter.class);
+    private static final String PREFLIGHT_FLAG_PROP = "CorsFilter.preflightFlag";
 
     public static final String DEFAULT_ALLOWED_METHODS = "HEAD, GET, PUT, POST, DELETE";
     public static final String COMMA_SEPARATED = ",";
@@ -91,7 +96,7 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
     }
 
     private static Set<String> parseCommaSeparatedSet(String value) {
-        if(EMPTY_STRING.equals(value)) {
+        if (EMPTY_STRING.equals(value)) {
             return new HashSet<>();
         }
         return Arrays.stream(value.split(COMMA_SEPARATED)).map(String::trim).collect(Collectors.toSet());
@@ -104,7 +109,9 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
     @Override
     public void filter(ContainerRequestContext request) throws IOException {
         if (isPreflight(request)) {
+            LOGGER.debug("Handling pre-flight CORS request: {} {}", request.getMethod(), request.getUriInfo().getPath());
             request.abortWith(handlePreflight(request));
+            request.setProperty(PREFLIGHT_FLAG_PROP, true);
         }
     }
 
@@ -114,14 +121,17 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
 
     @Override
     public void filter(ContainerRequestContext request, ContainerResponseContext response) throws IOException {
-        final MultivaluedMap<String, Object> headers = response.getHeaders();
-        final String origin = request.getHeaderString(HEADER_ORIGIN);
-        if (origin != null && isAllowedOrigin(origin)) {
-            exposedHeaders.forEach(header -> headers.add(HEADER_AC_EXPOSE_HEADERS, header));
-            headers.add(HEADER_AC_ALLOW_ORIGIN, origin);
-            headers.add(HEADER_AC_ALLOW_CREDENTIALS, String.valueOf(allowCredentials));
+        if (!Boolean.TRUE.equals(request.getProperty(PREFLIGHT_FLAG_PROP))) {
+            final MultivaluedMap<String, Object> headers = response.getHeaders();
+            final String origin = request.getHeaderString(HEADER_ORIGIN);
+            if (origin != null && isAllowedOrigin(origin)) {
+                LOGGER.debug("Handling simple CORS request: {} {}", request.getMethod(), request.getUriInfo().getPath());
+                exposedHeaders.forEach(header -> headers.add(HEADER_AC_EXPOSE_HEADERS, header));
+                headers.add(HEADER_AC_ALLOW_ORIGIN, origin);
+                headers.add(HEADER_AC_ALLOW_CREDENTIALS, String.valueOf(allowCredentials));
+            }
+            headers.add(HEADER_VARY, HEADER_ORIGIN);
         }
-        headers.add(HEADER_VARY, HEADER_ORIGIN);
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -131,14 +141,18 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
     private Response handlePreflight(ContainerRequestContext request) {
         final String origin = request.getHeaderString(HEADER_ORIGIN);
         if (!isAllowedOrigin(origin)) {
+            LOGGER.warn("CORS pre-flight failed: origin \"{}\".", origin);
             return failedPreflight();
         }
-        final String method = request.getMethod();
+        final String method = request.getHeaderString(HEADER_AC_REQUEST_METHOD);
         if (!isWhitelisted(allowedMethods, method)) {
+            LOGGER.warn("CORS pre-flight failed: method \"{}\".", method);
             return failedPreflight();
         }
         final List<String> requestHeaders = request.getHeaders().getOrDefault(HEADER_AC_REQUEST_HEADERS, new LinkedList<>()).stream().filter(header -> !SIMPLE_RESPONSE_HEADERS.contains(header)).collect(Collectors.toList());
-        if (requestHeaders.stream().filter(requestHeader -> !isWhitelisted(allowedHeaders, requestHeader.toUpperCase())).findFirst().isPresent()) {
+        final Optional<String> invalidHeader = requestHeaders.stream().filter(requestHeader -> !isWhitelisted(allowedHeaders, requestHeader.toUpperCase())).findFirst();
+        if (invalidHeader.isPresent()) {
+            LOGGER.warn("CORS pre-flight failed: header \"{}\".", invalidHeader.get());
             return failedPreflight();
         }
         final Response.ResponseBuilder builder = Response.noContent();
