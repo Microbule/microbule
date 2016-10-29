@@ -70,6 +70,7 @@
     </feature>
 
     <feature name="microbule-example-scr" version="${project.version}">
+        <feature>scr</feature>
         <bundle>mvn:org.microbule/microbule-example-common/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-example-scr/${project.version}</bundle>
     </feature>
