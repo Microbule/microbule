@@ -1,9 +1,12 @@
-package org.microbule.spi;
+package org.microbule.decorator.errormap;
 
-public interface JaxrsServerDecorator {
+
+import javax.ws.rs.core.Response;
+
+public interface ErrorMapperService {
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    void decorate(JaxrsServer server, JaxrsServerProperties properties);
+    Response createResponse(Exception e);
 }

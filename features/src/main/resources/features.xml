@@ -5,26 +5,33 @@
 
     <feature name="microbule" version="${project.version}">
         <feature version="${project.version}">microbule-core</feature>
-        <feature version="${project.version}">microbule-errormap</feature>
-        <feature version="${project.version}">microbule-gson</feature>
-        <feature version="${project.version}">microbule-validation</feature>
+        <feature version="${project.version}">microbule-decorator-errormap</feature>
+        <feature version="${project.version}">microbule-decorator-gson</feature>
+        <feature version="${project.version}">microbule-decorator-validation</feature>
+        <feature version="${project.version}">microbule-decorator-cors</feature>
     </feature>
 
     <feature name="microbule-core" version="${project.version}">
         <feature version="${cxf.version}">cxf-jaxrs</feature>
+        <feature version="${cxf.version}">cxf-rs-description-swagger2</feature>
         <feature version="${eos.version}">eos-core</feature>
         <bundle>mvn:org.microbule/microbule-spi/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-core/${project.version}</bundle>
     </feature>
 
-    <feature name="microbule-gson" version="${project.version}">
+    <feature name="microbule-decorator-gson" version="${project.version}">
         <feature version="${eos.version}">eos-core</feature>
         <bundle>mvn:com.google.code.gson/gson/${gson.version}</bundle>
         <bundle>mvn:org.microbule/microbule-spi/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-gson/${project.version}</bundle>
+        <bundle>mvn:org.microbule/microbule-decorator-gson/${project.version}</bundle>
     </feature>
 
-    <feature name="microbule-validation" version="${project.version}">
+    <feature name="microbule-decorator-cors" version="${project.version}">
+        <bundle>mvn:org.microbule/microbule-spi/${project.version}</bundle>
+        <bundle>mvn:org.microbule/microbule-decorator-cors/${project.version}</bundle>
+    </feature>
+
+    <feature name="microbule-decorator-validation" version="${project.version}">
         <bundle>mvn:javax.validation/validation-api/${validation.api.version}</bundle>
         <bundle>mvn:org.jboss.logging/jboss-logging/${jboss.logging.version}</bundle>
         <bundle>mvn:com.fasterxml/classmate/${classmate.version}</bundle>
@@ -32,13 +39,13 @@
         <bundle>mvn:org.glassfish.web/javax.el/${glassfish.el.version}</bundle>
         <bundle>mvn:org.hibernate/hibernate-validator/${hibernate.validator.version}</bundle>
         <bundle>mvn:org.microbule/microbule-spi/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-validation/${project.version}</bundle>
+        <bundle>mvn:org.microbule/microbule-decorator-validation/${project.version}</bundle>
     </feature>
 
-    <feature name="microbule-errormap" version="${project.version}">
+    <feature name="microbule-decorator-errormap" version="${project.version}">
         <feature version="${eos.version}">eos-core</feature>
         <bundle>mvn:org.microbule/microbule-spi/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-errormap/${project.version}</bundle>
+        <bundle>mvn:org.microbule/microbule-decorator-errormap/${project.version}</bundle>
     </feature>
 
     <feature name="eos-core" version="${eos.version}">
@@ -47,6 +54,9 @@
         <bundle>mvn:com.savoirtech.eos/eos-core/${eos.version}</bundle>
     </feature>
 
+    <!--
+    Example Features
+    -->
     <feature name="microbule-examples" version="${project.version}">
         <feature version="${project.version}">microbule</feature>
         <feature version="${project.version}">microbule-example-blueprint</feature>

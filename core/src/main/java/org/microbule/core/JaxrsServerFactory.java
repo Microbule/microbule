@@ -12,6 +12,7 @@ import org.apache.cxf.BusFactory;
 import org.apache.cxf.endpoint.Server;
 import org.apache.cxf.feature.LoggingFeature;
 import org.apache.cxf.jaxrs.JAXRSServerFactoryBean;
+import org.apache.cxf.jaxrs.swagger.Swagger2Feature;
 import org.microbule.spi.JaxrsServerDecorator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
@@ -26,6 +27,7 @@ public class JaxrsServerFactory extends KeyedWhiteboard<String, JaxrsServerDecor
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
+    private static final String ENABLED_PROP_PATTERN = "microbule.%s.enabled";
     private static final String MICROBULE_FILTER = "(microbule.address=*)";
     private static final String ADDRESS_PROP = "microbule.address";
 
@@ -93,9 +95,16 @@ public class JaxrsServerFactory extends KeyedWhiteboard<String, JaxrsServerDecor
                     sf.setBus(BusFactory.getDefaultBus(true));
                     sf.setServiceBean(serviceImplementation);
                     sf.setAddress(address);
-                    sf.setFeatures(Lists.newArrayList(new LoggingFeature()));
+                    sf.setFeatures(Lists.newArrayList(new LoggingFeature(), createSwaggerFeature()));
                     final JaxrsServerImpl jaxrsServer = new JaxrsServerImpl(serviceInterface, ref);
-                    asMap().values().forEach(decorator -> decorator.decorate(jaxrsServer));
+                    final JaxrsServerPropertiesImpl serverProperties = new JaxrsServerPropertiesImpl(ref);
+                    asMap().forEach((name, decorator) -> {
+                        final String enabledProperty = String.format(ENABLED_PROP_PATTERN, name);
+                        final Boolean enabled = serverProperties.getProperty(enabledProperty, Boolean::parseBoolean, true);
+                        if (enabled) {
+                            decorator.decorate(jaxrsServer, serverProperties);
+                        }
+                    });
                     sf.setProviders(jaxrsServer.getProviders());
                     servers.put(serviceId, sf.create());
                 }
@@ -103,6 +112,12 @@ public class JaxrsServerFactory extends KeyedWhiteboard<String, JaxrsServerDecor
                 e.printStackTrace();
             }
         });
+    }
+
+    private Swagger2Feature createSwaggerFeature() {
+        final Swagger2Feature feature = new Swagger2Feature();
+        feature.setPrettyPrint(true);
+        return feature;
     }
 
     private Long serviceId(ServiceReference<?> ref) {

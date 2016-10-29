@@ -1,9 +1,11 @@
-package org.microbule.spi;
+package org.microbule.decorator.gson;
 
-public interface JaxrsServerDecorator {
+import com.google.gson.GsonBuilder;
+
+public interface GsonCustomizer {
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    void decorate(JaxrsServer server, JaxrsServerProperties properties);
+    void customize(GsonBuilder builder);
 }
