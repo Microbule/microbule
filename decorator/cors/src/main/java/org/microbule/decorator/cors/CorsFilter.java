@@ -44,10 +44,10 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
     private static final Set<String> SIMPLE_RESPONSE_HEADERS = new HashSet<>(Arrays.asList(
             "CACHE-CONTROL",
             "CONTENT-LANGUAGE",
-            "CONTENT-TYPE".toUpperCase(),
-            "EXPIRES".toUpperCase(),
-            "LAST-MODIFIED".toUpperCase(),
-            "PRAGMA".toUpperCase()
+            "CONTENT-TYPE",
+            "EXPIRES",
+            "LAST-MODIFIED",
+            "PRAGMA"
     ));
 
     private static final String HEADER_ORIGIN = "Origin";

@@ -100,7 +100,7 @@ public class JaxrsServerFactory extends KeyedWhiteboard<String, JaxrsServerDecor
                     final JaxrsServerPropertiesImpl serverProperties = new JaxrsServerPropertiesImpl(ref);
                     asMap().forEach((name, decorator) -> {
                         final String enabledProperty = String.format(ENABLED_PROP_PATTERN, name);
-                        final Boolean enabled = serverProperties.getProperty(enabledProperty, Boolean::parseBoolean, true);
+                        final Boolean enabled = serverProperties.getProperty(enabledProperty, Boolean::parseBoolean, Boolean.TRUE);
                         if (enabled) {
                             LOGGER.info("Decorating JAX-RS service using \"{}\" decorator...", name);
                             decorator.decorate(jaxrsServer, serverProperties);
