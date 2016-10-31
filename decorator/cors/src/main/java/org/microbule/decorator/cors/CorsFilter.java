@@ -42,12 +42,12 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
     public static final String EXPOSED_HEADERS_PROP = "microbule.cors.exposedHeaders";
     public static final String EMPTY_STRING = "";
     private static final Set<String> SIMPLE_RESPONSE_HEADERS = new HashSet<>(Arrays.asList(
-            "Cache-Control".toUpperCase(),
-            "Content-Language".toUpperCase(),
-            "Content-Type".toUpperCase(),
-            "Expires".toUpperCase(),
-            "Last-Modified".toUpperCase(),
-            "Pragma".toUpperCase()
+            "CACHE-CONTROL",
+            "CONTENT-LANGUAGE",
+            "CONTENT-TYPE".toUpperCase(),
+            "EXPIRES".toUpperCase(),
+            "LAST-MODIFIED".toUpperCase(),
+            "PRAGMA".toUpperCase()
     ));
 
     private static final String HEADER_ORIGIN = "Origin";
@@ -111,7 +111,7 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
         if (isPreflight(request)) {
             LOGGER.debug("Handling pre-flight CORS request: {} {}", request.getMethod(), request.getUriInfo().getPath());
             request.abortWith(handlePreflight(request));
-            request.setProperty(PREFLIGHT_FLAG_PROP, true);
+            request.setProperty(PREFLIGHT_FLAG_PROP, Boolean.TRUE);
         }
     }
 

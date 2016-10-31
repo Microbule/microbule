@@ -69,7 +69,7 @@ public class JaxrsServerFactory extends KeyedWhiteboard<String, JaxrsServerDecor
                 }
             }, MICROBULE_FILTER);
         } catch (InvalidSyntaxException e) {
-            e.printStackTrace();
+            LOGGER.error("Unable to add service listener JAX-RS services using filter \"{}\".", MICROBULE_FILTER, e);
         }
         try {
             ServiceReference<?>[] serviceReferences = bundleContext.getAllServiceReferences(null, MICROBULE_FILTER);
@@ -77,7 +77,7 @@ public class JaxrsServerFactory extends KeyedWhiteboard<String, JaxrsServerDecor
                 Arrays.stream(serviceReferences).forEach(this::processService);
             }
         } catch (InvalidSyntaxException e) {
-            e.printStackTrace();
+            LOGGER.error("Unable to search for JAX-RS services using filter \"{}\".", MICROBULE_FILTER, e);
         }
     }
 
@@ -110,7 +110,7 @@ public class JaxrsServerFactory extends KeyedWhiteboard<String, JaxrsServerDecor
                     servers.put(serviceId, sf.create());
                 }
             } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+                LOGGER.error("Unable to create JAX-RS server!", e);
             }
         });
     }
