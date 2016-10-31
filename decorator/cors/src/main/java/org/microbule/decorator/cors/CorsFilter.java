@@ -169,8 +169,8 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
         return allowedOrigins == null || allowedOrigins.contains(origin);
     }
 
-    private static boolean isWhitelisted(Set<String> whitelist, String value) {
-        return whitelist == null || whitelist.contains(value);
+    private static boolean isWhitelisted(Set<String> acceptedValues, String value) {
+        return acceptedValues == null || acceptedValues.contains(value);
     }
 
     private Response failedPreflight() {
