@@ -5,4 +5,10 @@
         <argument ref="blueprintBundleContext" />
     </bean>
 
+    <bean id="proxyFactory" class="org.microbule.core.JaxrsProxyFactoryImpl">
+        <argument ref="blueprintBundleContext" />
+    </bean>
+
+    <service ref="proxyFactory" interface="org.microbule.api.JaxrsProxyFactory" />
+
 </blueprint>

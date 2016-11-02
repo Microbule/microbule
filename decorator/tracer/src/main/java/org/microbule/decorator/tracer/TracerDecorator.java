@@ -1,12 +1,13 @@
 package org.microbule.decorator.tracer;
 
 import com.savoirtech.eos.pattern.whiteboard.SingleWhiteboard;
+import org.microbule.spi.JaxrsProxy;
+import org.microbule.spi.JaxrsProxyDecorator;
 import org.microbule.spi.JaxrsServer;
 import org.microbule.spi.JaxrsServerDecorator;
-import org.microbule.spi.JaxrsServerProperties;
 import org.osgi.framework.BundleContext;
 
-public class TracerDecorator extends SingleWhiteboard<TracerIdProvider> implements JaxrsServerDecorator {
+public class TracerDecorator extends SingleWhiteboard<TracerIdProvider> implements JaxrsServerDecorator, JaxrsProxyDecorator {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
@@ -23,11 +24,20 @@ public class TracerDecorator extends SingleWhiteboard<TracerIdProvider> implemen
     }
 
 //----------------------------------------------------------------------------------------------------------------------
+// JaxrsProxyDecorator Implementation
+//----------------------------------------------------------------------------------------------------------------------
+
+    @Override
+    public void decorate(JaxrsProxy proxy) {
+        proxy.addProvider(new TracerClientFilter(traceIdHeader));
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
 // JaxrsServerDecorator Implementation
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public void decorate(JaxrsServer server, JaxrsServerProperties properties) {
-        server.addProvider(new TracerFilter(traceIdHeader, getService(UuidTracerIdProvider.INSTANCE)));
+    public void decorate(JaxrsServer server) {
+        server.addProvider(new TracerContainerFilter(traceIdHeader, getService(UuidTracerIdProvider.INSTANCE)));
     }
 }

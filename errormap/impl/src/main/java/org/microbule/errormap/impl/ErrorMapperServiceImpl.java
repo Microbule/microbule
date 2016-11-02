@@ -1,20 +1,19 @@
-package org.microbule.decorator.errormap.impl;
+package org.microbule.errormap.impl;
 
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.savoirtech.eos.pattern.whiteboard.KeyedWhiteboard;
 import com.savoirtech.eos.pattern.whiteboard.SingleWhiteboard;
-import org.apache.commons.lang3.StringUtils;
-import org.microbule.decorator.errormap.DefaultErrorMapper;
-import org.microbule.decorator.errormap.ErrorMapperService;
-import org.microbule.spi.error.ErrorMapper;
-import org.microbule.spi.error.ErrorResponseProvider;
+import org.microbule.errormap.api.ErrorMapperService;
+import org.microbule.errormap.spi.ErrorMapper;
+import org.microbule.errormap.spi.ErrorResponseStrategy;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static org.microbule.errormap.impl.PlainTextErrorResponseStrategy.INSTANCE;
 
 public class ErrorMapperServiceImpl extends KeyedWhiteboard<String, ErrorMapper> implements ErrorMapperService {
 //----------------------------------------------------------------------------------------------------------------------
@@ -23,13 +22,7 @@ public class ErrorMapperServiceImpl extends KeyedWhiteboard<String, ErrorMapper>
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ErrorMapperServiceImpl.class);
 
-    private static final ErrorResponseProvider DEFAULT_ERROR_RESPONSE_PROVIDER = (status, errorMessages) ->
-            Response.status(status)
-                    .type(MediaType.TEXT_PLAIN_TYPE)
-                    .entity(StringUtils.join(errorMessages, "\n"))
-                    .build();
-
-    private final SingleWhiteboard<ErrorResponseProvider> responseFactory;
+    private final SingleWhiteboard<ErrorResponseStrategy> responseStrategy;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
@@ -37,7 +30,7 @@ public class ErrorMapperServiceImpl extends KeyedWhiteboard<String, ErrorMapper>
 
     public ErrorMapperServiceImpl(BundleContext bundleContext) {
         super(bundleContext, ErrorMapper.class, (svc, props) -> nameOf(svc.getExceptionType()));
-        this.responseFactory = new SingleWhiteboard<>(bundleContext, ErrorResponseProvider.class);
+        this.responseStrategy = new SingleWhiteboard<>(bundleContext, ErrorResponseStrategy.class);
     }
 
     private static String nameOf(Class<?> type) {
@@ -49,14 +42,23 @@ public class ErrorMapperServiceImpl extends KeyedWhiteboard<String, ErrorMapper>
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
+    public Exception createException(Response response) {
+        return getErrorResponseStrategy().createException(response);
+    }
+
+    @Override
     public Response createResponse(Exception e) {
         ErrorMapper handler = getExceptionHandler(e);
-        return responseFactory.getService(DEFAULT_ERROR_RESPONSE_PROVIDER).createResponse(handler.getStatus(e), handler.getErrorMessages(e));
+        return getErrorResponseStrategy().createResponse(handler.getStatus(e), handler.getErrorMessages(e));
     }
 
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
+
+    private ErrorResponseStrategy getErrorResponseStrategy() {
+        return responseStrategy.getService(INSTANCE);
+    }
 
     private ErrorMapper getExceptionHandler(Exception exception) {
         final ErrorMapper handler = findExceptionHandler(exception.getClass());

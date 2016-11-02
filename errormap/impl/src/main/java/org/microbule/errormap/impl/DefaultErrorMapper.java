@@ -1,11 +1,12 @@
-package org.microbule.decorator.errormap;
+package org.microbule.errormap.impl;
 
 import java.util.Collections;
 import java.util.List;
 
 import javax.ws.rs.core.Response;
 
-import org.microbule.spi.error.ErrorMapper;
+import org.microbule.errormap.spi.ErrorMapper;
+
 
 public class DefaultErrorMapper implements ErrorMapper {
 //----------------------------------------------------------------------------------------------------------------------

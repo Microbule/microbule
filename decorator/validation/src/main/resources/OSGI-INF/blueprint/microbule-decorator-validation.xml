@@ -10,7 +10,11 @@
         </service-properties>
     </service>
 
+    <!--
+    ConstraintViolationException Mapper
+    -->
     <bean id="constraintViolationExceptionMapper" class="org.microbule.decorator.validation.ConstraintViolationExceptionMapper" />
-    <service ref="constraintViolationExceptionMapper" interface="org.microbule.spi.error.ErrorMapper" />
+
+    <service ref="constraintViolationExceptionMapper" interface="org.microbule.errormap.spi.ErrorMapper" />
 
 </blueprint>

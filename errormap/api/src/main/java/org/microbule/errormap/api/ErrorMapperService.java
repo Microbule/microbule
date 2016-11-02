@@ -1,14 +1,14 @@
-package org.microbule.spi.error;
+package org.microbule.errormap.api;
 
-import java.util.List;
 
 import javax.ws.rs.core.Response;
 
-
-public interface ErrorResponseProvider {
+public interface ErrorMapperService {
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    Response createResponse(Response.StatusType status, List<String> exceptionMessages);
+    Exception createException(Response response);
+
+    Response createResponse(Exception e);
 }

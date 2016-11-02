@@ -1,4 +1,4 @@
-package org.microbule.spi.error;
+package org.microbule.errormap.spi;
 
 import java.util.List;
 

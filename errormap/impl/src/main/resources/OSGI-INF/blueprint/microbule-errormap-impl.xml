@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+
+    <!--
+    Error Mapper Service
+    -->
+    <bean id="errorMapperService" class="org.microbule.errormap.impl.ErrorMapperServiceImpl">
+        <argument ref="blueprintBundleContext" />
+    </bean>
+
+    <service ref="errorMapperService" interface="org.microbule.errormap.api.ErrorMapperService" />
+
+    <!--
+    IllegalArgumentException Mapper
+    -->
+    <bean id="illegalArgumentExceptionMapper" class="org.microbule.errormap.spi.ConstantErrorMapper">
+        <argument value="java.lang.IllegalArgumentException" />
+        <argument value="BAD_REQUEST" />
+    </bean>
+
+    <service ref="illegalArgumentExceptionMapper" interface="org.microbule.errormap.spi.ErrorMapper" />
+
+    <!--
+    Guava VerifyException Mapper
+    -->
+    <bean id="verifyExceptionMapper" class="org.microbule.errormap.spi.ConstantErrorMapper">
+        <argument value="com.google.common.base.VerifyException" />
+        <argument value="BAD_REQUEST" />
+    </bean>
+
+    <service ref="verifyExceptionMapper" interface="org.microbule.errormap.spi.ErrorMapper" />
+
+    <!--
+    WebApplicationException Mapper
+    -->
+    <bean id="webApplicationExceptionErrorMapper" class="org.microbule.errormap.impl.WebApplicationExceptionErrorMapper" />
+
+    <service ref="webApplicationExceptionErrorMapper" interface="org.microbule.errormap.spi.ErrorMapper" />
+
+</blueprint>

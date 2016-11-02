@@ -12,11 +12,17 @@
         </service-properties>
     </service>
 
-    <bean id="jsonSyntaxExceptionMapper" class="org.microbule.spi.error.ConstantErrorMapper">
+    <service ref="decorator" interface="org.microbule.spi.JaxrsProxyDecorator">
+        <service-properties>
+            <entry key="name" value="gson" />
+        </service-properties>
+    </service>
+
+    <bean id="jsonSyntaxExceptionMapper" class="org.microbule.errormap.spi.ConstantErrorMapper">
         <argument value="com.google.gson.JsonSyntaxException" />
         <argument value="BAD_REQUEST" />
     </bean>
 
-    <service ref="jsonSyntaxExceptionMapper" interface="org.microbule.spi.error.ErrorMapper" />
+    <service ref="jsonSyntaxExceptionMapper" interface="org.microbule.errormap.spi.ErrorMapper" />
 
 </blueprint>

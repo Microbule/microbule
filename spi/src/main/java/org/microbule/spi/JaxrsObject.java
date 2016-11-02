@@ -2,10 +2,20 @@ package org.microbule.spi;
 
 import java.util.function.Function;
 
-public interface JaxrsServerProperties {
+public interface JaxrsObject {
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Adds a JAX-RS client provider
+     * @param provider the provider
+     */
+    void addProvider(Object provider);
+
+    default Boolean getBooleanProperty(String key) {
+        return getProperty(key, Boolean::parseBoolean);
+    }
 
     default Double getDoubleProperty(String key) {
         return getProperty(key, Double::parseDouble);
@@ -22,12 +32,21 @@ public interface JaxrsServerProperties {
         return value == null ? defaultValue : value;
     }
 
-    <T> T getProperty(String key, Function<String, T> xform);
+    default <T> T getProperty(String key, Function<String, T> xform) {
+        final String value = getProperty(key);
+        return value == null ? null : xform.apply(value);
+    }
 
     default <T> T getProperty(String key, Function<String,T> xform, T defaultValue) {
         final T value = getProperty(key, xform);
         return value == null ? defaultValue : value;
     }
+
+    /**
+     * Returns the JAX-RS service interface
+     * @return the service interface
+     */
+    Class<?> getServiceInterface();
 
     /**
      * Returns the value of a boolean property

@@ -28,7 +28,6 @@ import org.apache.cxf.phase.PhaseInterceptorChain;
 import org.hibernate.validator.HibernateValidator;
 import org.microbule.spi.JaxrsServer;
 import org.microbule.spi.JaxrsServerDecorator;
-import org.microbule.spi.JaxrsServerProperties;
 
 @Provider
 public class ValidationProvider extends AbstractPhaseInterceptor<Message> implements ContainerRequestFilter, JaxrsServerDecorator {
@@ -81,7 +80,7 @@ public class ValidationProvider extends AbstractPhaseInterceptor<Message> implem
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public void decorate(JaxrsServer server, JaxrsServerProperties properties) {
+    public void decorate(JaxrsServer server) {
         server.addProvider(this);
     }
 

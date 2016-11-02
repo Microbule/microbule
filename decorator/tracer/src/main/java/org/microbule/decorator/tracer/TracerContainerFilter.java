@@ -11,15 +11,16 @@ import javax.ws.rs.ext.Provider;
 
 import org.slf4j.MDC;
 
+import static org.microbule.decorator.tracer.TracerConstants.REQUEST_ID_KEY;
+import static org.microbule.decorator.tracer.TracerConstants.TRACE_ID_KEY;
+
 @Provider
 @javax.annotation.Priority(Priorities.HEADER_DECORATOR)
-public class TracerFilter implements ContainerRequestFilter, ContainerResponseFilter {
+public class TracerContainerFilter implements ContainerRequestFilter, ContainerResponseFilter {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    private static final String TRACE_ID_KEY = "microbule_trace_id";
-    private static final String REQUEST_ID_KEY = "microbule_request_id";
     private final String traceIdHeader;
     private final TracerIdProvider idProvider;
 
@@ -27,7 +28,7 @@ public class TracerFilter implements ContainerRequestFilter, ContainerResponseFi
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public TracerFilter(String traceIdHeader, TracerIdProvider idProvider) {
+    public TracerContainerFilter(String traceIdHeader, TracerIdProvider idProvider) {
         this.traceIdHeader = traceIdHeader;
         this.idProvider = idProvider;
     }

@@ -1,4 +1,4 @@
-package org.microbule.spi.error;
+package org.microbule.errormap.spi;
 
 import javax.ws.rs.core.Response;
 

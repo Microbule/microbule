@@ -26,15 +26,16 @@ import com.google.gson.GsonBuilder;
 import com.savoirtech.eos.pattern.whiteboard.AbstractWhiteboard;
 import com.savoirtech.eos.util.ServiceProperties;
 import org.apache.commons.lang3.ObjectUtils;
+import org.microbule.spi.JaxrsProxy;
+import org.microbule.spi.JaxrsProxyDecorator;
 import org.microbule.spi.JaxrsServer;
 import org.microbule.spi.JaxrsServerDecorator;
-import org.microbule.spi.JaxrsServerProperties;
 import org.osgi.framework.BundleContext;
 
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class GsonDecorator extends AbstractWhiteboard<GsonCustomizer, GsonCustomizer> implements MessageBodyReader<Object>, MessageBodyWriter<Object>, JaxrsServerDecorator {
+public class GsonDecorator extends AbstractWhiteboard<GsonCustomizer, GsonCustomizer> implements MessageBodyReader<Object>, MessageBodyWriter<Object>, JaxrsServerDecorator, JaxrsProxyDecorator {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
@@ -60,11 +61,20 @@ public class GsonDecorator extends AbstractWhiteboard<GsonCustomizer, GsonCustom
     }
 
 //----------------------------------------------------------------------------------------------------------------------
+// JaxrsProxyDecorator Implementation
+//----------------------------------------------------------------------------------------------------------------------
+
+    @Override
+    public void decorate(JaxrsProxy proxy) {
+        proxy.addProvider(this);
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
 // JaxrsServerDecorator Implementation
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public void decorate(JaxrsServer server, JaxrsServerProperties properties) {
+    public void decorate(JaxrsServer server) {
         server.addProvider(this);
     }
 

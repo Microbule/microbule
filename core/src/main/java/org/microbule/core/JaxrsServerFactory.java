@@ -7,7 +7,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.ws.rs.Path;
 
 import com.google.common.collect.Lists;
-import com.savoirtech.eos.pattern.whiteboard.KeyedWhiteboard;
 import org.apache.cxf.BusFactory;
 import org.apache.cxf.endpoint.Server;
 import org.apache.cxf.feature.LoggingFeature;
@@ -22,12 +21,11 @@ import org.osgi.framework.ServiceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class JaxrsServerFactory extends KeyedWhiteboard<String, JaxrsServerDecorator> {
+public class JaxrsServerFactory extends JaxrsDecoratorWhiteboard<JaxrsServerDecorator> {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    private static final String ENABLED_PROP_PATTERN = "microbule.%s.enabled";
     private static final String MICROBULE_FILTER = "(microbule.address=*)";
     private static final String ADDRESS_PROP = "microbule.address";
 
@@ -41,7 +39,7 @@ public class JaxrsServerFactory extends KeyedWhiteboard<String, JaxrsServerDecor
 //----------------------------------------------------------------------------------------------------------------------
 
     public JaxrsServerFactory(BundleContext bundleContext) {
-        super(bundleContext, JaxrsServerDecorator.class, (svc, props) -> props.getProperty("name"));
+        super(bundleContext, JaxrsServerDecorator.class);
         this.bundleContext = bundleContext;
     }
 
@@ -97,15 +95,7 @@ public class JaxrsServerFactory extends KeyedWhiteboard<String, JaxrsServerDecor
                     sf.setAddress(address);
                     sf.setFeatures(Lists.newArrayList(new LoggingFeature(), createSwaggerFeature()));
                     final JaxrsServerImpl jaxrsServer = new JaxrsServerImpl(serviceInterface, ref);
-                    final JaxrsServerPropertiesImpl serverProperties = new JaxrsServerPropertiesImpl(ref);
-                    asMap().forEach((name, decorator) -> {
-                        final String enabledProperty = String.format(ENABLED_PROP_PATTERN, name);
-                        final Boolean enabled = serverProperties.getProperty(enabledProperty, Boolean::parseBoolean, Boolean.TRUE);
-                        if (enabled) {
-                            LOGGER.info("Decorating JAX-RS service using \"{}\" decorator...", name);
-                            decorator.decorate(jaxrsServer, serverProperties);
-                        }
-                    });
+                    decoratorsFor(jaxrsServer).forEach(decorator -> decorator.decorate(jaxrsServer));
                     sf.setProviders(jaxrsServer.getProviders());
                     servers.put(serviceId, sf.create());
                 }

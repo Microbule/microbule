@@ -3,7 +3,8 @@ package org.microbule.decorator.errormap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
-import org.microbule.decorator.errormap.ErrorMapperService;
+import org.microbule.errormap.api.ErrorMapperService;
+
 
 public abstract class ErrorMapperExceptionMapper<E extends Exception> implements ExceptionMapper<E> {
 //----------------------------------------------------------------------------------------------------------------------

@@ -20,4 +20,10 @@
         </service-properties>
     </service>
 
+    <service ref="decorator" interface="org.microbule.spi.JaxrsProxyDecorator">
+        <service-properties>
+            <entry key="name" value="tracer" />
+        </service-properties>
+    </service>
+
 </blueprint>

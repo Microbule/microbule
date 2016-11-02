@@ -2,7 +2,6 @@ package org.microbule.decorator.cors;
 
 import org.microbule.spi.JaxrsServer;
 import org.microbule.spi.JaxrsServerDecorator;
-import org.microbule.spi.JaxrsServerProperties;
 
 public class CorsDecorator implements JaxrsServerDecorator {
 //----------------------------------------------------------------------------------------------------------------------
@@ -10,7 +9,7 @@ public class CorsDecorator implements JaxrsServerDecorator {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public void decorate(JaxrsServer server, JaxrsServerProperties properties) {
-        server.addProvider(new CorsFilter(properties));
+    public void decorate(JaxrsServer server) {
+        server.addProvider(new CorsFilter(server));
     }
 }

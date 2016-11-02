@@ -1,4 +1,4 @@
-package org.microbule.decorator.errormap;
+package org.microbule.errormap.impl;
 
 import java.util.Collections;
 import java.util.List;
@@ -7,7 +7,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang3.StringUtils;
-import org.microbule.spi.error.TypedErrorMapper;
+import org.microbule.errormap.spi.TypedErrorMapper;
 
 public class WebApplicationExceptionErrorMapper extends TypedErrorMapper<WebApplicationException> {
 //----------------------------------------------------------------------------------------------------------------------
@@ -26,17 +26,10 @@ public class WebApplicationExceptionErrorMapper extends TypedErrorMapper<WebAppl
     protected List<String> doGetErrorMessages(WebApplicationException exception) {
         Response response = exception.getResponse();
         if (StringUtils.isBlank(exception.getMessage())) {
-            return Collections.singletonList(getErrorMessage(response));
+            return Collections.singletonList(Responses.getErrorMessage(response));
         } else {
             return Collections.singletonList(exception.getMessage());
         }
-    }
-
-    private String getErrorMessage(Response response) {
-        if (response.hasEntity()) {
-            return StringUtils.defaultString(response.readEntity(String.class), response.getStatusInfo().getReasonPhrase());
-        }
-        return response.getStatusInfo().getReasonPhrase();
     }
 
     @Override

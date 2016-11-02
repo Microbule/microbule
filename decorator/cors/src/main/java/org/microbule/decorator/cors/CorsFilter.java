@@ -19,18 +19,16 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
-import org.microbule.spi.JaxrsServerProperties;
+import org.microbule.spi.JaxrsObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Provider
 @PreMatching
 public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilter {
-    //----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
-    private static final Logger LOGGER = LoggerFactory.getLogger(CorsFilter.class);
-    private static final String PREFLIGHT_FLAG_PROP = "CorsFilter.preflightFlag";
 
     public static final String DEFAULT_ALLOWED_METHODS = "HEAD, GET, PUT, POST, DELETE";
     public static final String COMMA_SEPARATED = ",";
@@ -41,6 +39,8 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
     public static final String MAX_AGE_PROP = "microbule.cors.maxAge";
     public static final String EXPOSED_HEADERS_PROP = "microbule.cors.exposedHeaders";
     public static final String EMPTY_STRING = "";
+    private static final Logger LOGGER = LoggerFactory.getLogger(CorsFilter.class);
+    private static final String PREFLIGHT_FLAG_PROP = "CorsFilter.preflightFlag";
     private static final Set<String> SIMPLE_RESPONSE_HEADERS = new HashSet<>(Arrays.asList(
             "CACHE-CONTROL",
             "CONTENT-LANGUAGE",
@@ -78,7 +78,7 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public CorsFilter(JaxrsServerProperties serverProperties) {
+    public CorsFilter(JaxrsObject serverProperties) {
         this.allowedOrigins = parseWhitelist(serverProperties.getProperty(ALLOWED_ORIGINS_PROP, ALLOW_ALL));
         this.allowedMethods = parseWhitelist(serverProperties.getProperty(ALLOWED_METHODS_PROP, DEFAULT_ALLOWED_METHODS));
         this.allowedHeaders = parseWhitelist(serverProperties.getProperty(ALLOWED_HEADERS_PROP, ALLOW_ALL).toUpperCase());

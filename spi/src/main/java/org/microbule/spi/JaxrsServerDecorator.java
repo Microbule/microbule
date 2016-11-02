@@ -5,5 +5,5 @@ public interface JaxrsServerDecorator {
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    void decorate(JaxrsServer server, JaxrsServerProperties properties);
+    void decorate(JaxrsServer server);
 }

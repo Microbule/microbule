@@ -1,39 +1,37 @@
-package org.microbule.core;
+package org.microbule.decorator.tracer;
 
-import java.util.function.Function;
+import java.io.IOException;
 
-import org.microbule.spi.JaxrsServerProperties;
-import org.osgi.framework.ServiceReference;
+import javax.ws.rs.client.ClientRequestContext;
+import javax.ws.rs.client.ClientRequestFilter;
 
-public class JaxrsServerPropertiesImpl implements JaxrsServerProperties {
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.MDC;
+
+public class TracerClientFilter implements ClientRequestFilter {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    private final ServiceReference<?> reference;
+    private final String traceIdHeader;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public JaxrsServerPropertiesImpl(ServiceReference<?> reference) {
-        this.reference = reference;
+    public TracerClientFilter(String traceIdHeader) {
+        this.traceIdHeader = traceIdHeader;
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-// JaxrsServerProperties Implementation
+// ClientRequestFilter Implementation
 //----------------------------------------------------------------------------------------------------------------------
 
-
     @Override
-    public String getProperty(String key) {
-        final Object value = reference.getProperty(key);
-        return value == null ? null : String.valueOf(value);
-    }
-
-    @Override
-    public <T> T getProperty(String key, Function<String, T> xform) {
-        final String value = getProperty(key);
-        return value == null ? null : xform.apply(value);
+    public void filter(ClientRequestContext requestContext) throws IOException {
+        final String traceId = MDC.get(TracerConstants.TRACE_ID_KEY);
+        if(StringUtils.isNotBlank(traceId)) {
+            requestContext.getHeaders().putSingle(traceIdHeader, traceId);
+        }
     }
 }

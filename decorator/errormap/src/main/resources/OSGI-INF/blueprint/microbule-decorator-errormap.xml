@@ -2,9 +2,7 @@
 
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 
-    <bean id="errorMapperService" class="org.microbule.decorator.errormap.impl.ErrorMapperServiceImpl">
-        <argument ref="blueprintBundleContext" />
-    </bean>
+    <reference id="errorMapperService" interface="org.microbule.errormap.api.ErrorMapperService" />
 
     <bean id="decorator" class="org.microbule.decorator.errormap.ErrorMapperDecorator">
         <argument ref="errorMapperService" />
@@ -16,22 +14,10 @@
         </service-properties>
     </service>
 
-    <bean id="illegalArgumentExceptionMapper" class="org.microbule.spi.error.ConstantErrorMapper">
-        <argument value="java.lang.IllegalArgumentException" />
-        <argument value="BAD_REQUEST" />
-    </bean>
-
-    <service ref="illegalArgumentExceptionMapper" interface="org.microbule.spi.error.ErrorMapper" />
-
-    <bean id="verifyExceptionMapper" class="org.microbule.spi.error.ConstantErrorMapper">
-        <argument value="com.google.common.base.VerifyException" />
-        <argument value="BAD_REQUEST" />
-    </bean>
-
-    <service ref="verifyExceptionMapper" interface="org.microbule.spi.error.ErrorMapper" />
-
-    <bean id="webApplicationExceptionErrorMapper" class="org.microbule.decorator.errormap.WebApplicationExceptionErrorMapper" />
-
-    <service ref="webApplicationExceptionErrorMapper" interface="org.microbule.spi.error.ErrorMapper" />
+    <service ref="decorator" interface="org.microbule.spi.JaxrsProxyDecorator">
+        <service-properties>
+            <entry key="name" value="errormap" />
+        </service-properties>
+    </service>
 
 </blueprint>
