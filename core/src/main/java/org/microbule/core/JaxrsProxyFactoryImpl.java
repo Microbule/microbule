@@ -24,7 +24,7 @@ public class JaxrsProxyFactoryImpl extends JaxrsDecoratorWhiteboard<JaxrsProxyDe
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public <T> T createProxy(Class<T> serviceInterface, String baseAddress, Map<String, Object> properties) {
+    public <T> T createProxy(Class<T> serviceInterface, String baseAddress, Map<String, String> properties) {
         final JaxrsProxyImpl jaxrsProxy = new JaxrsProxyImpl(serviceInterface, properties);
         decoratorsFor(jaxrsProxy).forEach(decorator -> decorator.decorate(jaxrsProxy));
         return JAXRSClientFactory.create(baseAddress, serviceInterface, jaxrsProxy.getProviders(), singletonList(new LoggingFeature()), null);

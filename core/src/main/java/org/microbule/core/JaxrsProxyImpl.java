@@ -9,7 +9,7 @@ public class JaxrsProxyImpl extends JaxrsObjectImpl implements JaxrsProxy {
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public JaxrsProxyImpl(Class<?> serviceInterface, Map<String, Object> properties) {
+    public JaxrsProxyImpl(Class<?> serviceInterface, Map<String, String> properties) {
         super(serviceInterface, properties::get);
     }
 }

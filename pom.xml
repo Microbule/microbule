@@ -18,9 +18,9 @@
 
     <modules>
         <module>api</module>
-        <module>errormap</module>
         <module>spi</module>
         <module>core</module>
+        <module>errormap</module>
         <module>decorator</module>
         <module>example</module>
         <module>features</module>
