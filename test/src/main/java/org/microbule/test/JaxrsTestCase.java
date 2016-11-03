@@ -10,14 +10,12 @@ import javax.ws.rs.client.WebTarget;
 
 import org.apache.commons.lang3.reflect.TypeUtils;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.microbule.api.JaxrsServer;
 import org.microbule.core.JaxrsProxyFactoryImpl;
 import org.microbule.core.JaxrsServerFactoryImpl;
-import org.mockito.MockitoAnnotations;
 
-public abstract class JaxrsTestCase<T> extends Assert {
+public abstract class JaxrsTestCase<T> extends MockObjectTestCase {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
@@ -91,7 +89,6 @@ public abstract class JaxrsTestCase<T> extends Assert {
 
     @Before
     public void startServer() {
-        MockitoAnnotations.initMocks(this);
         final JaxrsServerFactoryImpl factory = new JaxrsServerFactoryImpl();
         addDecorators(factory);
         baseAddress = createBaseAddress();
