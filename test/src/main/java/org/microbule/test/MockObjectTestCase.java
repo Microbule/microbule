@@ -1,10 +1,9 @@
 package org.microbule.test;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.mockito.MockitoAnnotations;
 
-public abstract class MockObjectTestCase extends Assert {
+public abstract class MockObjectTestCase extends MicrobuleTestCase {
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
