@@ -57,6 +57,7 @@
         <build.helper.plugin.version>1.9.1</build.helper.plugin.version>
         <bundle.plugin.version>3.2.0</bundle.plugin.version>
         <deploy.plugin.version>2.8.2</deploy.plugin.version>
+        <jacoco.plugin.version>0.7.4.201502262128</jacoco.plugin.version>
         <jar.plugin.version>2.6</jar.plugin.version>
         <resources.plugin.version>2.7</resources.plugin.version>
         <sonar.plugin.version>3.2</sonar.plugin.version>
@@ -239,6 +240,38 @@
                         </execution>
                     </executions>
                 </plugin>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco.plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>default-prepare-agent</id>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>default-prepare-agent-integration</id>
+                            <goals>
+                                <goal>prepare-agent-integration</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>default-report</id>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>default-report-integration</id>
+                            <goals>
+                                <goal>report-integration</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
             </plugins>
         </pluginManagement>
 
