@@ -275,7 +275,6 @@
                 <version>${jacoco.plugin.version}</version>
                 <configuration>
                     <append>true</append>
-                    <destFile>${sonar.jacoco.itReportPath}</destFile>
                 </configuration>
                 <executions>
                     <execution>
@@ -286,6 +285,9 @@
                     </execution>
                     <execution>
                         <id>default-prepare-agent-integration</id>
+                        <configuration>
+                            <destFile>${sonar.jacoco.itReportPath}</destFile>
+                        </configuration>
                         <goals>
                             <goal>prepare-agent-integration</goal>
                         </goals>
@@ -298,6 +300,9 @@
                     </execution>
                     <execution>
                         <id>default-report-integration</id>
+                        <configuration>
+                            <dataFile>${sonar.jacoco.itReportPath}</dataFile>
+                        </configuration>
                         <goals>
                             <goal>report-integration</goal>
                         </goals>
