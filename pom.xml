@@ -153,11 +153,7 @@
                     <artifactId>sonar-maven-plugin</artifactId>
                     <version>${sonar.plugin.version}</version>
                 </plugin>
-                <plugin>
-                    <groupId>org.jacoco</groupId>
-                    <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>${jacoco.plugin.version}</version>
-                </plugin>
+
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>build-helper-maven-plugin</artifactId>
@@ -250,10 +246,15 @@
                         </execution>
                     </executions>
                 </plugin>
-
-
             </plugins>
         </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.plugin.version}</version>
+            </plugin>
+        </plugins>
     </build>
 
 </project>
