@@ -6,12 +6,12 @@
     -->
     <bean id="serverFactory" class="org.microbule.core.JaxrsServerFactoryImpl" />
 
-    <bean id="serverDecoratorRegistrar" class="org.microbule.osgi.JaxrsServerDecoratorRegistrar">
+    <bean id="serverDecoratorRegistrar" class="org.microbule.core.osgi.JaxrsServerDecoratorRegistrar">
         <argument ref="blueprintBundleContext"/>
         <argument ref="serverFactory" />
     </bean>
 
-    <bean id="serverManager" class="org.microbule.osgi.JaxrsServerManager" init-method="init" destroy-method="destroy">
+    <bean id="serverManager" class="org.microbule.core.osgi.JaxrsServerManager" init-method="init" destroy-method="destroy">
         <argument ref="blueprintBundleContext"/>
         <argument ref="serverFactory" />
     </bean>
@@ -23,7 +23,7 @@
     -->
     <bean id="proxyFactory" class="org.microbule.core.JaxrsProxyFactoryImpl" />
 
-    <bean id="proxyDecoratorRegistrar" class="org.microbule.osgi.JaxrsProxyDecoratorRegistrar">
+    <bean id="proxyDecoratorRegistrar" class="org.microbule.core.osgi.JaxrsProxyDecoratorRegistrar">
         <argument ref="blueprintBundleContext" />
         <argument ref="proxyFactory" />
     </bean>

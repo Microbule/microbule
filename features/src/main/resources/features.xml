@@ -24,7 +24,6 @@
         <bundle>mvn:org.microbule/microbule-api/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-spi/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-core/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-osgi/${project.version}</bundle>
     </feature>
 
     <feature name="microbule-errormap" version="${project.version}">

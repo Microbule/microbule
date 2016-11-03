@@ -2,8 +2,11 @@
 
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 
-    <bean id="gsonFactory" class="org.microbule.decorator.gson.GsonFactory">
+    <bean id="gsonFactory" class="org.microbule.decorator.gson.GsonFactory" />
+
+    <bean id="gsonCustomizerRegistrar" class="org.microbule.decorator.gson.GsonCustomizerRegistrar">
         <argument ref="blueprintBundleContext" />
+        <argument ref="gsonFactory" />
     </bean>
 
     <!--

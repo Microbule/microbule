@@ -1,15 +1,20 @@
-package org.microbule.core;
+package org.microbule.test;
 
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+
 import org.apache.commons.lang3.reflect.TypeUtils;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.microbule.api.JaxrsServer;
+import org.microbule.core.JaxrsProxyFactoryImpl;
+import org.microbule.core.JaxrsServerFactoryImpl;
 import org.mockito.MockitoAnnotations;
 
 public abstract class JaxrsTestCase<T> extends Assert {
@@ -67,6 +72,10 @@ public abstract class JaxrsTestCase<T> extends Assert {
         final Map<TypeVariable<?>, Type> arguments = TypeUtils.getTypeArguments(getClass(), JaxrsTestCase.class);
         final TypeVariable<Class<JaxrsTestCase>> variable = JaxrsTestCase.class.getTypeParameters()[0];
         return (Class<T>) arguments.get(variable);
+    }
+
+    protected WebTarget createWebTarget(){
+        return ClientBuilder.newClient().target(getBaseAddress());
     }
 
     protected int getPort() {

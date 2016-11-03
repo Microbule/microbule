@@ -1,4 +1,4 @@
-package org.microbule.osgi;
+package org.microbule.core.osgi;
 
 import com.savoirtech.eos.pattern.whiteboard.AbstractWhiteboard;
 import com.savoirtech.eos.util.ServiceProperties;

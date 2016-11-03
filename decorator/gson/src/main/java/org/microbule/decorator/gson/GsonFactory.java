@@ -6,11 +6,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.savoirtech.eos.pattern.whiteboard.AbstractWhiteboard;
-import com.savoirtech.eos.util.ServiceProperties;
-import org.osgi.framework.BundleContext;
 
-public class GsonFactory extends AbstractWhiteboard<GsonCustomizer, GsonCustomizer> {
+public class GsonFactory {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
@@ -22,10 +19,8 @@ public class GsonFactory extends AbstractWhiteboard<GsonCustomizer, GsonCustomiz
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public GsonFactory(BundleContext bundleContext) {
-        super(bundleContext, GsonCustomizer.class);
+    public GsonFactory() {
         rebuild();
-        start();
     }
 
     private void rebuild() {
@@ -39,20 +34,18 @@ public class GsonFactory extends AbstractWhiteboard<GsonCustomizer, GsonCustomiz
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    protected GsonCustomizer addService(GsonCustomizer service, ServiceProperties properties) {
-        customizers.add(service);
+    public void addCustomizer(GsonCustomizer customizer) {
+        customizers.add(customizer);
         rebuild();
-        return service;
     }
 
     public Gson createGson() {
         return gson.get();
     }
 
-    @Override
-    protected void removeService(GsonCustomizer service, GsonCustomizer tracked) {
-        customizers.remove(tracked);
-        rebuild();
+    public void removeCustomizer(GsonCustomizer customizer) {
+        if (customizers.remove(customizer)) {
+            rebuild();
+        }
     }
 }

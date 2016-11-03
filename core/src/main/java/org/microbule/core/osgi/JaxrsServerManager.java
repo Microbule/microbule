@@ -1,4 +1,4 @@
-package org.microbule.osgi;
+package org.microbule.core.osgi;
 
 import java.util.Arrays;
 import java.util.Map;
