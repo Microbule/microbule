@@ -47,7 +47,7 @@ public abstract class JaxrsTestCase<T> extends MockObjectTestCase {
         // Do nothing!
     }
 
-    protected void addDecorators(JaxrsProxyFactoryImpl proxyFactory) {
+    protected void addDecorators(JaxrsProxyFactoryImpl factory) {
         // Do nothing!
     }
 
