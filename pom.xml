@@ -273,6 +273,10 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco.plugin.version}</version>
+                <configuration>
+                    <append>true</append>
+                    <destFile>${sonar.jacoco.itReportPath}</destFile>
+                </configuration>
                 <executions>
                     <execution>
                         <id>default-prepare-agent</id>
