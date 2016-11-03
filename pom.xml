@@ -286,8 +286,8 @@
                     <execution>
                         <id>default-prepare-agent-integration</id>
                         <configuration>
-
-                            <destFile>${sonar.jacoco.itReportPath}</destFile>
+                            <destfile>${sonar.jacoco.itReportPath}</destfile>
+                            <!--<destFile>${sonar.jacoco.itReportPath}</destFile>-->
                         </configuration>
                         <goals>
                             <goal>prepare-agent-integration</goal>
