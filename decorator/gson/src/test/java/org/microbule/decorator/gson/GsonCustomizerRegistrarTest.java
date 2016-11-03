@@ -14,11 +14,19 @@ import static org.mockito.Mockito.verify;
 
 
 public class GsonCustomizerRegistrarTest extends MockObjectTestCase {
+//----------------------------------------------------------------------------------------------------------------------
+// Fields
+//----------------------------------------------------------------------------------------------------------------------
+
     @Rule
     public final OsgiRule osgiRule = new OsgiRule();
 
     @Mock
     private GsonCustomizer gsonCustomizer;
+
+//----------------------------------------------------------------------------------------------------------------------
+// Other Methods
+//----------------------------------------------------------------------------------------------------------------------
 
     @Test
     public void testAddingCustomizer() {
@@ -28,5 +36,4 @@ public class GsonCustomizerRegistrarTest extends MockObjectTestCase {
         verify(gsonCustomizer).customize(any(GsonBuilder.class));
         registration.unregister();
     }
-
 }
