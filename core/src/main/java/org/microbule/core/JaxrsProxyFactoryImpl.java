@@ -6,10 +6,11 @@ import org.apache.cxf.feature.LoggingFeature;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
 import org.microbule.api.JaxrsProxyFactory;
 import org.microbule.spi.JaxrsProxyConfig;
+import org.microbule.spi.JaxrsProxyDecorator;
 
 import static java.util.Collections.singletonList;
 
-public class JaxrsProxyFactoryImpl extends JaxrsObjectDecoratorRegistry<JaxrsProxyConfig> implements JaxrsProxyFactory {
+public class JaxrsProxyFactoryImpl extends JaxrsObjectDecoratorRegistry<JaxrsProxyConfig,JaxrsProxyDecorator> implements JaxrsProxyFactory {
 //----------------------------------------------------------------------------------------------------------------------
 // JaxrsProxyFactory Implementation
 //----------------------------------------------------------------------------------------------------------------------

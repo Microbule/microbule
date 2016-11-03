@@ -10,8 +10,9 @@ import org.apache.cxf.jaxrs.swagger.Swagger2Feature;
 import org.microbule.api.JaxrsServer;
 import org.microbule.api.JaxrsServerFactory;
 import org.microbule.spi.JaxrsServerConfig;
+import org.microbule.spi.JaxrsServerDecorator;
 
-public class JaxrsServerFactoryImpl extends JaxrsObjectDecoratorRegistry<JaxrsServerConfig> implements JaxrsServerFactory {
+public class JaxrsServerFactoryImpl extends JaxrsObjectDecoratorRegistry<JaxrsServerConfig,JaxrsServerDecorator> implements JaxrsServerFactory {
 //----------------------------------------------------------------------------------------------------------------------
 // JaxrsServerFactory Implementation
 //----------------------------------------------------------------------------------------------------------------------

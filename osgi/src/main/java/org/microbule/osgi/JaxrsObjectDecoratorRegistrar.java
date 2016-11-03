@@ -15,13 +15,13 @@ public abstract class JaxrsObjectDecoratorRegistrar<C extends JaxrsObjectConfig,
 
     public static final String NAME_PROP = "name";
 
-    private final JaxrsObjectDecoratorRegistry<C> registry;
+    private final JaxrsObjectDecoratorRegistry<C,T> registry;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public JaxrsObjectDecoratorRegistrar(BundleContext bundleContext, Class<T> serviceType, JaxrsObjectDecoratorRegistry<C> registry) {
+    public JaxrsObjectDecoratorRegistrar(BundleContext bundleContext, Class<T> serviceType, JaxrsObjectDecoratorRegistry<C,T> registry) {
         super(bundleContext, serviceType);
         this.registry = registry;
     }

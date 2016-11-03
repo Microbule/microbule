@@ -44,6 +44,8 @@
         <hibernate.validator.version>5.2.4.Final</hibernate.validator.version>
         <javax.el.api.version>2.2.5</javax.el.api.version>
         <jboss.logging.version>3.3.0.Final</jboss.logging.version>
+        <junit.version>4.12</junit.version>
+        <mockito.version>2.2.10</mockito.version>
         <osgi.version>5.0.0</osgi.version>
         <pax.cdi.version>0.11.0</pax.cdi.version>
         <slf4j.version>1.7.21</slf4j.version>
@@ -117,6 +119,11 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
