@@ -80,6 +80,8 @@
         <osgi.embed.dir>lib</osgi.embed.dir>
         <osgi.activator/>
         <osgi.dynamic/>
+
+        <sonar.jacoco.itReportPath>${session.executionRootDirectory}/target/reports/jacoco-it.exec</sonar.jacoco.itReportPath>
     </properties>
 
     <scm>
