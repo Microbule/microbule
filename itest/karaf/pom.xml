@@ -11,6 +11,10 @@
     <artifactId>microbule-itest-karaf</artifactId>
     <name>Microbule :: Integration Tests :: Apache Karaf</name>
 
+    <properties>
+        <sonar.jacoco.itReportPath>${project.basedir}/reports/jacoco.exec</sonar.jacoco.itReportPath>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.microbule</groupId>
