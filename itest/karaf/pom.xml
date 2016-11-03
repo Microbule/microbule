@@ -86,7 +86,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>${failsafe.plugin.version}</version>
+                <inherited>true</inherited>
                 <configuration>
                     <forkMode>once</forkMode>
                     <systemPropertyVariables>
@@ -95,15 +95,6 @@
                         <karaf.version>${karaf.version}</karaf.version>
                     </systemPropertyVariables>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>verify</id>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
