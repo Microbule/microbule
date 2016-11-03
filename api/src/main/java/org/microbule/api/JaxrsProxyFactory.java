@@ -17,5 +17,5 @@ public interface JaxrsProxyFactory {
      * @param <T> the proxy type
      * @return the proxy
      */
-    <T> T createProxy(Class<T> serviceInterface, String baseAddress, Map<String,String> properties);
+    <T> T createProxy(Class<T> serviceInterface, String baseAddress, Map<String,Object> properties);
 }

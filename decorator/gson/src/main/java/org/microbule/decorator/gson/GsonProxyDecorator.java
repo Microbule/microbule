@@ -1,30 +1,29 @@
-package org.microbule.core;
+package org.microbule.decorator.gson;
 
-import org.apache.cxf.endpoint.Server;
-import org.microbule.api.JaxrsServer;
+import org.microbule.spi.JaxrsProxyConfig;
+import org.microbule.spi.JaxrsProxyDecorator;
 
-public class JaxrsServerImpl implements JaxrsServer {
+public class GsonProxyDecorator implements JaxrsProxyDecorator {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    private final Server server;
+    private final GsonFactory factory;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public JaxrsServerImpl(Server server) {
-        this.server = server;
+    public GsonProxyDecorator(GsonFactory factory) {
+        this.factory = factory;
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-// JaxrsServer Implementation
+// JaxrsObjectDecorator Implementation
 //----------------------------------------------------------------------------------------------------------------------
 
-
     @Override
-    public void shutdown() {
-        server.destroy();
+    public void decorate(JaxrsProxyConfig proxy) {
+        proxy.addProvider(new GsonProvider(factory));
     }
 }

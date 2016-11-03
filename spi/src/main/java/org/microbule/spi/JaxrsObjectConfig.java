@@ -2,7 +2,7 @@ package org.microbule.spi;
 
 import java.util.function.Function;
 
-public interface JaxrsObject {
+public interface JaxrsObjectConfig {
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
@@ -41,6 +41,12 @@ public interface JaxrsObject {
         final T value = getProperty(key, xform);
         return value == null ? defaultValue : value;
     }
+
+    /**
+     * Returns the base address of the JAX-RS service.
+     * @return the base address
+     */
+    String getBaseAddress();
 
     /**
      * Returns the JAX-RS service interface

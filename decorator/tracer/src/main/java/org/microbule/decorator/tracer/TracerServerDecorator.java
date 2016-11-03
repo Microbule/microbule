@@ -1,13 +1,11 @@
 package org.microbule.decorator.tracer;
 
 import com.savoirtech.eos.pattern.whiteboard.SingleWhiteboard;
-import org.microbule.spi.JaxrsProxy;
-import org.microbule.spi.JaxrsProxyDecorator;
-import org.microbule.spi.JaxrsServer;
+import org.microbule.spi.JaxrsServerConfig;
 import org.microbule.spi.JaxrsServerDecorator;
 import org.osgi.framework.BundleContext;
 
-public class TracerDecorator extends SingleWhiteboard<TracerIdProvider> implements JaxrsServerDecorator, JaxrsProxyDecorator {
+public class TracerServerDecorator extends SingleWhiteboard<TracerIdProvider> implements JaxrsServerDecorator {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
@@ -18,26 +16,17 @@ public class TracerDecorator extends SingleWhiteboard<TracerIdProvider> implemen
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public TracerDecorator(BundleContext bundleContext, String traceIdHeader) {
+    public TracerServerDecorator(BundleContext bundleContext, String traceIdHeader) {
         super(bundleContext, TracerIdProvider.class);
         this.traceIdHeader = traceIdHeader;
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-// JaxrsProxyDecorator Implementation
+// JaxrsObjectDecorator Implementation
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public void decorate(JaxrsProxy proxy) {
-        proxy.addProvider(new TracerClientFilter(traceIdHeader));
-    }
-
-//----------------------------------------------------------------------------------------------------------------------
-// JaxrsServerDecorator Implementation
-//----------------------------------------------------------------------------------------------------------------------
-
-    @Override
-    public void decorate(JaxrsServer server) {
+    public void decorate(JaxrsServerConfig server) {
         server.addProvider(new TracerContainerFilter(traceIdHeader, getService(UuidTracerIdProvider.INSTANCE)));
     }
 }

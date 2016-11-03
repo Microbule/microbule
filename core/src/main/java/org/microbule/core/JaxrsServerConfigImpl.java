@@ -2,14 +2,14 @@ package org.microbule.core;
 
 import java.util.Map;
 
-import org.microbule.spi.JaxrsProxy;
+import org.microbule.spi.JaxrsServerConfig;
 
-public class JaxrsProxyImpl extends JaxrsObjectImpl implements JaxrsProxy {
+public class JaxrsServerConfigImpl extends JaxrsObjectConfigImpl implements JaxrsServerConfig {
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public JaxrsProxyImpl(Class<?> serviceInterface, Map<String, String> properties) {
-        super(serviceInterface, properties::get);
+    public JaxrsServerConfigImpl(Class<?> serviceInterface, String baseAddress, Map<String,Object> properties) {
+        super(serviceInterface, baseAddress, properties);
     }
 }

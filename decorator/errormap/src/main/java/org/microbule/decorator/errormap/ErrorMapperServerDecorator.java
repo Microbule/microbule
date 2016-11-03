@@ -1,30 +1,31 @@
-package org.microbule.core;
+package org.microbule.decorator.errormap;
 
-import org.apache.cxf.endpoint.Server;
-import org.microbule.api.JaxrsServer;
+import org.microbule.errormap.api.ErrorMapperService;
+import org.microbule.spi.JaxrsServerConfig;
+import org.microbule.spi.JaxrsServerDecorator;
 
-public class JaxrsServerImpl implements JaxrsServer {
+public class ErrorMapperServerDecorator implements JaxrsServerDecorator {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    private final Server server;
+    private final ErrorMapperService errorMapperService;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public JaxrsServerImpl(Server server) {
-        this.server = server;
+    public ErrorMapperServerDecorator(ErrorMapperService errorMapperService) {
+        this.errorMapperService = errorMapperService;
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-// JaxrsServer Implementation
+// JaxrsObjectDecorator Implementation
 //----------------------------------------------------------------------------------------------------------------------
 
-
     @Override
-    public void shutdown() {
-        server.destroy();
+    public void decorate(JaxrsServerConfig server) {
+        server.addProvider(new WebApplicationExceptionMapper(errorMapperService));
+        server.addProvider(new RootExceptionMapper(errorMapperService));
     }
 }

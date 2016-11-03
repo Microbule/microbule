@@ -20,6 +20,7 @@
         <module>api</module>
         <module>spi</module>
         <module>core</module>
+        <module>osgi</module>
         <module>errormap</module>
         <module>decorator</module>
         <module>example</module>

@@ -19,7 +19,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
-import org.microbule.spi.JaxrsObject;
+import org.microbule.spi.JaxrsObjectConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -78,7 +78,7 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public CorsFilter(JaxrsObject serverProperties) {
+    public CorsFilter(JaxrsObjectConfig serverProperties) {
         this.allowedOrigins = parseWhitelist(serverProperties.getProperty(ALLOWED_ORIGINS_PROP, ALLOW_ALL));
         this.allowedMethods = parseWhitelist(serverProperties.getProperty(ALLOWED_METHODS_PROP, DEFAULT_ALLOWED_METHODS));
         this.allowedHeaders = parseWhitelist(serverProperties.getProperty(ALLOWED_HEADERS_PROP, ALLOW_ALL).toUpperCase());

@@ -4,17 +4,21 @@
 
     <reference id="errorMapperService" interface="org.microbule.errormap.api.ErrorMapperService" />
 
-    <bean id="decorator" class="org.microbule.decorator.errormap.ErrorMapperDecorator">
+    <bean id="serverDecorator" class="org.microbule.decorator.errormap.ErrorMapperServerDecorator">
         <argument ref="errorMapperService" />
     </bean>
 
-    <service ref="decorator" interface="org.microbule.spi.JaxrsServerDecorator">
+    <service ref="serverDecorator" interface="org.microbule.spi.JaxrsServerDecorator">
         <service-properties>
             <entry key="name" value="errormap" />
         </service-properties>
     </service>
 
-    <service ref="decorator" interface="org.microbule.spi.JaxrsProxyDecorator">
+    <bean id="proxyDecorator" class="org.microbule.decorator.errormap.ErrorMapperProxyDecorator">
+        <argument ref="errorMapperService" />
+    </bean>
+
+    <service ref="proxyDecorator" interface="org.microbule.spi.JaxrsProxyDecorator">
         <service-properties>
             <entry key="name" value="errormap" />
         </service-properties>

@@ -1,9 +1,4 @@
 package org.microbule.spi;
 
-public interface JaxrsServerDecorator {
-//----------------------------------------------------------------------------------------------------------------------
-// Other Methods
-//----------------------------------------------------------------------------------------------------------------------
-
-    void decorate(JaxrsServer server);
+public interface JaxrsServerDecorator extends JaxrsObjectDecorator<JaxrsServerConfig> {
 }

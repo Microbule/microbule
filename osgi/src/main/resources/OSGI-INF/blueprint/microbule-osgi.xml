@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+
+    <!--
+    JAX-RS Server Factory
+    -->
+    <bean id="serverFactory" class="org.microbule.core.JaxrsServerFactoryImpl" />
+
+    <bean id="serverDecoratorRegistrar" class="org.microbule.osgi.JaxrsServerDecoratorRegistrar">
+        <argument ref="blueprintBundleContext"/>
+        <argument ref="serverFactory" />
+    </bean>
+
+    <bean id="serverManager" class="org.microbule.osgi.JaxrsServerManager" init-method="init" destroy-method="destroy">
+        <argument ref="blueprintBundleContext"/>
+        <argument ref="serverFactory" />
+    </bean>
+
+    <service ref="serverFactory" interface="org.microbule.api.JaxrsServerFactory" />
+
+    <!--
+    JAX-RS Proxy Factory
+    -->
+    <bean id="proxyFactory" class="org.microbule.core.JaxrsProxyFactoryImpl" />
+
+    <bean id="proxyDecoratorRegistrar" class="org.microbule.osgi.JaxrsProxyDecoratorRegistrar">
+        <argument ref="blueprintBundleContext" />
+        <argument ref="proxyFactory" />
+    </bean>
+
+    <service ref="proxyFactory" interface="org.microbule.api.JaxrsProxyFactory" />
+
+</blueprint>

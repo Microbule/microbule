@@ -1,9 +1,4 @@
 package org.microbule.spi;
 
-public interface JaxrsProxyDecorator {
-//----------------------------------------------------------------------------------------------------------------------
-// Other Methods
-//----------------------------------------------------------------------------------------------------------------------
-
-    void decorate(JaxrsProxy proxy);
+public interface JaxrsProxyDecorator extends JaxrsObjectDecorator<JaxrsProxyConfig> {
 }

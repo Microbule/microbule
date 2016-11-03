@@ -1,18 +1,14 @@
-package org.microbule.core;
+package org.microbule.osgi;
 
 import java.util.Arrays;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.Path;
 
-import com.google.common.collect.Lists;
-import org.apache.cxf.BusFactory;
-import org.apache.cxf.endpoint.Server;
-import org.apache.cxf.feature.LoggingFeature;
-import org.apache.cxf.jaxrs.JAXRSServerFactoryBean;
-import org.apache.cxf.jaxrs.swagger.Swagger2Feature;
-import org.microbule.spi.JaxrsServerDecorator;
+import com.google.common.collect.MapMaker;
+import org.microbule.api.JaxrsServer;
+import org.microbule.api.JaxrsServerFactory;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 import org.osgi.framework.InvalidSyntaxException;
@@ -21,7 +17,7 @@ import org.osgi.framework.ServiceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class JaxrsServerFactory extends JaxrsDecoratorWhiteboard<JaxrsServerDecorator> {
+public class JaxrsServerManager {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
@@ -29,18 +25,21 @@ public class JaxrsServerFactory extends JaxrsDecoratorWhiteboard<JaxrsServerDeco
     private static final String MICROBULE_FILTER = "(microbule.address=*)";
     private static final String ADDRESS_PROP = "microbule.address";
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JaxrsServerFactory.class);
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(JaxrsServerManager.class);
 
     private final BundleContext bundleContext;
-    private final Map<Long, Server> servers = new ConcurrentHashMap<>();
+
+    private final JaxrsServerFactory factory;
+    private final Map<Long, JaxrsServer> servers = new MapMaker().makeMap();
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public JaxrsServerFactory(BundleContext bundleContext) {
-        super(bundleContext, JaxrsServerDecorator.class);
+    public JaxrsServerManager(BundleContext bundleContext, JaxrsServerFactory factory) {
         this.bundleContext = bundleContext;
+        this.factory = factory;
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -48,7 +47,7 @@ public class JaxrsServerFactory extends JaxrsDecoratorWhiteboard<JaxrsServerDeco
 //----------------------------------------------------------------------------------------------------------------------
 
     public void destroy() {
-        servers.values().forEach(Server::destroy);
+        servers.values().forEach(JaxrsServer::shutdown);
     }
 
     public void init() {
@@ -60,9 +59,9 @@ public class JaxrsServerFactory extends JaxrsDecoratorWhiteboard<JaxrsServerDeco
                         break;
                     case ServiceEvent.UNREGISTERING:
                         final Long serviceId = serviceId(event.getServiceReference());
-                        final Server server = servers.get(serviceId);
+                        final JaxrsServer server = servers.get(serviceId);
                         if (server != null) {
-                            server.destroy();
+                            server.shutdown();
                         }
                 }
             }, MICROBULE_FILTER);
@@ -89,15 +88,8 @@ public class JaxrsServerFactory extends JaxrsDecoratorWhiteboard<JaxrsServerDeco
                     final String address = (String) ref.getProperty(ADDRESS_PROP);
                     LOGGER.info("Detected JAX-RS resource {} ({}) at address {} from bundle {} ({}).", serviceInterfaceName, serviceId, address, ref.getBundle().getSymbolicName(), ref.getBundle().getBundleId());
                     final Object serviceImplementation = bundleContext.getService(ref);
-                    final JAXRSServerFactoryBean sf = new JAXRSServerFactoryBean();
-                    sf.setBus(BusFactory.getDefaultBus(true));
-                    sf.setServiceBean(serviceImplementation);
-                    sf.setAddress(address);
-                    sf.setFeatures(Lists.newArrayList(new LoggingFeature(), createSwaggerFeature()));
-                    final JaxrsServerImpl jaxrsServer = new JaxrsServerImpl(serviceInterface, ref);
-                    decoratorsFor(jaxrsServer).forEach(decorator -> decorator.decorate(jaxrsServer));
-                    sf.setProviders(jaxrsServer.getProviders());
-                    servers.put(serviceId, sf.create());
+                    JaxrsServer server = factory.createJaxrsServer(serviceInterface, serviceImplementation, address, toProperties(ref));
+                    servers.put(serviceId, server);
                 }
             } catch (ClassNotFoundException e) {
                 LOGGER.error("Unable to create JAX-RS server!", e);
@@ -105,13 +97,11 @@ public class JaxrsServerFactory extends JaxrsDecoratorWhiteboard<JaxrsServerDeco
         });
     }
 
-    private Swagger2Feature createSwaggerFeature() {
-        final Swagger2Feature feature = new Swagger2Feature();
-        feature.setPrettyPrint(true);
-        return feature;
-    }
-
     private Long serviceId(ServiceReference<?> ref) {
         return (Long) ref.getProperty(Constants.SERVICE_ID);
+    }
+
+    private static Map<String, Object> toProperties(ServiceReference<?> ref) {
+        return Arrays.stream(ref.getPropertyKeys()).collect(Collectors.toMap(key -> key, ref::getProperty));
     }
 }

@@ -2,22 +2,39 @@
 
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 
-    <bean id="decorator" class="org.microbule.decorator.gson.GsonDecorator">
+    <bean id="gsonFactory" class="org.microbule.decorator.gson.GsonFactory">
         <argument ref="blueprintBundleContext" />
     </bean>
 
-    <service ref="decorator" interface="org.microbule.spi.JaxrsServerDecorator">
+    <!--
+    Server Decorator
+    -->
+    <bean id="serverDecorator" class="org.microbule.decorator.gson.GsonServerDecorator">
+        <argument ref="gsonFactory" />
+    </bean>
+
+    <service ref="serverDecorator" interface="org.microbule.spi.JaxrsServerDecorator">
         <service-properties>
             <entry key="name" value="gson" />
         </service-properties>
     </service>
 
-    <service ref="decorator" interface="org.microbule.spi.JaxrsProxyDecorator">
+    <!--
+    Proxy Decorator
+    -->
+    <bean id="proxyDecorator" class="org.microbule.decorator.gson.GsonProxyDecorator">
+        <argument ref="gsonFactory" />
+    </bean>
+
+    <service ref="proxyDecorator" interface="org.microbule.spi.JaxrsProxyDecorator">
         <service-properties>
             <entry key="name" value="gson" />
         </service-properties>
     </service>
 
+    <!--
+    Exception Mappers
+    -->
     <bean id="jsonSyntaxExceptionMapper" class="org.microbule.errormap.spi.ConstantErrorMapper">
         <argument value="com.google.gson.JsonSyntaxException" />
         <argument value="BAD_REQUEST" />

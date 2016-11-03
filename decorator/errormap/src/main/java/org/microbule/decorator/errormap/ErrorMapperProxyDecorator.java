@@ -1,12 +1,10 @@
 package org.microbule.decorator.errormap;
 
 import org.microbule.errormap.api.ErrorMapperService;
-import org.microbule.spi.JaxrsProxy;
+import org.microbule.spi.JaxrsProxyConfig;
 import org.microbule.spi.JaxrsProxyDecorator;
-import org.microbule.spi.JaxrsServer;
-import org.microbule.spi.JaxrsServerDecorator;
 
-public class ErrorMapperDecorator implements JaxrsServerDecorator, JaxrsProxyDecorator {
+public class ErrorMapperProxyDecorator implements JaxrsProxyDecorator {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
@@ -17,26 +15,16 @@ public class ErrorMapperDecorator implements JaxrsServerDecorator, JaxrsProxyDec
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public ErrorMapperDecorator(ErrorMapperService errorMapperService) {
+    public ErrorMapperProxyDecorator(ErrorMapperService errorMapperService) {
         this.errorMapperService = errorMapperService;
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-// JaxrsProxyDecorator Implementation
+// JaxrsObjectDecorator Implementation
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public void decorate(JaxrsProxy proxy) {
+    public void decorate(JaxrsProxyConfig proxy) {
         proxy.addProvider(new ErrorMapperResponseExceptionMapper(errorMapperService));
-    }
-
-//----------------------------------------------------------------------------------------------------------------------
-// JaxrsServerDecorator Implementation
-//----------------------------------------------------------------------------------------------------------------------
-
-    @Override
-    public void decorate(JaxrsServer server) {
-        server.addProvider(new WebApplicationExceptionMapper(errorMapperService));
-        server.addProvider(new RootExceptionMapper(errorMapperService));
     }
 }
