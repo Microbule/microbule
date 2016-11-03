@@ -81,7 +81,7 @@
         <osgi.activator/>
         <osgi.dynamic/>
 
-        <sonar.jacoco.itReportPath>${session.executionRootDirectory}/target/reports/jacoco-it.exec</sonar.jacoco.itReportPath>
+        <sonar.jacoco.itReportPath>${env.WORKSPACE}/target/reports/jacoco-it.exec</sonar.jacoco.itReportPath>
     </properties>
 
     <scm>
@@ -286,6 +286,7 @@
                     <execution>
                         <id>default-prepare-agent-integration</id>
                         <configuration>
+
                             <destFile>${sonar.jacoco.itReportPath}</destFile>
                         </configuration>
                         <goals>
