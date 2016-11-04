@@ -80,6 +80,7 @@
         <osgi.embed.dir>lib</osgi.embed.dir>
         <osgi.activator/>
         <osgi.dynamic/>
+
     </properties>
 
     <scm>
