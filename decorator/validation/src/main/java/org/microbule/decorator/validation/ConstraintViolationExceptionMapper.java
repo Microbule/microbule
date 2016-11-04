@@ -25,7 +25,7 @@ public class ConstraintViolationExceptionMapper extends TypedErrorMapper<Constra
 
     @Override
     protected List<String> doGetErrorMessages(ConstraintViolationException exception) {
-        return exception.getConstraintViolations().stream().map(ConstraintViolation::getMessage).collect(Collectors.toList());
+        return exception.getConstraintViolations().stream().map(ConstraintViolation::getMessage).sorted().collect(Collectors.toList());
     }
 
     @Override

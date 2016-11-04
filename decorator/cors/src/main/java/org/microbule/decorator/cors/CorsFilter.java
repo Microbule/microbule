@@ -174,7 +174,7 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
     }
 
     private Response failedPreflight() {
-        return Response.noContent().build();
+        return Response.noContent().header(HEADER_VARY, HEADER_ORIGIN).build();
     }
 
     private boolean isPreflight(ContainerRequestContext request) {

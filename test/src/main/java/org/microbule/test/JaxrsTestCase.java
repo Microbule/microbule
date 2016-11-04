@@ -9,6 +9,7 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
 import org.apache.commons.lang3.reflect.TypeUtils;
+import org.apache.cxf.jaxrs.client.WebClient;
 import org.junit.After;
 import org.junit.Before;
 import org.microbule.api.JaxrsServer;
@@ -22,6 +23,7 @@ public abstract class JaxrsTestCase<T> extends MockObjectTestCase {
 
     public static final String BASE_ADDRESS_PATTERN = "http://localhost:%d/%s";
     public static final int DEFAULT_PORT = 8383;
+    public static final String USE_ASYNC_HTTP_CONDUIT_PROP = "use.async.http.conduit";
     private JaxrsServer server;
     private String baseAddress;
 
@@ -62,7 +64,9 @@ public abstract class JaxrsTestCase<T> extends MockObjectTestCase {
     protected T createProxy() {
         final JaxrsProxyFactoryImpl proxyFactory = new JaxrsProxyFactoryImpl();
         addDecorators(proxyFactory);
-        return proxyFactory.createProxy(getServiceInterface(), baseAddress, createProperties());
+        final T proxy = proxyFactory.createProxy(getServiceInterface(), baseAddress, createProperties());
+        WebClient.getConfig(proxy).getRequestContext().put(USE_ASYNC_HTTP_CONDUIT_PROP, true);
+        return proxy;
     }
 
     @SuppressWarnings("unchecked")
@@ -72,8 +76,8 @@ public abstract class JaxrsTestCase<T> extends MockObjectTestCase {
         return (Class<T>) arguments.get(variable);
     }
 
-    protected WebTarget createWebTarget(){
-        return ClientBuilder.newClient().target(getBaseAddress());
+    protected WebTarget createWebTarget() {
+        return ClientBuilder.newClient().target(getBaseAddress()).property(USE_ASYNC_HTTP_CONDUIT_PROP, true);
     }
 
     protected int getPort() {
