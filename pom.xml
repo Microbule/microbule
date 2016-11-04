@@ -80,8 +80,6 @@
         <osgi.embed.dir>lib</osgi.embed.dir>
         <osgi.activator/>
         <osgi.dynamic/>
-
-        <sonar.jacoco.itReportPath>${env.WORKSPACE}/target/reports/jacoco-it.exec</sonar.jacoco.itReportPath>
     </properties>
 
     <scm>
@@ -285,10 +283,6 @@
                     </execution>
                     <execution>
                         <id>default-prepare-agent-integration</id>
-                        <configuration>
-                            <destfile>${sonar.jacoco.itReportPath}</destfile>
-                            <!--<destFile>${sonar.jacoco.itReportPath}</destFile>-->
-                        </configuration>
                         <goals>
                             <goal>prepare-agent-integration</goal>
                         </goals>
@@ -301,9 +295,6 @@
                     </execution>
                     <execution>
                         <id>default-report-integration</id>
-                        <configuration>
-                            <dataFile>${sonar.jacoco.itReportPath}</dataFile>
-                        </configuration>
                         <goals>
                             <goal>report-integration</goal>
                         </goals>

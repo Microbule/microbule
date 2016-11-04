@@ -43,17 +43,20 @@ public class WebApplicationExceptions {
 
     public static Class<? extends WebApplicationException> getWebApplicationExceptionClass(Response response) {
         int status = response.getStatus();
-        Class<? extends WebApplicationException> cls = EXCEPTIONS_MAP.get(status);
-        if (cls == null) {
-            int family = status / 100;
-            if (family == 3) {
-                cls = RedirectionException.class;
-            } else if (family == 4) {
-                cls = ClientErrorException.class;
-            } else if (family == 5) {
-                cls = ServerErrorException.class;
+        final Class<? extends WebApplicationException> exceptionType = EXCEPTIONS_MAP.get(status);
+        if (exceptionType == null) {
+            final int family = status / 100;
+            switch(family) {
+                case 3:
+                    return RedirectionException.class;
+                case 4:
+                    return ClientErrorException.class;
+                case 5:
+                    return ServerErrorException.class;
+                default:
+                    return WebApplicationException.class;
             }
         }
-        return cls == null ? WebApplicationException.class : cls;
+        return exceptionType;
     }
 }
