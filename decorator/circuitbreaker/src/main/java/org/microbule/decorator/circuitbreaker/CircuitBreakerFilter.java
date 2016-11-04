@@ -72,7 +72,7 @@ public class CircuitBreakerFilter implements ClientRequestFilter, ClientResponse
 
     @Override
     public void filter(ClientRequestContext requestContext, ClientResponseContext responseContext) throws IOException {
-        if (Response.Status.Family.SERVER_ERROR.equals(responseContext.getStatusInfo().getFamily())) {
+        if (Response.Status.Family.SERVER_ERROR == responseContext.getStatusInfo().getFamily()) {
             circuitBreaker.incrementAndCheckState(1);
         }
     }

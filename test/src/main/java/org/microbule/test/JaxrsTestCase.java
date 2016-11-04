@@ -65,7 +65,7 @@ public abstract class JaxrsTestCase<T> extends MockObjectTestCase {
         final JaxrsProxyFactoryImpl proxyFactory = new JaxrsProxyFactoryImpl();
         addDecorators(proxyFactory);
         final T proxy = proxyFactory.createProxy(getServiceInterface(), baseAddress, createProperties());
-        WebClient.getConfig(proxy).getRequestContext().put(USE_ASYNC_HTTP_CONDUIT_PROP, true);
+        WebClient.getConfig(proxy).getRequestContext().put(USE_ASYNC_HTTP_CONDUIT_PROP, Boolean.TRUE);
         return proxy;
     }
 
@@ -77,7 +77,7 @@ public abstract class JaxrsTestCase<T> extends MockObjectTestCase {
     }
 
     protected WebTarget createWebTarget() {
-        return ClientBuilder.newClient().target(getBaseAddress()).property(USE_ASYNC_HTTP_CONDUIT_PROP, true);
+        return ClientBuilder.newClient().target(getBaseAddress()).property(USE_ASYNC_HTTP_CONDUIT_PROP, Boolean.TRUE);
     }
 
     protected int getPort() {
