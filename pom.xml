@@ -81,6 +81,7 @@
         <osgi.activator/>
         <osgi.dynamic/>
 
+        <sonar.jacoco.exclusions>org/microbule/test/**,org/microbule/example/**</sonar.jacoco.exclusions>
     </properties>
 
     <scm>
