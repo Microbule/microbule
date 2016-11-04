@@ -12,5 +12,12 @@
     <name>Microbule :: Error Mapping :: SPI</name>
     <packaging>bundle</packaging>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>org.microbule</groupId>
+            <artifactId>microbule-test</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>
