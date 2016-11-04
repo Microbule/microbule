@@ -4,7 +4,7 @@ import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class Responses {
+public final class Responses {
 //----------------------------------------------------------------------------------------------------------------------
 // Static Methods
 //----------------------------------------------------------------------------------------------------------------------
@@ -14,5 +14,12 @@ public class Responses {
             return StringUtils.defaultString(response.readEntity(String.class), response.getStatusInfo().getReasonPhrase());
         }
         return response.getStatusInfo().getReasonPhrase();
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
+// Constructors
+//----------------------------------------------------------------------------------------------------------------------
+
+    private Responses() {
     }
 }

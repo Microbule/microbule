@@ -18,7 +18,7 @@ import javax.ws.rs.ServiceUnavailableException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
-public class WebApplicationExceptions {
+public final class WebApplicationExceptions {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
@@ -46,7 +46,7 @@ public class WebApplicationExceptions {
         final Class<? extends WebApplicationException> exceptionType = EXCEPTIONS_MAP.get(status);
         if (exceptionType == null) {
             final int family = status / 100;
-            switch(family) {
+            switch (family) {
                 case 3:
                     return RedirectionException.class;
                 case 4:
@@ -58,5 +58,13 @@ public class WebApplicationExceptions {
             }
         }
         return exceptionType;
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
+// Constructors
+//----------------------------------------------------------------------------------------------------------------------
+
+    private WebApplicationExceptions() {
+
     }
 }
