@@ -3,24 +3,25 @@ package org.microbule.core;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import org.microbule.spi.JaxrsObjectConfig;
 
-public abstract class JaxrsObjectConfigImpl implements JaxrsObjectConfig {
+public class JaxrsObjectConfigImpl implements JaxrsObjectConfig {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
     private final Class<?> serviceInterface;
     private final String baseAddress;
-    private final Map<String,Object> properties;
+    private final Map<String, Object> properties;
     private final List<Object> providers = new LinkedList<>();
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public JaxrsObjectConfigImpl(Class<?> serviceInterface, String baseAddress, Map<String,Object> properties) {
+    public JaxrsObjectConfigImpl(Class<?> serviceInterface, String baseAddress, Map<String, Object> properties) {
         this.serviceInterface = serviceInterface;
         this.baseAddress = baseAddress;
         this.properties = properties;
@@ -49,6 +50,43 @@ public abstract class JaxrsObjectConfigImpl implements JaxrsObjectConfig {
         return serviceInterface;
     }
 
+    public Boolean getBooleanProperty(String key) {
+        return getProperty(key, Boolean::parseBoolean);
+    }
+
+    public Double getDoubleProperty(String key) {
+        return getProperty(key, Double::parseDouble);
+    }
+
+    public Integer getIntProperty(String key) {
+        return getProperty(key, Integer::parseInt);
+    }
+
+    public String getProperty(String key, String defaultValue) {
+        final String value = getProperty(key);
+        return value == null ? defaultValue : value;
+    }
+
+    public <T> T getProperty(String key, Function<String, T> xform) {
+        final String value = getProperty(key);
+        return value == null ? null : xform.apply(value);
+    }
+
+    public <T> T getProperty(String key, Function<String, T> xform, T defaultValue) {
+        final T value = getProperty(key, xform);
+        return value == null ? defaultValue : value;
+    }
+
+
+    /**
+     * Returns the value of a boolean property
+     *
+     * @param key the property key
+     * @return whether or not the value of the property is 'true' (case insensitive)
+     */
+    public boolean isTrue(String key) {
+        return Boolean.parseBoolean(getProperty(key));
+    }
 //----------------------------------------------------------------------------------------------------------------------
 // Getter/Setter Methods
 //----------------------------------------------------------------------------------------------------------------------
