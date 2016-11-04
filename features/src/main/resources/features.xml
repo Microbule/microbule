@@ -12,6 +12,7 @@
         <feature version="${project.version}">microbule-decorator-cors</feature>
         <feature version="${project.version}">microbule-decorator-tracer</feature>
         <feature version="${project.version}">microbule-decorator-requestlog</feature>
+        <feature version="${project.version}">microbule-decorator-circuitbreaker</feature>
     </feature>
 
     <!--
@@ -62,6 +63,10 @@
     <feature name="microbule-decorator-tracer" version="${project.version}">
         <feature version="${eos.version}">eos-core</feature>
         <bundle>mvn:org.microbule/microbule-decorator-tracer/${project.version}</bundle>
+    </feature>
+
+    <feature name="microbule-decorator-circuitbreaker" version="${project.version}">
+        <bundle>mvn:org.microbule/microbule-decorator-circuitbreaker/${project.version}</bundle>
     </feature>
 
     <feature name="eos-core" version="${eos.version}">

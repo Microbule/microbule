@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0">
+
+    <bean id="proxyDecorator" class="org.microbule.decorator.circuitbreaker.CircuitBreakerDecorator"/>
+
+    <service ref="proxyDecorator" interface="org.microbule.spi.JaxrsProxyDecorator">
+        <service-properties>
+            <entry key="name" value="circuitbreaker" />
+        </service-properties>
+    </service>
+
+</blueprint>

@@ -19,6 +19,7 @@
         <module>validation</module>
         <module>tracer</module>
         <module>requestlog</module>
+        <module>circuitbreaker</module>
     </modules>
 
     <dependencies>

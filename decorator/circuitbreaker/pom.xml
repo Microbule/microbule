@@ -8,7 +8,15 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>microbule-decorator-cors</artifactId>
-    <name>Microbule :: Decorator :: CORS</name>
+    <artifactId>microbule-decorator-circuitbreaker</artifactId>
+    <name>Microbule :: Decorator :: Circuit Breaker</name>
     <packaging>bundle</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons.lang3.version}</version>
+        </dependency>
+    </dependencies>
 </project>
