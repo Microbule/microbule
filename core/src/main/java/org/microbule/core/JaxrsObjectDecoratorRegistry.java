@@ -12,13 +12,13 @@ public abstract class JaxrsObjectDecoratorRegistry<C extends JaxrsObjectConfig,T
 //----------------------------------------------------------------------------------------------------------------------
 
     private static final String ENABLED_PROP_PATTERN = "microbule.%s.enabled";
-    private final Map<String, JaxrsObjectDecorator<C>> decoratorsMap = new MapMaker().makeMap();
+    private final Map<String, T> decoratorsMap = new MapMaker().makeMap();
 
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    public boolean addDecorator(String name, JaxrsObjectDecorator<C> decorator) {
+    public boolean addDecorator(String name, T decorator) {
         return decoratorsMap.putIfAbsent(name, decorator) == null;
     }
 
@@ -30,6 +30,14 @@ public abstract class JaxrsObjectDecoratorRegistry<C extends JaxrsObjectConfig,T
                 decorator.decorate(object);
             }
         });
+    }
+
+    public T getDecorator(String name) {
+        return decoratorsMap.get(name);
+    }
+
+    public int getDecoratorCount() {
+        return decoratorsMap.size();
     }
 
     public void removeDecorator(String name) {

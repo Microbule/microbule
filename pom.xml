@@ -21,6 +21,7 @@
         <module>api</module>
         <module>spi</module>
         <module>core</module>
+        <module>osgi</module>
         <module>test</module>
         <module>errormap</module>
         <module>decorator</module>

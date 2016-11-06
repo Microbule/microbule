@@ -1,4 +1,4 @@
-package org.microbule.core.osgi;
+package org.microbule.osgi;
 
 import org.microbule.core.JaxrsProxyFactoryImpl;
 import org.microbule.spi.JaxrsProxyConfig;

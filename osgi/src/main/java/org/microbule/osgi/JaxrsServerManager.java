@@ -1,4 +1,4 @@
-package org.microbule.core.osgi;
+package org.microbule.osgi;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -22,8 +22,8 @@ public class JaxrsServerManager {
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
+    public static final String ADDRESS_PROP = "microbule.address";
     private static final String MICROBULE_FILTER = "(microbule.address=*)";
-    private static final String ADDRESS_PROP = "microbule.address";
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JaxrsServerManager.class);
@@ -97,11 +97,11 @@ public class JaxrsServerManager {
         });
     }
 
-    private Long serviceId(ServiceReference<?> ref) {
-        return (Long) ref.getProperty(Constants.SERVICE_ID);
-    }
-
     private static Map<String, Object> toProperties(ServiceReference<?> ref) {
         return Arrays.stream(ref.getPropertyKeys()).collect(Collectors.toMap(key -> key, ref::getProperty));
+    }
+
+    private Long serviceId(ServiceReference<?> ref) {
+        return (Long) ref.getProperty(Constants.SERVICE_ID);
     }
 }

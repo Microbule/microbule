@@ -1,4 +1,4 @@
-package org.microbule.core.osgi;
+package org.microbule.osgi;
 
 import org.microbule.core.JaxrsServerFactoryImpl;
 import org.microbule.spi.JaxrsServerConfig;
