@@ -21,6 +21,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 
 public class JaxrsServerFactoryImplTest extends Assert {
@@ -54,6 +55,8 @@ public class JaxrsServerFactoryImplTest extends Assert {
         final JaxrsProxyFactoryImpl proxyFactory = new JaxrsProxyFactoryImpl();
         proxyFactory.addDecorator("mock", proxyDecorator);
         proxyFactory.addDecorator("requestcount", config -> config.addProvider(clientRequestCount));
+        assertEquals(2, proxyFactory.getDecoratorCount());
+        assertSame(proxyDecorator, proxyFactory.getDecorator("mock"));
 
         final HelloService proxy = proxyFactory.createProxy(HelloService.class, BASE_ADDRESS, new HashMap<>());
 
@@ -69,14 +72,24 @@ public class JaxrsServerFactoryImplTest extends Assert {
     }
 
     @Test
+    public void testCreateProxyWhenDecoratorDisabled() {
+        final JaxrsProxyFactoryImpl proxyFactory = new JaxrsProxyFactoryImpl();
+        proxyFactory.addDecorator("mock", proxyDecorator);
+        proxyFactory.addDecorator("requestcount", config -> config.addProvider(clientRequestCount));
+
+        final HashMap<String, Object> props = new HashMap<>();
+        props.put("microbule.mock.enabled", "false");
+        proxyFactory.createProxy(HelloService.class, BASE_ADDRESS, props);
+        verifyNoMoreInteractions(proxyDecorator);
+    }
+
+    @Test
     public void testCreatingServer() {
         verify(serverDecorator).decorate(serverConfigCaptor.capture());
         final JaxrsServerConfig serverConfig = serverConfigCaptor.getValue();
         assertEquals(HelloService.class, serverConfig.getServiceInterface());
         assertEquals(BASE_ADDRESS, serverConfig.getBaseAddress());
     }
-
-
 
     @Before
     public void startServer() {
@@ -85,6 +98,11 @@ public class JaxrsServerFactoryImplTest extends Assert {
         serverFactory.addDecorator("mock", serverDecorator);
         serverFactory.addDecorator("requestcount", config -> config.addProvider(containerRequestCount));
         server = serverFactory.createJaxrsServer(HelloService.class, new HelloServiceImpl(), BASE_ADDRESS, new HashMap<>());
+    }
+
+    @Test
+    public void testRegisterDuplicateDecorator() {
+        assertFalse(serverFactory.addDecorator("mock", serverDecorator));
     }
 
     @After
