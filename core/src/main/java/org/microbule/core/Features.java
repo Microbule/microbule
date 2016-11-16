@@ -5,7 +5,6 @@ import org.apache.cxf.feature.LoggingFeature;
 import org.apache.cxf.jaxrs.swagger.Swagger2Feature;
 import org.apache.cxf.transport.common.gzip.GZIPFeature;
 import org.microbule.spi.JaxrsObjectConfig;
-import org.microbule.spi.JaxrsServerConfig;
 
 public class Features {
 //----------------------------------------------------------------------------------------------------------------------
@@ -15,6 +14,9 @@ public class Features {
     public static final String GZIP_THRESHOLD_PROP = "microbule.feature.gzip.threshold";
     public static final String GZIP_FORCE_PROP = "microbule.feature.gzip.force";
     public static final int GZIP_DEFAULT_THRESHOLD = 1024;
+    public static final String LOGGING_FEATURE_NAME = "logging";
+    public static final String SWAGGER_FEATURE_NAME = "swagger";
+    public static final String GZIP_FEATURE_NAME = "gzip";
 
 //----------------------------------------------------------------------------------------------------------------------
 // Static Methods
@@ -27,11 +29,11 @@ public class Features {
         return gzip;
     }
 
-    public static Feature createLoggingFeature(JaxrsObjectConfig cfg) {
+    public static Feature createLoggingFeature() {
         return new LoggingFeature();
     }
 
-    public static Feature createSwaggerFeature(JaxrsServerConfig cfg) {
+    public static Feature createSwaggerFeature() {
         final Swagger2Feature feature = new Swagger2Feature();
         feature.setPrettyPrint(true);
         return feature;

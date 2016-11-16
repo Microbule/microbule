@@ -9,8 +9,8 @@ import org.microbule.api.JaxrsProxyFactory;
 import org.microbule.spi.JaxrsProxyConfig;
 import org.microbule.spi.JaxrsProxyDecorator;
 
-import static org.microbule.core.JaxrsServerFactoryImpl.GZIP_FEATURE_NAME;
-import static org.microbule.core.JaxrsServerFactoryImpl.LOGGING_FEATURE_NAME;
+import static org.microbule.core.Features.GZIP_FEATURE_NAME;
+import static org.microbule.core.Features.LOGGING_FEATURE_NAME;
 
 public class JaxrsProxyFactoryImpl extends JaxrsObjectDecoratorRegistry<JaxrsProxyConfig, JaxrsProxyDecorator> implements JaxrsProxyFactory {
 //----------------------------------------------------------------------------------------------------------------------
@@ -22,7 +22,7 @@ public class JaxrsProxyFactoryImpl extends JaxrsObjectDecoratorRegistry<JaxrsPro
         final JaxrsProxyConfigImpl jaxrsProxy = new JaxrsProxyConfigImpl(serviceInterface, baseAddress, properties);
         decorate(jaxrsProxy);
         final List<Feature> features = new FeaturesBuilder<>(jaxrsProxy)
-                .addFeature(LOGGING_FEATURE_NAME, Features::createLoggingFeature)
+                .addFeature(LOGGING_FEATURE_NAME, (cfg) -> Features.createLoggingFeature())
                 .addFeature(GZIP_FEATURE_NAME, Features::createGzipFeature)
                 .build();
         return JAXRSClientFactory.create(baseAddress, serviceInterface, jaxrsProxy.getProviders(), features, null);

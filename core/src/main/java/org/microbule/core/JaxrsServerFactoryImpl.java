@@ -14,11 +14,7 @@ public class JaxrsServerFactoryImpl extends JaxrsObjectDecoratorRegistry<JaxrsSe
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    public static final String LOGGING_FEATURE_NAME = "logging";
-    public static final String SWAGGER_FEATURE_NAME = "swagger";
-    public static final String GZIP_FEATURE_NAME = "gzip";
-
-//----------------------------------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------------------
 // JaxrsServerFactory Implementation
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -31,9 +27,9 @@ public class JaxrsServerFactoryImpl extends JaxrsObjectDecoratorRegistry<JaxrsSe
         sf.setServiceBean(serviceImplementation);
         sf.setAddress(baseAddress);
         sf.setFeatures(new FeaturesBuilder<>(config)
-                .addFeature(LOGGING_FEATURE_NAME, Features::createLoggingFeature)
-                .addFeature(SWAGGER_FEATURE_NAME, Features::createSwaggerFeature)
-                .addFeature(GZIP_FEATURE_NAME, Features::createGzipFeature)
+                .addFeature(Features.LOGGING_FEATURE_NAME, (cfg) -> Features.createLoggingFeature())
+                .addFeature(Features.SWAGGER_FEATURE_NAME, (cfg) -> Features.createSwaggerFeature())
+                .addFeature(Features.GZIP_FEATURE_NAME, Features::createGzipFeature)
                 .build());
         sf.setProviders(config.getProviders());
         return new JaxrsServerImpl(sf.create());
