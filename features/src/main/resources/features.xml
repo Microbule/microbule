@@ -13,6 +13,7 @@
         <feature version="${project.version}">microbule-decorator-tracer</feature>
         <feature version="${project.version}">microbule-decorator-requestlog</feature>
         <feature version="${project.version}">microbule-decorator-circuitbreaker</feature>
+        <feature version="${project.version}">microbule-decorator-cache</feature>
     </feature>
 
     <!--
@@ -22,6 +23,7 @@
         <feature version="${cxf.version}">cxf-jaxrs</feature>
         <feature version="${cxf.version}">cxf-rs-description-swagger2</feature>
         <feature version="${eos.version}">eos-core</feature>
+        <bundle>mvn:org.microbule/microbule-annotation/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-api/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-spi/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-core/${project.version}</bundle>
@@ -44,6 +46,10 @@
 
     <feature name="microbule-decorator-cors" version="${project.version}">
         <bundle>mvn:org.microbule/microbule-decorator-cors/${project.version}</bundle>
+    </feature>
+
+    <feature name="microbule-decorator-cache" version="${project.version}">
+        <bundle>mvn:org.microbule/microbule-decorator-cache/${project.version}</bundle>
     </feature>
 
     <feature name="microbule-decorator-validation" version="${project.version}">

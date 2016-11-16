@@ -4,26 +4,14 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.microbule</groupId>
-        <artifactId>microbule-example-parent</artifactId>
+        <artifactId>microbule-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>microbule-example-common</artifactId>
-    <name>Microbule :: Example :: Common</name>
+    <artifactId>microbule-annotation</artifactId>
+    <name>Microbule :: Annotations</name>
     <packaging>bundle</packaging>
 
-    <dependencies>
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>${validation.api.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-annotation</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
     <build>
         <plugins>
             <plugin>
