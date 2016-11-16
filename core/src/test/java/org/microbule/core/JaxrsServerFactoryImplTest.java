@@ -58,7 +58,9 @@ public class JaxrsServerFactoryImplTest extends Assert {
         assertEquals(2, proxyFactory.getDecoratorCount());
         assertSame(proxyDecorator, proxyFactory.getDecorator("mock"));
 
-        final HelloService proxy = proxyFactory.createProxy(HelloService.class, BASE_ADDRESS, new HashMap<>());
+        final HashMap<String, Object> properties = new HashMap<>();
+        properties.put("microbule.feature.gzip.enabled", "false");
+        final HelloService proxy = proxyFactory.createProxy(HelloService.class, BASE_ADDRESS, properties);
 
         verify(proxyDecorator).decorate(proxyConfigCaptor.capture());
         final JaxrsProxyConfig proxyConfig = proxyConfigCaptor.getValue();
