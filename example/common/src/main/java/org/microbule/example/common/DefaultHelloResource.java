@@ -3,7 +3,7 @@ package org.microbule.example.common;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class AbstractHelloResource implements HelloResource {
+public class DefaultHelloResource implements HelloResource {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------

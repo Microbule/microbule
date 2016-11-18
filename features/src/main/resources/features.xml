@@ -102,6 +102,12 @@
         <bundle>mvn:org.microbule/microbule-example-blueprint/${project.version}</bundle>
     </feature>
 
+    <feature name="microbule-example-activator" version="${project.version}">
+        <feature version="${project.version}">microbule</feature>
+        <bundle>mvn:org.microbule/microbule-example-common/${project.version}</bundle>
+        <bundle>mvn:org.microbule/microbule-example-activator/${project.version}</bundle>
+    </feature>
+
     <feature name="microbule-example-scr" version="${project.version}">
         <feature version="${project.version}">microbule</feature>
         <feature>scr</feature>

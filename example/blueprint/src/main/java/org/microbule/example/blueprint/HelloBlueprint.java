@@ -1,6 +1,6 @@
 package org.microbule.example.blueprint;
 
-import org.microbule.example.common.AbstractHelloResource;
+import org.microbule.example.common.DefaultHelloResource;
 
-public class HelloBlueprint extends AbstractHelloResource {
+public class HelloBlueprint extends DefaultHelloResource {
 }

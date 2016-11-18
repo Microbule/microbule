@@ -17,5 +17,6 @@
         <module>cdi</module>
         <module>scr</module>
         <module>blueprint</module>
+        <module>activator</module>
     </modules>
 </project>
