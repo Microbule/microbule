@@ -57,6 +57,12 @@ public class HelloActivator implements BundleActivator {
 
 ```
 
+Microbule will automatically detect the service and mount it at "/microbule-example-activator".  Give it a try:
+
+```
+http://localhost:8181/cxf/microbule-example-activator/hello/Microbule
+```
+
 ## Microbule Features
 
 Microbule provides many built-in features out-of-the-box.
