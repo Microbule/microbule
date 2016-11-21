@@ -78,7 +78,7 @@ framework-of-choice (OSGi Blueprint, OSGi Declarative Services, CDI, etc.) to wi
 
 Microbule provides many built-in features out-of-the-box.
 
-#### GSON
+### GSON
 
 Microbule will transform payloads to/from JSON using the [Google GSON](https://github.com/google/gson) library.  For
 example, given the following response type:
@@ -106,7 +106,7 @@ Microbule will automatically format the response paylad as:
 }
 ```
 
-#### Request Logging
+### Request Logging
 
 Microbule will log begin/end events for every service call:
 
@@ -115,7 +115,7 @@ Microbule will log begin/end events for every service call:
  2016-11-21 10:57:01,583  INFO RequestLogFilter - END   GET hello/Microbule - 200 OK (0.012 sec)
  ```
 
-#### Bean Validation ([JSR-303](https://jcp.org/en/jsr/detail?id=303))
+### Bean Validation ([JSR-303](https://jcp.org/en/jsr/detail?id=303))
 
 Microbule can automatically validate method parameters using Bean Validation:
 
@@ -131,11 +131,11 @@ Microbule can automatically validate method parameters using Bean Validation:
  }
  ```
 
-#### Cross-Origin Resource Scripting (CORS)
+### Cross-Origin Resource Scripting (CORS)
 
 Microbule automatically adds CORS headers to your responses.
 
-#### Tracer
+### Tracer
 
 Microbule will generate a the following random UUID header values automatically:
 
@@ -151,7 +151,7 @@ A typical response will contain the following headers:
  Microbule-Trace-ID=[da3e59f4-8aff-4a89-bc30-7ad310fecf63]
  ```
 
-#### Cache-Control
+### Cache-Control Header
 
 Microbule will automatically manage the *Cache-Control* headers for you.  Each method annotated with @Cacheable will
 yield a *Cache-Control* header.  For example, consider the following method:
