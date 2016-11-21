@@ -6,27 +6,29 @@
     <cm:property-placeholder persistent-id="org.microbule.decorator.tracer" update-strategy="reload">
         <cm:default-properties>
             <cm:property name="traceIdHeader" value="Microbule-Trace-ID"/>
+            <cm:property name="requestIdHeader" value="Microbule-Request-ID"/>
         </cm:default-properties>
     </cm:property-placeholder>
 
     <bean id="serverDecorator" class="org.microbule.decorator.tracer.TracerServerDecorator">
-        <argument ref="blueprintBundleContext" />
-        <argument value="${traceIdHeader}" />
+        <argument ref="blueprintBundleContext"/>
+        <argument value="${traceIdHeader}"/>
+        <argument value="${requestIdHeader}"/>
     </bean>
 
     <service ref="serverDecorator" interface="org.microbule.spi.JaxrsServerDecorator">
         <service-properties>
-            <entry key="name" value="tracer" />
+            <entry key="name" value="tracer"/>
         </service-properties>
     </service>
 
     <bean id="proxyDecorator" class="org.microbule.decorator.tracer.TracerProxyDecorator">
-        <argument value="${traceIdHeader}" />
+        <argument value="${traceIdHeader}"/>
     </bean>
 
     <service ref="proxyDecorator" interface="org.microbule.spi.JaxrsProxyDecorator">
         <service-properties>
-            <entry key="name" value="tracer" />
+            <entry key="name" value="tracer"/>
         </service-properties>
     </service>
 

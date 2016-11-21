@@ -22,14 +22,16 @@ public class TracerContainerFilter implements ContainerRequestFilter, ContainerR
 //----------------------------------------------------------------------------------------------------------------------
 
     private final String traceIdHeader;
+    private final String requestIdHeader;
     private final TracerIdProvider idProvider;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public TracerContainerFilter(String traceIdHeader, TracerIdProvider idProvider) {
+    public TracerContainerFilter(String traceIdHeader, String requestIdHeader, TracerIdProvider idProvider) {
         this.traceIdHeader = traceIdHeader;
+        this.requestIdHeader = requestIdHeader;
         this.idProvider = idProvider;
     }
 
@@ -43,9 +45,11 @@ public class TracerContainerFilter implements ContainerRequestFilter, ContainerR
         if(traceId == null) {
             traceId = idProvider.generateTraceId(request);
         }
+        final String requestId = idProvider.generateRequestId(request);
         request.setProperty(TRACE_ID_KEY, traceId);
+        request.setProperty(REQUEST_ID_KEY, requestId);
         MDC.put(TRACE_ID_KEY, traceId);
-        MDC.put(REQUEST_ID_KEY, idProvider.generateRequestId(request));
+        MDC.put(REQUEST_ID_KEY, requestId);
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -56,6 +60,8 @@ public class TracerContainerFilter implements ContainerRequestFilter, ContainerR
     public void filter(ContainerRequestContext request, ContainerResponseContext response) throws IOException {
         MDC.remove(TRACE_ID_KEY);
         MDC.remove(REQUEST_ID_KEY);
-        response.getHeaders().add(traceIdHeader, request.getProperty(TRACE_ID_KEY));
+        response.getHeaders().putSingle(traceIdHeader, request.getProperty(TRACE_ID_KEY));
+        response.getHeaders().putSingle(requestIdHeader, request.getProperty(REQUEST_ID_KEY));
+
     }
 }

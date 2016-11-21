@@ -11,14 +11,16 @@ public class TracerServerDecorator extends SingleWhiteboard<TracerIdProvider> im
 //----------------------------------------------------------------------------------------------------------------------
 
     private final String traceIdHeader;
+    private final String requestIdHeader;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public TracerServerDecorator(BundleContext bundleContext, String traceIdHeader) {
+    public TracerServerDecorator(BundleContext bundleContext, String traceIdHeader, String requestIdHeader) {
         super(bundleContext, TracerIdProvider.class);
         this.traceIdHeader = traceIdHeader;
+        this.requestIdHeader = requestIdHeader;
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -27,6 +29,6 @@ public class TracerServerDecorator extends SingleWhiteboard<TracerIdProvider> im
 
     @Override
     public void decorate(JaxrsServerConfig server) {
-        server.addProvider(new TracerContainerFilter(traceIdHeader, getService(UuidTracerIdProvider.INSTANCE)));
+        server.addProvider(new TracerContainerFilter(traceIdHeader, requestIdHeader, getService(UuidTracerIdProvider.INSTANCE)));
     }
 }

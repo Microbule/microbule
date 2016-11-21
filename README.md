@@ -135,6 +135,14 @@ Microbule can automatically validate method parameters using Bean Validation:
 
 Microbule automatically adds CORS headers to your responses.
 
+#### Tracer
+
+Microbule will generate a the following random UUID header values automatically:
+
+- Microbule-Trace-ID: a unique value corresponding to the transaction.  If the header is found on the request, the
+existing value will be used.
+- Microbule-Request-ID: a unique value corresponding to the request itself.  This is generated for each request.
+
 ## What's in a Name?
 
 A "microbule" is a unit of length used in Marvel's

@@ -24,7 +24,7 @@ public class TracerServerDecoratorTest extends HelloTestCase {
 
     @Override
     protected void addDecorators(JaxrsServerFactoryImpl factory) {
-        factory.addDecorator("tracer", new TracerServerDecorator(osgiRule.getBundleContext(), TracerConstants.DEFAULT_TRACE_ID_HEADER));
+        factory.addDecorator("tracer", new TracerServerDecorator(osgiRule.getBundleContext(), TracerConstants.DEFAULT_TRACE_ID_HEADER, TracerConstants.DEFAULT_REQUEST_ID_HEADER));
     }
 
     @Test
@@ -35,5 +35,6 @@ public class TracerServerDecoratorTest extends HelloTestCase {
                 .header(TracerConstants.DEFAULT_TRACE_ID_HEADER, "foobarbaz")
                 .get();
         assertEquals("foobarbaz", response.getHeaderString(TracerConstants.DEFAULT_TRACE_ID_HEADER));
+        assertNotNull(response.getHeaderString(TracerConstants.DEFAULT_REQUEST_ID_HEADER));
     }
 }
