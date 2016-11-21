@@ -60,11 +60,11 @@ public class HelloActivator implements BundleActivator {
 
 Microbule provides many built-in features out-of-the-box.
 
-### GSON
+#### GSON
 
 Microbule will transform payloads to/from JSON using the [Google GSON](https://github.com/google/gson) library.
 
-### Request Logging
+#### Request Logging
 
 Microbule will log begin/end events for every service call:
 
@@ -73,7 +73,7 @@ Microbule will log begin/end events for every service call:
  2016-11-21 10:57:01,583  INFO RequestLogFilter - END   GET hello/Microbule - 200 OK (0.012 sec)
  ```
 
-### Bean Validation ([JSR-303](https://jcp.org/en/jsr/detail?id=303))
+#### Bean Validation ([JSR-303](https://jcp.org/en/jsr/detail?id=303))
 
 Microbule can automatically validate method parameters using Bean Validation:
 
@@ -89,7 +89,7 @@ Microbule can automatically validate method parameters using Bean Validation:
  }
  ```
 
-### Cross-Origin Resource Scripting (CORS)
+#### Cross-Origin Resource Scripting (CORS)
 
 Microbule automatically adds CORS headers to your responses.
 
