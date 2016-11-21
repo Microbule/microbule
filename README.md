@@ -8,7 +8,7 @@ quickly and easily!
 Microbule is an extension of the [Apache Karaf](http://karaf.apache.org) container.  Getting started with Microbule is
  simple:
 
-1. Download [Apache Karaf](http://karaf.apache.org/download.html) (verson 4.0.x) and extract to [KARAF_HOME].
+1. [Download](http://karaf.apache.org/download.html) Apache Karaf (version 4.0.x) and extract to [KARAF_HOME].
 2. Start Apache Karaf:
 
  ```
