@@ -84,6 +84,7 @@
         <osgi.dynamic/>
 
         <sonar.jacoco.exclusions>org/microbule/test/**,org/microbule/example/**</sonar.jacoco.exclusions>
+
     </properties>
 
     <scm>
@@ -309,6 +310,13 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-release-plugin</artifactId>
+                <inherited>true</inherited>
+                <configuration>
+                    <preparationGoals>clean install verify</preparationGoals>
+                </configuration>
             </plugin>
         </plugins>
     </build>
