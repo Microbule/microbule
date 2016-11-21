@@ -1,7 +1,8 @@
 # Microbule
 
 Microbule provides a framework for developing [Microservices](http://www.martinfowler.com/articles/microservices.html)
-quickly and easily!
+quickly and easily!  Services are written using the standard
+ [Java API for RESTful Services](https://jax-rs-spec.java.net/) (JAX-RS).
 
 ## Getting Started
 
