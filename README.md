@@ -199,6 +199,16 @@ or by injecting a *ResourceState* object, using the @Context annotation:
 When an *ETag* or *Last-Modified* value is provided, Microbule will check the *If-None-Match* and *If-Modified-Since*
 headers correspondingly.  If the resource is up-to-date, Microbule will return a "No Content" (204) response.
 
+## Opting Out
+
+By default, Microbule will apply all registered decorators to your services/proxies.  However, you can opt out of them
+individually using a service property.  For example, if you want to provide your own JSON processing provider, you can
+disable the GSON-based provider by setting the following service property:
+
+ ```
+ microbule.gson.enabled=false
+ ```
+
 ## What's in a Name?
 
 A "microbule" is a unit of length used in Marvel's
