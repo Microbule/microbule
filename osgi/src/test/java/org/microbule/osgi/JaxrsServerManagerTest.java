@@ -70,8 +70,7 @@ public class JaxrsServerManagerTest extends MockObjectTestCase {
     }
 
     private JaxrsServerManager createManager() {
-        JaxrsServerManager manager = new JaxrsServerManager(osgiRule.getBundleContext(), factory);
-        manager.init();
+        JaxrsServerManager manager = new JaxrsServerManager(osgiRule.getBundleContext(), factory, 100);
         return manager;
     }
 

@@ -2,6 +2,8 @@ package org.microbule.osgi;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.stream.Collectors;
 
 import javax.ws.rs.Path;
@@ -37,9 +39,10 @@ public class JaxrsServerManager {
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public JaxrsServerManager(BundleContext bundleContext, JaxrsServerFactory factory) {
+    public JaxrsServerManager(BundleContext bundleContext, JaxrsServerFactory factory, long quietPeriod) {
         this.bundleContext = bundleContext;
         this.factory = factory;
+        new BootstrapTask(quietPeriod).schedule();
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -50,8 +53,21 @@ public class JaxrsServerManager {
         servers.values().forEach(JaxrsServer::shutdown);
     }
 
-    public void init() {
+    private void findExistingServices() {
         try {
+            LOGGER.info("Searching for existing JAX-RS services (filter=\"{}\")...", MICROBULE_FILTER);
+            ServiceReference<?>[] serviceReferences = bundleContext.getAllServiceReferences(null, MICROBULE_FILTER);
+            if (serviceReferences != null) {
+                Arrays.stream(serviceReferences).forEach(JaxrsServerManager.this::processService);
+            }
+        } catch (InvalidSyntaxException e) {
+            LOGGER.error("Unable to search for JAX-RS services using filter \"{}\".", MICROBULE_FILTER, e);
+        }
+    }
+
+    private void registerServiceListener() {
+        try {
+            LOGGER.info("Registering ServiceListener to search for JAX-RS services (filter=\"{}\")...", MICROBULE_FILTER);
             bundleContext.addServiceListener(event -> {
                 switch (event.getType()) {
                     case ServiceEvent.REGISTERED:
@@ -68,14 +84,6 @@ public class JaxrsServerManager {
         } catch (InvalidSyntaxException e) {
             LOGGER.error("Unable to add service listener JAX-RS services using filter \"{}\".", MICROBULE_FILTER, e);
         }
-        try {
-            ServiceReference<?>[] serviceReferences = bundleContext.getAllServiceReferences(null, MICROBULE_FILTER);
-            if (serviceReferences != null) {
-                Arrays.stream(serviceReferences).forEach(this::processService);
-            }
-        } catch (InvalidSyntaxException e) {
-            LOGGER.error("Unable to search for JAX-RS services using filter \"{}\".", MICROBULE_FILTER, e);
-        }
     }
 
     private void processService(ServiceReference<?> ref) {
@@ -86,7 +94,7 @@ public class JaxrsServerManager {
                 if (serviceInterface.isAnnotationPresent(Path.class)) {
                     final Long serviceId = serviceId(ref);
                     final String address = (String) ref.getProperty(ADDRESS_PROP);
-                    LOGGER.info("Detected JAX-RS resource {} ({}) at address {} from bundle {} ({}).", serviceInterfaceName, serviceId, address, ref.getBundle().getSymbolicName(), ref.getBundle().getBundleId());
+                    LOGGER.info("Detected JAX-RS service {} ({}) at address {} from bundle {} ({}).", serviceInterfaceName, serviceId, address, ref.getBundle().getSymbolicName(), ref.getBundle().getBundleId());
                     final Object serviceImplementation = bundleContext.getService(ref);
                     JaxrsServer server = factory.createJaxrsServer(serviceInterface, serviceImplementation, address, toProperties(ref));
                     servers.put(serviceId, server);
@@ -103,5 +111,49 @@ public class JaxrsServerManager {
 
     private Long serviceId(ServiceReference<?> ref) {
         return (Long) ref.getProperty(Constants.SERVICE_ID);
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
+// Inner Classes
+//----------------------------------------------------------------------------------------------------------------------
+
+    private class BootstrapTask extends TimerTask {
+//----------------------------------------------------------------------------------------------------------------------
+// Fields
+//----------------------------------------------------------------------------------------------------------------------
+
+        private final long quietPeriod;
+        private Timer timer;
+
+//----------------------------------------------------------------------------------------------------------------------
+// Constructors
+//----------------------------------------------------------------------------------------------------------------------
+
+        public BootstrapTask(long quietPeriod) {
+            this.quietPeriod = quietPeriod;
+        }
+
+//----------------------------------------------------------------------------------------------------------------------
+// Runnable Implementation
+//----------------------------------------------------------------------------------------------------------------------
+
+        @Override
+        public void run() {
+            LOGGER.info("Quiet period ({} ms) expired, executing Microbule Bootstrap...", quietPeriod);
+            registerServiceListener();
+            findExistingServices();
+            LOGGER.info("Canceling Microbule Bootstrap timer thread...");
+            timer.cancel();
+        }
+
+//----------------------------------------------------------------------------------------------------------------------
+// Other Methods
+//----------------------------------------------------------------------------------------------------------------------
+
+        public void schedule() {
+            LOGGER.info("Scheduling Microbule Bootstrap task to run after quiet period ({} ms)...", quietPeriod);
+            this.timer = new Timer("Microbule Bootstrap Timer");
+            timer.schedule(this, quietPeriod);
+        }
     }
 }
