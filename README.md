@@ -144,6 +144,26 @@ existing value will be used.
 - **Microbule-Request-ID**: a unique value corresponding to the request itself.  This is generated for each and every
 request.
 
+#### Cache
+
+Microbule will automatically manage the *Cache-Control* headers for you.  Each method annotated with @Cacheable will
+yield a *Cache-Control* header.  For example, consider the following method:
+
+ ```
+ @GET
+ @Produces(MediaType.TEXT_PLAIN)
+ @Path("/value")
+ @Cacheable(maxAge = 600)
+ String getValue();
+ ```
+
+When executed, the *Cache-Control* header will contain:
+
+ ```
+ Cache-Control=[no-transform,max-age=600]
+ ```
+
+
 ## What's in a Name?
 
 A "microbule" is a unit of length used in Marvel's
