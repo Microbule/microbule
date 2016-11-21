@@ -58,8 +58,8 @@ public class HelloActivator implements BundleActivator {
 ```
 
 Microbule will automatically detect the service set its publish address as "/microbule-example-activator"!  Since
-Microbule only relies upon OSGi services, you can use your framework-of-choice (CDI, Blueprint, Spring, etc.) to piece
-together your service implementation object.
+Microbule only relies upon OSGi services, you can use your framework-of-choice
+(OSGi Blueprint, OSGi Declarative Services, CDI, etc.) to wire up your service implementation object.
 
 ## Microbule Features
 
