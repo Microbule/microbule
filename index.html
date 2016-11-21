@@ -235,6 +235,15 @@ headers correspondingly.  If the resource is up-to-date, Microbule will return a
 encountering issues.  By default, the circuit breaker will "open" when the service responds with more than <em>10</em> server
 error level (500+) responses per second and will "close" when it drops back down below this threshold.</p>
 
+<h3>
+<a id="error-mapping" class="anchor" href="#error-mapping" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Error Mapping</h3>
+
+<p>Microbule will inject its own JAX-RS ExceptionMappers into the services by default.  These ExceptionMappers will use
+the ErrorMapperService to create responses when an exception happens.  The default format of the error response will be
+a plain text response with newline-separated error messages.  You can override the default format by exposing an
+ErrorResponseStrategy OSGi service.  To provide mapping for individual exception types, simply expose an ErrorMapper
+OSGi service.</p>
+
 <h2>
 <a id="opting-out" class="anchor" href="#opting-out" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Opting Out</h2>
 
