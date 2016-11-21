@@ -73,6 +73,7 @@ public class HelloActivator implements BundleActivator {
 Microbule will automatically detect the service set its publish address as "/microbule-example-activator" using
 [Apache CXF](http://cxf.apache.org) as the JAX-RS implementation.  Since Microbule uses OSGi services, you can use your
 framework-of-choice (OSGi Blueprint, OSGi Declarative Services, CDI, etc.) to wire up your service implementation object.
+The service *interface* should be annotated with all of the appropriate JAX-RS annotations.
 
 ## Microbule Features
 
