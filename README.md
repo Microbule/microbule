@@ -1,6 +1,7 @@
 # Microbule
 
-Microbule serves as a framework for developing [Microservices](http://www.martinfowler.com/articles/microservices.html).
+Microbule provides a framework for developing [Microservices](http://www.martinfowler.com/articles/microservices.html)
+quickly and easily!
 
 ## Getting Started
 
