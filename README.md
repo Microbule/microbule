@@ -19,6 +19,18 @@ Microbule is an extension of the [Apache Karaf](http://karaf.apache.org) contain
 3. Install the Microbule Karaf [Feature](https://karaf.apache.org/manual/latest/provisioning):
 
  ```
+         __ __                  ____
+        / //_/____ __________ _/ __/
+       / ,<  / __ `/ ___/ __ `/ /_
+      / /| |/ /_/ / /  / /_/ / __/
+     /_/ |_|\__,_/_/   \__,_/_/
+
+   Apache Karaf (4.0.7)
+
+ Hit '<tab>' for a list of available commands
+ and '[cmd] --help' for help on a specific command.
+ Hit '<ctrl-d>' or type 'system:shutdown' or 'logout' to shutdown Karaf.
+
  karaf@root()> repo-add mvn:org.microbule/microbule-features/<VERSION>/xml/features
  karaf@root()> feature:install microbule
  ```
