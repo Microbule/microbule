@@ -139,9 +139,10 @@ Microbule automatically adds CORS headers to your responses.
 
 Microbule will generate a the following random UUID header values automatically:
 
-- Microbule-Trace-ID: a unique value corresponding to the transaction.  If the header is found on the request, the
+- *Microbule-Trace-ID*: a unique value corresponding to a "transaction."  If the header is found on the request, the
 existing value will be used.
-- Microbule-Request-ID: a unique value corresponding to the request itself.  This is generated for each request.
+- *Microbule-Request-ID*: a unique value corresponding to the request itself.  This is generated for each and every
+request.
 
 ## What's in a Name?
 
