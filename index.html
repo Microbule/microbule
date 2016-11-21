@@ -245,6 +245,21 @@ ErrorResponseStrategy OSGi service.  To provide mapping for individual exception
 OSGi service.</p>
 
 <h2>
+<a id="creating-client-proxies" class="anchor" href="#creating-client-proxies" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Creating Client Proxies</h2>
+
+<p>One of the beautiful features of Apache CXF is its ability to generate dynamic client proxies that implement the JAX-RS
+service interface.  Microbule uses this feature to provide type-safe client proxies:</p>
+
+<pre><code> JaxrsProxyFactory proxyFactory = ...;
+ Map&lt;String,Object&gt; props = new HashMap&lt;&gt;();
+ props.put("microbule.circuitbreaker.enabled", "false");
+ HelloService helloService = proxyFactory.createProxy(HelloService.class, "http://localhost:8383/HelloService", props);
+</code></pre>
+
+<p>Microbule exposes a JaxrsProxyFactory OSGi service for you to use.  Simply inject it wherever you need to create client
+proxies.</p>
+
+<h2>
 <a id="opting-out" class="anchor" href="#opting-out" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Opting Out</h2>
 
 <p>By default, Microbule will apply all registered decorators to your services/proxies.  However, you can opt out of them
