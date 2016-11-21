@@ -144,7 +144,7 @@ existing value will be used.
 - **Microbule-Request-ID**: a unique value corresponding to the request itself.  This is generated for each and every
 request.
 
-#### Cache
+#### Cache-Control
 
 Microbule will automatically manage the *Cache-Control* headers for you.  Each method annotated with @Cacheable will
 yield a *Cache-Control* header.  For example, consider the following method:
@@ -163,7 +163,10 @@ When executed, the *Cache-Control* header will contain:
  Cache-Control=[no-transform,max-age=600]
  ```
 
-To set the *Last-Modified* header, you can use a Response object:
+##### ETag and Last-Modified
+
+Microbule will also manage the *ETag* and *Last-Modified* headers for you.  You can provide these values by using a
+JAX-RS Response object:
 
  ```
  public Response createResponse() {
@@ -171,45 +174,24 @@ To set the *Last-Modified* header, you can use a Response object:
  }
  ```
 
-or, you can inject a *ResourceState* object, using the @Context annotation:
+or by injecting a *ResourceState* object, using the @Context annotation:
 
  ```
- public class CacheResourceImpl implements CacheResource {
+  public class CacheResourceImpl implements CacheResource {
 
-     @Context
-     private ResourceState resourceState;
+      @Context
+      private ResourceState resourceState;
 
-     @Override
-     public String getValueWithLastModified() {
-         resourceState.setLastModified(new Date());
-         return "ValueWithLastModified";
-     }
- }
- ```
+      @Override
+      public String getValueWithEtag() {
+          resourceState.setEntityTag(ENTITY_TAG);
+          return "ValueWithEtag";
+      }
+  }
+  ```
 
-To set the *ETag* header, you can use a Response object:
-
- ```
- public Response createResponse() {
-   return Response.ok("payload").tag("12345").build();
- }
- ```
-
-or, you can inject a *ResourceState* object, using the @Context annotation:
-
- ```
- public class CacheResourceImpl implements CacheResource {
-
-     @Context
-     private ResourceState resourceState;
-
-     @Override
-     public String getValueWithEtag() {
-         resourceState.setEntityTag(ENTITY_TAG);
-         return "ValueWithEtag";
-     }
- }
- ```
+When an *ETag* or *Last-Modified* value is provided, Microbule will check the *If-None-Match* and *If-Modified-Since*
+headers correspondingly.  If the resource is up-to-date, Microbule will return a "No Content" (204) response.
 
 ## What's in a Name?
 
