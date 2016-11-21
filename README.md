@@ -174,7 +174,7 @@ JAX-RS Response object:
 
 or by injecting a *ResourceState* object, using the @Context annotation:
 
- ```
+  ```
   public class CacheResourceImpl implements CacheResource {
 
       @Context
@@ -182,8 +182,8 @@ or by injecting a *ResourceState* object, using the @Context annotation:
 
       @Override
       public String getValueWithEtag() {
-          resourceState.setEntityTag(ENTITY_TAG);
-          return "ValueWithEtag";
+          resourceState.setEntityTag("12345");
+          return "payload";
       }
   }
   ```
