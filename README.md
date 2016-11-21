@@ -57,8 +57,8 @@ public class HelloActivator implements BundleActivator {
 
 ```
 
-Microbule will automatically detect the service set its publish address as "/microbule-example-activator".
-[Give it a try](http://localhost:8181/cxf/microbule-example-activator/hello/Microbule)!
+Microbule will automatically detect the service set its publish address as "/microbule-example-activator"
+(http://localhost:8181/cxf/microbule-example-activator/hello/Microbule)!
 
 
 
