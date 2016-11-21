@@ -163,8 +163,6 @@ When executed, the *Cache-Control* header will contain:
  Cache-Control=[no-transform,max-age=600]
  ```
 
-##### ETag and Last-Modified
-
 Microbule will also manage the *ETag* and *Last-Modified* headers for you.  You can provide these values by using a
 JAX-RS Response object:
 
