@@ -163,6 +163,53 @@ When executed, the *Cache-Control* header will contain:
  Cache-Control=[no-transform,max-age=600]
  ```
 
+To set the *Last-Modified* header, you can use a Response object:
+
+ ```
+ public Response createResponse() {
+   return Response.ok("payload").lastModified(new Date()).build();
+ }
+ ```
+
+or, you can inject a *ResourceState* object, using the @Context annotation:
+
+ ```
+ public class CacheResourceImpl implements CacheResource {
+
+     @Context
+     private ResourceState resourceState;
+
+     @Override
+     public String getValueWithLastModified() {
+         resourceState.setLastModified(new Date());
+         return "ValueWithLastModified";
+     }
+ }
+ ```
+
+To set the *ETag* header, you can use a Response object:
+
+ ```
+ public Response createResponse() {
+   return Response.ok("payload").tag("12345").build();
+ }
+ ```
+
+or, you can inject a *ResourceState* object, using the @Context annotation:
+
+ ```
+ public class CacheResourceImpl implements CacheResource {
+
+     @Context
+     private ResourceState resourceState;
+
+     @Override
+     public String getValueWithEtag() {
+         resourceState.setEntityTag(ENTITY_TAG);
+         return "ValueWithEtag";
+     }
+ }
+ ```
 
 ## What's in a Name?
 
