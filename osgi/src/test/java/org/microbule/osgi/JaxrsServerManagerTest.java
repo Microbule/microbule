@@ -70,8 +70,13 @@ public class JaxrsServerManagerTest extends MockObjectTestCase {
     }
 
     private JaxrsServerManager createManager() {
-        JaxrsServerManager manager = new JaxrsServerManager(osgiRule.getBundleContext(), factory, 100);
-        return manager;
+        try {
+            JaxrsServerManager manager = new JaxrsServerManager(osgiRule.getBundleContext(), factory, 25);
+            Thread.sleep(100);
+            return manager;
+        } catch (InterruptedException e) {
+            throw new IllegalStateException("Unable to start server manager.");
+        }
     }
 
     private ServiceRegistration<HelloServiceImpl> registerServer(HelloServiceImpl impl) {
