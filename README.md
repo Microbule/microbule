@@ -34,7 +34,7 @@ Microbule is an extension of the [Apache Karaf](http://karaf.apache.org) contain
 
 Microbule uses the OSGi [Whiteboard Pattern](http://enroute.osgi.org/doc/218-patterns.html) to discover JAX-RS services
 at runtime.  In order to register a service with Microbule, you have to expose them as an OSGi service with the
-"microbule.address" service property.  Microbule provides a BundleActivator-based example:
+"microbule.address" service property.  Microbule provides the following BundleActivator-based example:
 
 ```
 public class HelloActivator implements BundleActivator {
@@ -55,6 +55,43 @@ public class HelloActivator implements BundleActivator {
 }
 
 ```
+
+## Microbule Features
+
+Microbule provides many built-in features out-of-the-box.
+
+### GSON
+
+Microbule will transform payloads to/from JSON using the [Google GSON](https://github.com/google/gson) library.
+
+### Request Logging
+
+Microbule will log begin/end events for every service call:
+
+ ```
+ 2016-11-21 10:57:01,568  INFO RequestLogFilter - BEGIN GET hello/Microbule
+ 2016-11-21 10:57:01,583  INFO RequestLogFilter - END   GET hello/Microbule - 200 OK (0.012 sec)
+ ```
+
+### Bean Validation ([JSR-303](https://jcp.org/en/jsr/detail?id=303))
+
+Microbule can automatically validate method parameters using Bean Validation:
+
+ ```
+ @Path("/")
+ public interface HelloResource {
+
+     @Path("/hello/{name}")
+     @Produces(MediaType.APPLICATION_JSON)
+     @GET
+     @Cacheable
+     HelloResponse sayHello(@PathParam("name") @Size(min = 5, message="Name must be at least 5 characters long.") String name);
+ }
+ ```
+
+### Cross-Origin Resource Scripting (CORS)
+
+Microbule automatically adds CORS headers to your responses.
 
 ## What's in a Name?
 
