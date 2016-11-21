@@ -214,6 +214,21 @@ a plain text response with newline-separated error messages.  You can override t
 ErrorResponseStrategy OSGi service.  To provide mapping for individual exception types, simply expose an ErrorMapper
 OSGi service.
 
+## Creating Client Proxies
+
+One of the beautiful features of Apache CXF is its ability to generate dynamic client proxies that implement the JAX-RS
+service interface.  Microbule uses this feature to provide type-safe client proxies:
+
+ ```
+ JaxrsProxyFactory proxyFactory = ...;
+ Map<String,Object> props = new HashMap<>();
+ props.put("microbule.circuitbreaker.enabled", "false");
+ HelloService helloService = proxyFactory.createProxy(HelloService.class, "http://localhost:8383/HelloService", props);
+ ```
+
+Microbule exposes a JaxrsProxyFactory OSGi service for you to use.  Simply inject it wherever you need to create client
+proxies.
+
 ## Opting Out
 
 By default, Microbule will apply all registered decorators to your services/proxies.  However, you can opt out of them
