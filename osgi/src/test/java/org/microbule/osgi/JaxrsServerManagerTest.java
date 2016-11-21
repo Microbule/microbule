@@ -48,14 +48,30 @@ public class JaxrsServerManagerTest extends MockObjectTestCase {
     public void testDestroyServersUponShutdown() {
         final HelloServiceImpl impl = new HelloServiceImpl();
         registerServer(impl);
-        final JaxrsServerManager manager = createManager();
+        final JaxrsServerManager manager = createManager(-1);
         manager.destroy();
         verify(jaxrsServer).shutdown();
     }
 
     @Test
+    public void testServiceDiscoveryWithQuietPeriod() throws Exception {
+        final HelloServiceImpl impl = new HelloServiceImpl();
+        final ServiceRegistration<HelloServiceImpl> registration = registerServer(impl);
+
+        createManager(1);
+        Thread.sleep(500);
+
+        verify(factory).createJaxrsServer(eq(HelloService.class), same(impl), eq(BASE_ADDRESS), propertiesCaptor.capture());
+        Map<String, Object> properties = propertiesCaptor.getValue();
+        assertEquals("bar", properties.get("foo"));
+        assertEquals(BASE_ADDRESS, properties.get(JaxrsServerManager.ADDRESS_PROP));
+
+        registration.unregister();
+    }
+
+    @Test
     public void testServiceDiscovery() {
-        JaxrsServerManager manager = createManager();
+        JaxrsServerManager manager = createManager(-1);
 
         final HelloServiceImpl impl = new HelloServiceImpl();
         final ServiceRegistration<HelloServiceImpl> registration = registerServer(impl);
@@ -69,14 +85,8 @@ public class JaxrsServerManagerTest extends MockObjectTestCase {
         verify(jaxrsServer).shutdown();
     }
 
-    private JaxrsServerManager createManager() {
-        try {
-            JaxrsServerManager manager = new JaxrsServerManager(osgiRule.getBundleContext(), factory, 25);
-            Thread.sleep(100);
-            return manager;
-        } catch (InterruptedException e) {
-            throw new IllegalStateException("Unable to start server manager.");
-        }
+    private JaxrsServerManager createManager(long quietPeriod) {
+        return new JaxrsServerManager(osgiRule.getBundleContext(), factory, quietPeriod);
     }
 
     private ServiceRegistration<HelloServiceImpl> registerServer(HelloServiceImpl impl) {
@@ -89,7 +99,7 @@ public class JaxrsServerManagerTest extends MockObjectTestCase {
         final HelloServiceImpl impl = new HelloServiceImpl();
         final ServiceRegistration<HelloServiceImpl> registration = registerServer(impl);
 
-        JaxrsServerManager manager = createManager();
+        JaxrsServerManager manager = createManager(-1);
 
         verify(factory).createJaxrsServer(eq(HelloService.class), same(impl), eq(BASE_ADDRESS), propertiesCaptor.capture());
         Map<String, Object> properties = propertiesCaptor.getValue();

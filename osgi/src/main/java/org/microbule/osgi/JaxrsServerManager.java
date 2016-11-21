@@ -151,9 +151,15 @@ public class JaxrsServerManager {
 //----------------------------------------------------------------------------------------------------------------------
 
         public void schedule() {
-            LOGGER.info("Scheduling Microbule Bootstrap task to run after quiet period ({} ms)...", quietPeriod);
-            this.timer = new Timer("Microbule Bootstrap Timer");
-            timer.schedule(this, quietPeriod);
+            if (quietPeriod > 0) {
+                LOGGER.info("Scheduling Microbule Bootstrap task to run after quiet period ({} ms)...", quietPeriod);
+                this.timer = new Timer("Microbule Bootstrap Timer");
+                timer.schedule(this, quietPeriod);
+            } else {
+                LOGGER.info("Executing Microbule Bootstrap...");
+                registerServiceListener();
+                findExistingServices();
+            }
         }
     }
 }
