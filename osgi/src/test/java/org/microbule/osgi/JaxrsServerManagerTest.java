@@ -1,6 +1,8 @@
 package org.microbule.osgi;
 
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -14,6 +16,8 @@ import org.microbule.test.osgi.ServicePropsBuilder;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.osgi.framework.ServiceRegistration;
 
 import static org.mockito.ArgumentMatchers.anyMap;
@@ -57,9 +61,16 @@ public class JaxrsServerManagerTest extends MockObjectTestCase {
     public void testServiceDiscoveryWithQuietPeriod() throws Exception {
         final HelloServiceImpl impl = new HelloServiceImpl();
         final ServiceRegistration<HelloServiceImpl> registration = registerServer(impl);
-
-        createManager(1);
-        Thread.sleep(500);
+        CountDownLatch latch = new CountDownLatch(1);
+        when(factory.createJaxrsServer(eq(HelloService.class), same(impl), eq(BASE_ADDRESS), anyMap())).thenAnswer(new Answer<JaxrsServer>() {
+            @Override
+            public JaxrsServer answer(InvocationOnMock invocationOnMock) throws Throwable {
+                latch.countDown();
+                return jaxrsServer;
+            }
+        });
+        createManager(100);
+        latch.await(5, TimeUnit.SECONDS);
 
         verify(factory).createJaxrsServer(eq(HelloService.class), same(impl), eq(BASE_ADDRESS), propertiesCaptor.capture());
         Map<String, Object> properties = propertiesCaptor.getValue();
