@@ -229,6 +229,40 @@ service interface.  Microbule uses this feature to provide type-safe client prox
 Microbule exposes a JaxrsProxyFactory OSGi service for you to use.  Simply inject it wherever you need to create client
 proxies.
 
+## Extending Microbule
+
+Extending Microbule couldn't be simpler.  JAX-RS relies upon the notion of "providers" in order to customize the
+"containers" and "clients."  Microbule provides two extension points JaxrsServerDecorator and JaxrsProxyDecorator which
+allow you to add container and client providers, respectively:
+
+ ```
+ public class MyServerDecorator implements JaxrsServerDecorator {
+     @Override
+     public void decorate(JaxrsServerConfig server) {
+         MyServerProvider provider = new MyServerProvider();
+         server.addProvider(provider);
+     }
+   }
+ }
+ ```
+
+The JaxrsServerConfig object will provide access to the service interface, the base address, and the service properties
+associated with the OSGi service used for the server.  To register your provider, you must expose it as an OSGi service
+with the "name" service property indicating its name.  Similarly, for customizing client proxies, you simply implement
+JaxrsProxyDecorator:
+
+ ```
+ public class MyProxyDecorator implements JaxrsProxyDecorator {
+     @Override
+     public void decorate(JaxrsProxyConfig proxy) {
+         MyProxyProvider provider = new MyProxyProvider();
+         proxy.addProvider(provider);
+     }
+ }
+ ```
+
+Again, the JaxrsProxyDecorator must be expopsed as an OSGi service with the "name" property.
+
 ## Opting Out
 
 By default, Microbule will apply all registered decorators to your services/proxies.  However, you can opt out of them
