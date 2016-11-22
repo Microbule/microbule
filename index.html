@@ -57,7 +57,7 @@ Hit '&lt;tab&gt;' for a list of available commands
 and '[cmd] --help' for help on a specific command.
 Hit '&lt;ctrl-d&gt;' or type 'system:shutdown' or 'logout' to shutdown Karaf.
 
-karaf@root()&gt; repo-add mvn:org.microbule/microbule-features/&lt;VERSION&gt;/xml/features
+karaf@root()&gt; repo-add mvn:org.microbule/microbule-features/0.1.0/xml/features
 karaf@root()&gt; feature:install microbule
 </code></pre>
 </li>
@@ -258,6 +258,39 @@ service interface.  Microbule uses this feature to provide type-safe client prox
 
 <p>Microbule exposes a JaxrsProxyFactory OSGi service for you to use.  Simply inject it wherever you need to create client
 proxies.</p>
+
+<h2>
+<a id="extending-microbule" class="anchor" href="#extending-microbule" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Extending Microbule</h2>
+
+<p>Extending Microbule couldn't be simpler.  JAX-RS relies upon the notion of "providers" in order to customize the
+"containers" and "clients."  Microbule provides two extension points JaxrsServerDecorator and JaxrsProxyDecorator which
+allow you to add container and client providers, respectively:</p>
+
+<pre><code> public class MyServerDecorator implements JaxrsServerDecorator {
+     @Override
+     public void decorate(JaxrsServerConfig server) {
+         MyServerProvider provider = new MyServerProvider();
+         server.addProvider(provider);
+     }
+   }
+ }
+</code></pre>
+
+<p>The JaxrsServerConfig object will provide access to the service interface, the base address, and the service properties
+associated with the OSGi service used for the server.  To register your provider, you must expose it as an OSGi service
+with the "name" service property indicating its name.  Similarly, for customizing client proxies, you simply implement
+JaxrsProxyDecorator:</p>
+
+<pre><code> public class MyProxyDecorator implements JaxrsProxyDecorator {
+     @Override
+     public void decorate(JaxrsProxyConfig proxy) {
+         MyProxyProvider provider = new MyProxyProvider();
+         proxy.addProvider(provider);
+     }
+ }
+</code></pre>
+
+<p>Again, the JaxrsProxyDecorator must be expopsed as an OSGi service with the "name" property.</p>
 
 <h2>
 <a id="opting-out" class="anchor" href="#opting-out" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Opting Out</h2>
