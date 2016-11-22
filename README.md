@@ -32,7 +32,7 @@ Microbule is an extension of the [Apache Karaf](http://karaf.apache.org) contain
  and '[cmd] --help' for help on a specific command.
  Hit '<ctrl-d>' or type 'system:shutdown' or 'logout' to shutdown Karaf.
 
- karaf@root()> repo-add mvn:org.microbule/microbule-features/<VERSION>/xml/features
+ karaf@root()> repo-add mvn:org.microbule/microbule-features/0.1.0/xml/features
  karaf@root()> feature:install microbule
  ```
 
