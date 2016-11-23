@@ -14,6 +14,7 @@
         <feature version="${project.version}">microbule-decorator-requestlog</feature>
         <feature version="${project.version}">microbule-decorator-circuitbreaker</feature>
         <feature version="${project.version}">microbule-decorator-cache</feature>
+        <feature version="${project.version}">microbule-decorator-timeout</feature>
     </feature>
 
     <!--
@@ -74,6 +75,10 @@
 
     <feature name="microbule-decorator-circuitbreaker" version="${project.version}">
         <bundle>mvn:org.microbule/microbule-decorator-circuitbreaker/${project.version}</bundle>
+    </feature>
+
+    <feature name="microbule-decorator-timeout" version="${project.version}">
+        <bundle>mvn:org.microbule/microbule-decorator-timeout/${project.version}</bundle>
     </feature>
 
     <feature name="eos-core" version="${eos.version}">

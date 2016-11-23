@@ -8,30 +8,20 @@
         <version>0.2.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>microbule-decorator-validation</artifactId>
-    <name>Microbule :: Decorator :: Validation</name>
+    <artifactId>microbule-decorator-timeout</artifactId>
+    <name>Microbule :: Decorator :: Timeout</name>
+    
     <packaging>bundle</packaging>
-
     <dependencies>
         <dependency>
-            <groupId>javax.el</groupId>
-            <artifactId>javax.el-api</artifactId>
-            <version>3.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>${hibernate.validator.version}</version>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons.lang3.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+            <artifactId>cxf-rt-rs-client</artifactId>
             <version>${cxf.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-errormap-spi</artifactId>
-            <version>0.2.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>
