@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.microbule</groupId>
         <artifactId>microbule-decorator-parent</artifactId>
-        <version>0.1.1-SNAPSHOT</version>
+        <version>0.1.1</version>
     </parent>
 
     <artifactId>microbule-decorator-gson</artifactId>
