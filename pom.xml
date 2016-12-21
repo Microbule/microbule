@@ -14,7 +14,7 @@
     <artifactId>microbule-parent</artifactId>
     <name>Microbule :: Parent</name>
     <packaging>pom</packaging>
-    <version>0.2.0-SNAPSHOT</version>
+    <version>0.1.1-SNAPSHOT</version>
 
     <modules>
         <module>annotation</module>
@@ -39,7 +39,7 @@
         <cdi.version>1.2</cdi.version>
         <classmate.version>1.3.1</classmate.version>
         <commons.lang3.version>3.5</commons.lang3.version>
-        <cxf.version>3.1.8</cxf.version>
+        <cxf.version>3.1.9</cxf.version>
         <eos.version>1.1.0</eos.version>
         <glassfish.el.version>2.2.6</glassfish.el.version>
         <gson.version>2.7</gson.version>
