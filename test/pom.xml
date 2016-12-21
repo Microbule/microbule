@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.microbule</groupId>
         <artifactId>microbule-parent</artifactId>
-        <version>0.1.1</version>
+        <version>0.1.2-SNAPSHOT</version>
     </parent>
 
     <artifactId>microbule-test</artifactId>
@@ -15,12 +15,12 @@
         <dependency>
             <groupId>org.microbule</groupId>
             <artifactId>microbule-api</artifactId>
-            <version>0.1.1</version>
+            <version>0.1.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.microbule</groupId>
             <artifactId>microbule-core</artifactId>
-            <version>0.1.1</version>
+            <version>0.1.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
