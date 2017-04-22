@@ -59,7 +59,7 @@
         <javax.el.api.version>2.2.5</javax.el.api.version>
         <jboss.logging.version>3.3.0.Final</jboss.logging.version>
         <junit.version>4.12</junit.version>
-        <karaf.version>4.0.7</karaf.version>
+        <karaf.version>4.1.1</karaf.version>
         <mockito.version>2.2.10</mockito.version>
         <osgi.version>5.0.0</osgi.version>
         <pax.cdi.version>0.11.0</pax.cdi.version>

@@ -25,12 +25,11 @@
     <feature name="microbule-core" version="${project.version}">
         <feature version="${cxf.version}">cxf-jaxrs</feature>
         <feature version="${cxf.version}">cxf-rs-description-swagger2</feature>
+        <feature prerequisite="true">wrap</feature>
 
         <bundle dependency="true">mvn:com.google.guava/guava/${guava.version}</bundle>
         <bundle dependency="true">mvn:org.apache.commons/commons-lang3/${commons.lang3.version}</bundle>
         <bundle dependency="true">mvn:com.savoirtech.eos/eos-core/${eos.version}</bundle>
-
-        <bundle dependency="true">wrap:mvn:com.github.rholder/guava-retrying/${guava.retrying.version}</bundle>
 
         <bundle>mvn:org.microbule/microbule-config-api/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-config-spi/${project.version}</bundle>

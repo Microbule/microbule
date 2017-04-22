@@ -34,7 +34,7 @@ public class KarafFeaturesIT extends Assert {
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    private static final String DEFAULT_KARAF_VERSION = "4.0.7";
+    private static final String DEFAULT_KARAF_VERSION = "4.1.1";
 
     @Inject
     private JaxrsProxyFactory proxyFactory;
