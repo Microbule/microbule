@@ -54,14 +54,11 @@
             <version>${cxf.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.microbule</groupId>
+            <artifactId>microbule-config-core</artifactId>
+            <version>0.1.2-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-bundle-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 </project>

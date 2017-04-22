@@ -5,7 +5,8 @@
 
     <service ref="resource" interface="org.microbule.example.common.HelloResource">
         <service-properties>
-            <entry key="microbule.address" value="/microbule-example-blueprint" />
+            <entry key="microbule.server" value="true"/>
+            <entry key="microbule.serverAddress" value="/microbule-example-blueprint" />
         </service-properties>
     </service>
 

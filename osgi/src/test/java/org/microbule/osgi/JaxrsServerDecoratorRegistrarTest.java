@@ -3,7 +3,7 @@ package org.microbule.osgi;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.microbule.core.JaxrsServerFactoryImpl;
+import org.microbule.core.DefaultJaxrsServerFactory;
 import org.microbule.spi.JaxrsServerDecorator;
 import org.microbule.test.MockObjectTestCase;
 import org.microbule.test.osgi.OsgiRule;
@@ -23,7 +23,7 @@ public class JaxrsServerDecoratorRegistrarTest extends MockObjectTestCase {
     @Mock
     private JaxrsServerDecorator decorator;
     private JaxrsServerDecoratorRegistrar registrar;
-    private final JaxrsServerFactoryImpl factory = new JaxrsServerFactoryImpl();
+    private final DefaultJaxrsServerFactory factory = new DefaultJaxrsServerFactory();
 
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods

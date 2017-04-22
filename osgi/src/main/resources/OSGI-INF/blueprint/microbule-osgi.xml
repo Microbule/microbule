@@ -8,10 +8,12 @@
         </cm:default-properties>
     </cm:property-placeholder>
 
+    <reference id="configService" interface="org.microbule.config.api.ConfigService" />
+
     <!--
     JAX-RS Server Factory
     -->
-    <bean id="serverFactory" class="org.microbule.core.JaxrsServerFactoryImpl" />
+    <bean id="serverFactory" class="org.microbule.core.DefaultJaxrsServerFactory" />
 
     <bean id="serverDecoratorRegistrar" class="org.microbule.osgi.JaxrsServerDecoratorRegistrar">
         <argument ref="blueprintBundleContext"/>
@@ -20,6 +22,7 @@
 
     <bean id="serverManager" class="org.microbule.osgi.JaxrsServerManager" destroy-method="destroy">
         <argument ref="blueprintBundleContext"/>
+        <argument ref="configService" />
         <argument ref="serverFactory" />
         <argument value="${quietPeriod}" />
     </bean>
@@ -29,7 +32,7 @@
     <!--
     JAX-RS Proxy Factory
     -->
-    <bean id="proxyFactory" class="org.microbule.core.JaxrsProxyFactoryImpl" />
+    <bean id="proxyFactory" class="org.microbule.core.DefaultJaxrsProxyFactory" />
 
     <bean id="proxyDecoratorRegistrar" class="org.microbule.osgi.JaxrsProxyDecoratorRegistrar">
         <argument ref="blueprintBundleContext" />

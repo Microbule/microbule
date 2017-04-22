@@ -1,4 +1,5 @@
 package org.microbule.spi;
 
-public interface JaxrsProxyDecorator extends JaxrsObjectDecorator<JaxrsProxyConfig> {
+@FunctionalInterface
+public interface JaxrsProxyDecorator extends JaxrsServiceDecorator {
 }

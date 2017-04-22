@@ -2,15 +2,25 @@ package org.microbule.osgi;
 
 import java.util.Arrays;
 import java.util.Map;
-import java.util.Timer;
+import java.util.Optional;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.ws.rs.Path;
 
 import com.google.common.collect.MapMaker;
 import org.microbule.api.JaxrsServer;
 import org.microbule.api.JaxrsServerFactory;
+import org.microbule.config.api.Config;
+import org.microbule.config.api.ConfigService;
+import org.microbule.config.core.CompositeConfig;
+import org.microbule.config.core.MapConfig;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 import org.osgi.framework.InvalidSyntaxException;
@@ -24,8 +34,8 @@ public class JaxrsServerManager {
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    public static final String ADDRESS_PROP = "microbule.address";
-    private static final String MICROBULE_FILTER = "(microbule.address=*)";
+    public static final String MICROBULE_GROUP = "microbule";
+    private static final String MICROBULE_FILTER = "(microbule.server=*)";
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JaxrsServerManager.class);
@@ -34,13 +44,26 @@ public class JaxrsServerManager {
 
     private final JaxrsServerFactory factory;
     private final Map<Long, JaxrsServer> servers = new MapMaker().makeMap();
+    private final AtomicLong lastUpdated = new AtomicLong(System.nanoTime());
+    private final ConfigService configService;
+
+//----------------------------------------------------------------------------------------------------------------------
+// Static Methods
+//----------------------------------------------------------------------------------------------------------------------
+
+    private static Map<String, String> toMap(ServiceReference<?> ref) {
+        final Map<String, String> map = Stream.of(ref.getPropertyKeys()).collect(Collectors.toMap(key -> key, key -> Optional.ofNullable(ref.getProperty(key)).map(String::valueOf).orElse(null)));
+        LOGGER.info("Mapped {} to map {}.", ref, map);
+        return map;
+    }
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public JaxrsServerManager(BundleContext bundleContext, JaxrsServerFactory factory, long quietPeriod) {
+    public JaxrsServerManager(BundleContext bundleContext, ConfigService configService, JaxrsServerFactory factory, long quietPeriod) {
         this.bundleContext = bundleContext;
+        this.configService = configService;
         this.factory = factory;
         new BootstrapTask(quietPeriod).schedule();
     }
@@ -78,6 +101,7 @@ public class JaxrsServerManager {
                         final JaxrsServer server = servers.get(serviceId);
                         if (server != null) {
                             server.shutdown();
+                            bundleContext.ungetService(event.getServiceReference());
                         }
                 }
             }, MICROBULE_FILTER);
@@ -92,21 +116,22 @@ public class JaxrsServerManager {
             try {
                 final Class<?> serviceInterface = ref.getBundle().loadClass(serviceInterfaceName);
                 if (serviceInterface.isAnnotationPresent(Path.class)) {
+                    lastUpdated.set(System.nanoTime());
                     final Long serviceId = serviceId(ref);
-                    final String address = (String) ref.getProperty(ADDRESS_PROP);
+                    final Config serverConfig = configService.getServerConfig(serviceInterface);
+                    final Config serviceConfig = new MapConfig(toMap(ref)).group(MICROBULE_GROUP);
+                    final Config config = new CompositeConfig(serviceConfig, serverConfig);
+                    final String address = config.value(JaxrsServerFactory.ADDRESS_PROP).orElse(null);
                     LOGGER.info("Detected JAX-RS service {} ({}) at address {} from bundle {} ({}).", serviceInterfaceName, serviceId, address, ref.getBundle().getSymbolicName(), ref.getBundle().getBundleId());
                     final Object serviceImplementation = bundleContext.getService(ref);
-                    JaxrsServer server = factory.createJaxrsServer(serviceInterface, serviceImplementation, address, toProperties(ref));
+
+                    JaxrsServer server = factory.createJaxrsServer(serviceInterface, serviceImplementation, config);
                     servers.put(serviceId, server);
                 }
             } catch (ClassNotFoundException e) {
                 LOGGER.error("Unable to create JAX-RS server!", e);
             }
         });
-    }
-
-    private static Map<String, Object> toProperties(ServiceReference<?> ref) {
-        return Arrays.stream(ref.getPropertyKeys()).collect(Collectors.toMap(key -> key, ref::getProperty));
     }
 
     private Long serviceId(ServiceReference<?> ref) {
@@ -123,7 +148,8 @@ public class JaxrsServerManager {
 //----------------------------------------------------------------------------------------------------------------------
 
         private final long quietPeriod;
-        private Timer timer;
+        private ScheduledExecutorService scheduler;
+        private final AtomicBoolean bootstrapped = new AtomicBoolean(false);
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
@@ -139,11 +165,14 @@ public class JaxrsServerManager {
 
         @Override
         public void run() {
-            LOGGER.info("Quiet period ({} ms) expired, executing Microbule Bootstrap...", quietPeriod);
-            registerServiceListener();
-            findExistingServices();
-            LOGGER.info("Canceling Microbule Bootstrap timer thread...");
-            timer.cancel();
+            if (!bootstrapped.get() && System.nanoTime() - lastUpdated.get() > quietPeriod * 1000000) {
+                bootstrapped.set(true);
+                LOGGER.info("Shutting down Microbule Bootstrap scheduler thread...");
+                scheduler.shutdown();
+                LOGGER.info("Quiet period ({} ms) expired, executing Microbule Bootstrap...", quietPeriod);
+                registerServiceListener();
+                findExistingServices();
+            }
         }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -152,9 +181,8 @@ public class JaxrsServerManager {
 
         public void schedule() {
             if (quietPeriod > 0) {
-                LOGGER.info("Scheduling Microbule Bootstrap task to run after quiet period ({} ms)...", quietPeriod);
-                this.timer = new Timer("Microbule Bootstrap Timer");
-                timer.schedule(this, quietPeriod);
+                scheduler = Executors.newScheduledThreadPool(1);
+                scheduler.scheduleWithFixedDelay(this::run, quietPeriod, 1000, TimeUnit.MILLISECONDS);
             } else {
                 LOGGER.info("Executing Microbule Bootstrap...");
                 registerServiceListener();

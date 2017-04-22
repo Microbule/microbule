@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+
+    <bean id="decorator" class="org.microbule.validation.decorator.ValidationDecorator"/>
+
+    <service ref="decorator" interface="org.microbule.spi.JaxrsServerDecorator">
+        <service-properties>
+            <entry key="name" value="validation"/>
+        </service-properties>
+    </service>
+
+    <!--
+    ConstraintViolationException Mapper
+    -->
+    <bean id="constraintViolationExceptionMapper" class="org.microbule.validation.decorator.ConstraintViolationExceptionMapper" />
+
+    <service ref="constraintViolationExceptionMapper" interface="org.microbule.errormap.spi.ErrorMapper" />
+
+</blueprint>

@@ -17,17 +17,27 @@
     <version>0.1.2-SNAPSHOT</version>
 
     <modules>
-        <module>annotation</module>
         <module>api</module>
         <module>spi</module>
         <module>core</module>
         <module>osgi</module>
         <module>test</module>
         <module>errormap</module>
-        <module>decorator</module>
+        <module>gzip</module>
+        <module>logging</module>
+        <module>swagger</module>
+        <module>cors</module>
+        <module>cache</module>
+        <module>validation</module>
+        <module>requestlog</module>
+        <module>timeout</module>
+        <module>circuitbreaker</module>
+        <module>tracer</module>
+        <module>gson</module>
         <module>example</module>
         <module>features</module>
         <module>itest</module>
+        <module>config</module>
     </modules>
 
     <properties>
@@ -39,11 +49,12 @@
         <cdi.version>1.2</cdi.version>
         <classmate.version>1.3.1</classmate.version>
         <commons.lang3.version>3.5</commons.lang3.version>
-        <cxf.version>3.1.9</cxf.version>
+        <cxf.version>3.1.11</cxf.version>
         <eos.version>1.1.0</eos.version>
         <glassfish.el.version>2.2.6</glassfish.el.version>
         <gson.version>2.7</gson.version>
         <guava.version>18.0</guava.version>
+        <guava.retrying.version>2.0.0</guava.retrying.version>
         <hibernate.validator.version>5.2.4.Final</hibernate.validator.version>
         <javax.el.api.version>2.2.5</javax.el.api.version>
         <jboss.logging.version>3.3.0.Final</jboss.logging.version>
@@ -221,6 +232,7 @@
                         </execution>
                     </executions>
                 </plugin>
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
@@ -237,45 +249,10 @@
                         </archive>
                     </configuration>
                 </plugin>
-
-                <plugin>
-                    <groupId>org.apache.felix</groupId>
-                    <artifactId>maven-bundle-plugin</artifactId>
-                    <version>${bundle.plugin.version}</version>
-                    <extensions>true</extensions>
-                    <configuration>
-                        <niceManifest>true</niceManifest>
-                        <instructions>
-                            <Import-Package>${osgi.import}</Import-Package>
-                            <Export-Package>${osgi.export}</Export-Package>
-                            <Private-Package>${osgi.private}</Private-Package>
-                            <Embed-Dependency>${osgi.embed}</Embed-Dependency>
-                            <Embed-Directory>${osgi.embed.dir}</Embed-Directory>
-                            <DynamicImport-Package>${osgi.dynamic}</DynamicImport-Package>
-                            <Bundle-Activator>${osgi.activator}</Bundle-Activator>
-                            <Build-Time>${maven.build.timestamp}</Build-Time>
-                            <Specification-Title>${project.name}</Specification-Title>
-                            <Specification-Version>${project.version}</Specification-Version>
-                            <Specification-Vendor>${project.organization.name}</Specification-Vendor>
-                            <Implementation-Title>${project.name}</Implementation-Title>
-                            <Implementation-Version>${project.version}</Implementation-Version>
-                            <Implementation-Vendor-Id>${project.groupId}</Implementation-Vendor-Id>
-                            <Implementation-Vendor>${project.organization.name}</Implementation-Vendor>
-                        </instructions>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>bundle-manifest</id>
-                            <phase>process-classes</phase>
-                            <goals>
-                                <goal>manifest</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
+
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -310,6 +287,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <artifactId>maven-release-plugin</artifactId>
                 <inherited>true</inherited>
@@ -317,6 +295,46 @@
                     <preparationGoals>clean install verify</preparationGoals>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>${bundle.plugin.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <niceManifest>true</niceManifest>
+                    <supportedProjectTypes>
+                        <supportedProjectType>bundle</supportedProjectType>
+                    </supportedProjectTypes>
+                    <instructions>
+                        <Import-Package>${osgi.import}</Import-Package>
+                        <Export-Package>${osgi.export}</Export-Package>
+                        <Private-Package>${osgi.private}</Private-Package>
+                        <Embed-Dependency>${osgi.embed}</Embed-Dependency>
+                        <Embed-Directory>${osgi.embed.dir}</Embed-Directory>
+                        <DynamicImport-Package>${osgi.dynamic}</DynamicImport-Package>
+                        <Bundle-Activator>${osgi.activator}</Bundle-Activator>
+                        <Build-Time>${maven.build.timestamp}</Build-Time>
+                        <Specification-Title>${project.name}</Specification-Title>
+                        <Specification-Version>${project.version}</Specification-Version>
+                        <Specification-Vendor>${project.organization.name}</Specification-Vendor>
+                        <Implementation-Title>${project.name}</Implementation-Title>
+                        <Implementation-Version>${project.version}</Implementation-Version>
+                        <Implementation-Vendor-Id>${project.groupId}</Implementation-Vendor-Id>
+                        <Implementation-Vendor>${project.organization.name}</Implementation-Vendor>
+                    </instructions>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>bundle-manifest</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>manifest</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 

@@ -7,7 +7,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.microbule.annotation.Cacheable;
+import org.microbule.cache.annotation.Cacheable;
 
 @Path("/")
 public interface HelloResource {

@@ -28,6 +28,11 @@
             <version>${commons.lang3.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.microbule</groupId>
+            <artifactId>microbule-config-core</artifactId>
+            <version>0.1.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>${mockito.version}</version>

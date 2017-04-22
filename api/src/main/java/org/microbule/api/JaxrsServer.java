@@ -1,5 +1,6 @@
 package org.microbule.api;
 
+@FunctionalInterface
 public interface JaxrsServer {
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods

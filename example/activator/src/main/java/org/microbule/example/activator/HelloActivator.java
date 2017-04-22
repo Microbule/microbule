@@ -24,7 +24,8 @@ public class HelloActivator implements BundleActivator {
     @Override
     public void start(BundleContext context) throws Exception {
         Dictionary<String,Object> props = new Hashtable<>();
-        props.put("microbule.address", "/microbule-example-activator");
+        props.put("microbule.server", "true");
+        props.put("microbule.serverAddress", "/microbule-example-activator");
         registration = context.registerService(HelloResource.class, new DefaultHelloResource(), props);
     }
 

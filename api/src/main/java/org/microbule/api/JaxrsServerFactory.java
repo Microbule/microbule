@@ -1,19 +1,25 @@
 package org.microbule.api;
 
-import java.util.Map;
+import org.microbule.config.api.Config;
 
 public interface JaxrsServerFactory {
+//----------------------------------------------------------------------------------------------------------------------
+// Fields
+//----------------------------------------------------------------------------------------------------------------------
+
+    String ADDRESS_PROP = "serverAddress";
+
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
     /**
      * Creates a new JAX-RS server
-     * @param serviceInterface the service interface
+     *
+     * @param serviceInterface      the service interface
      * @param serviceImplementation the service implementation object
-     * @param baseAddress the base address
-     * @param properties the properties
+     * @param config                the configuration
      * @return the server
      */
-    JaxrsServer createJaxrsServer(Class<?> serviceInterface, Object serviceImplementation, String baseAddress, Map<String,Object> properties);
+    JaxrsServer createJaxrsServer(Class<?> serviceInterface, Object serviceImplementation, Config config);
 }

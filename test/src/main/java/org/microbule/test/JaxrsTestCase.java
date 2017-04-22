@@ -2,7 +2,6 @@ package org.microbule.test;
 
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.ws.rs.client.ClientBuilder;
@@ -12,9 +11,12 @@ import org.apache.commons.lang3.reflect.TypeUtils;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.junit.After;
 import org.junit.Before;
+import org.microbule.api.JaxrsProxyFactory;
 import org.microbule.api.JaxrsServer;
-import org.microbule.core.JaxrsProxyFactoryImpl;
-import org.microbule.core.JaxrsServerFactoryImpl;
+import org.microbule.api.JaxrsServerFactory;
+import org.microbule.config.core.MapConfig;
+import org.microbule.core.DefaultJaxrsProxyFactory;
+import org.microbule.core.DefaultJaxrsServerFactory;
 
 public abstract class JaxrsTestCase<T> extends MockObjectTestCase {
 //----------------------------------------------------------------------------------------------------------------------
@@ -45,11 +47,11 @@ public abstract class JaxrsTestCase<T> extends MockObjectTestCase {
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    protected void addDecorators(JaxrsServerFactoryImpl factory) {
+    protected void addDecorators(DefaultJaxrsServerFactory factory) {
         // Do nothing!
     }
 
-    protected void addDecorators(JaxrsProxyFactoryImpl factory) {
+    protected void addDecorators(DefaultJaxrsProxyFactory factory) {
         // Do nothing!
     }
 
@@ -57,14 +59,17 @@ public abstract class JaxrsTestCase<T> extends MockObjectTestCase {
         return String.format(BASE_ADDRESS_PATTERN, getPort(), getClass().getSimpleName());
     }
 
-    protected Map<String, Object> createProperties() {
-        return new HashMap<>();
+    protected MapConfig createConfig() {
+        return new MapConfig();
     }
 
     protected T createProxy() {
-        final JaxrsProxyFactoryImpl proxyFactory = new JaxrsProxyFactoryImpl();
+        final DefaultJaxrsProxyFactory proxyFactory = new DefaultJaxrsProxyFactory();
         addDecorators(proxyFactory);
-        final T proxy = proxyFactory.createProxy(getServiceInterface(), baseAddress, createProperties());
+
+        MapConfig config = createConfig();
+        config.addValue(JaxrsProxyFactory.ADDRESS_PROP, baseAddress);
+        final T proxy = proxyFactory.createProxy(getServiceInterface(), config);
         WebClient.getConfig(proxy).getRequestContext().put(USE_ASYNC_HTTP_CONDUIT_PROP, Boolean.TRUE);
         return proxy;
     }
@@ -93,9 +98,12 @@ public abstract class JaxrsTestCase<T> extends MockObjectTestCase {
 
     @Before
     public void startServer() {
-        final JaxrsServerFactoryImpl factory = new JaxrsServerFactoryImpl();
+        final DefaultJaxrsServerFactory factory = new DefaultJaxrsServerFactory();
         addDecorators(factory);
         baseAddress = createBaseAddress();
-        server = factory.createJaxrsServer(getServiceInterface(), createImplementation(), baseAddress, createProperties());
+
+        final MapConfig config = createConfig();
+        config.addValue(JaxrsServerFactory.ADDRESS_PROP, baseAddress);
+        server = factory.createJaxrsServer(getServiceInterface(), createImplementation(), config);
     }
 }

@@ -3,7 +3,7 @@ package org.microbule.osgi;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.microbule.core.JaxrsProxyFactoryImpl;
+import org.microbule.core.DefaultJaxrsProxyFactory;
 import org.microbule.spi.JaxrsProxyDecorator;
 import org.microbule.test.MockObjectTestCase;
 import org.microbule.test.osgi.OsgiRule;
@@ -19,7 +19,7 @@ public class JaxrsProxyDecoratorRegistrarTest extends MockObjectTestCase {
     @Mock
     private JaxrsProxyDecorator decorator;
     private JaxrsProxyDecoratorRegistrar registrar;
-    private final JaxrsProxyFactoryImpl factory = new JaxrsProxyFactoryImpl();
+    private final DefaultJaxrsProxyFactory factory = new DefaultJaxrsProxyFactory();
 
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods

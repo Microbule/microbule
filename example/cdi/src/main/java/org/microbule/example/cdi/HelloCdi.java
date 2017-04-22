@@ -11,7 +11,10 @@ import org.ops4j.pax.cdi.api.Property;
 import org.slf4j.Logger;
 
 @OsgiServiceProvider(classes = HelloResource.class)
-@Properties(@Property(name = "microbule.address", value = "/microbule-example-cdi"))
+@Properties({
+        @Property(name = "microbule.address", value = "/microbule-example-cdi"),
+        @Property(name = "microbule.server", value = "true")
+})
 public class HelloCdi extends DefaultHelloResource implements HelloResource {
 
     @Inject
