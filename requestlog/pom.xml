@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.microbule</groupId>
         <artifactId>microbule-parent</artifactId>
-        <version>0.1.2-SNAPSHOT</version>
+        <version>0.2.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>microbule-requestlog-decorator</artifactId>
@@ -16,7 +16,7 @@
         <dependency>
             <groupId>org.microbule</groupId>
             <artifactId>microbule-spi</artifactId>
-            <version>0.1.2-SNAPSHOT</version>
+            <version>0.2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -26,7 +26,7 @@
         <dependency>
             <groupId>org.microbule</groupId>
             <artifactId>microbule-test</artifactId>
-            <version>0.1.2-SNAPSHOT</version>
+            <version>0.2.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
