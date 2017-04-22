@@ -5,7 +5,8 @@
 
     <cm:property-placeholder persistent-id="org.microbule.config.osgi" update-strategy="reload">
         <cm:default-properties>
-            <cm:property name="providerNames" value="osgi,consul,etcd"/>
+            <cm:property name="overrideProviderNames" value="sysprop,env"/>
+            <cm:property name="providerNames" value="osgi"/>
             <cm:property name="configPid" value="org.microbule.config.osgi.provider"/>
             <cm:property name="waitDuration" value="5" />
             <cm:property name="waitUnit" value="SECONDS" />
@@ -14,6 +15,7 @@
 
     <bean id="configService" class="org.microbule.config.osgi.OsgiConfigService">
         <argument ref="blueprintBundleContext"/>
+        <argument value="${overrideProviderNames}"/>
         <argument value="${providerNames}"/>
         <argument value="${waitDuration}" />
         <argument value="${waitUnit}" />

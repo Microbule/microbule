@@ -18,13 +18,14 @@ public class DefaultConfigService extends AbstractConfigService {
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public DefaultConfigService(List<String> providerNames, long waitDuration, TimeUnit waitUnit) {
-        super(providerNames, waitDuration, waitUnit);
+    public DefaultConfigService(String overrideProviderNamesCsv, String providerNamesCsv, long waitDuration, TimeUnit waitUnit) {
+        super(overrideProviderNamesCsv, providerNamesCsv, waitDuration, waitUnit);
     }
 
-    public DefaultConfigService(String providerNamesCsv, long waitDuration, TimeUnit waitUnit) {
-        super(providerNamesCsv, waitDuration, waitUnit);
+    public DefaultConfigService(List<String> overrideProviderNames, List<String> providerNames, long waitDuration, TimeUnit waitUnit) {
+        super(overrideProviderNames, providerNames, waitDuration, waitUnit);
     }
+
 
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods

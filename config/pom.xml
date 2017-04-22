@@ -20,5 +20,7 @@
         <module>http</module>
         <module>consul</module>
         <module>etcd</module>
+        <module>env</module>
+        <module>sysprop</module>
     </modules>
 </project>

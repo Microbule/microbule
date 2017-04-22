@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+
+    <bean id="configProvider" class="org.microbule.config.env.EnvironmentVariablesConfig" />
+
+    <service ref="configProvider" interface="org.microbule.config.spi.ConfigProvider">
+        <service-properties>
+            <entry key="name" value="env"/>
+        </service-properties>
+    </service>
+
+</blueprint>

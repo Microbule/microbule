@@ -1,5 +1,6 @@
 package org.microbule.config.core;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -27,6 +28,7 @@ public abstract class AbstractConfigService implements ConfigService {
 
     public static final char COMMA_SEPARATOR = ',';
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractConfigService.class);
+    private final List<String> overrideProviderNames;
     private final List<String> providerNames;
     private final Retryer<ConfigProvider> retryer;
 
@@ -34,17 +36,22 @@ public abstract class AbstractConfigService implements ConfigService {
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public AbstractConfigService(String providerNamesCsv, long waitDuration, TimeUnit waitUnit) {
-        this(Stream.of(StringUtils.split(providerNamesCsv, COMMA_SEPARATOR)).map(String::trim).collect(Collectors.toList()), waitDuration, waitUnit);
+    public AbstractConfigService(String overrideProviderNamesCsv, String providerNamesCsv, long waitDuration, TimeUnit waitUnit) {
+        this(toList(overrideProviderNamesCsv), toList(providerNamesCsv), waitDuration, waitUnit);
     }
 
-    public AbstractConfigService(List<String> providerNames, long waitDuration, TimeUnit waitUnit) {
+    private static List<String> toList(String csv) {
+        return Stream.of(StringUtils.split(csv, COMMA_SEPARATOR)).map(String::trim).collect(Collectors.toList());
+    }
+
+    public AbstractConfigService(List<String> overrideProviderNames, List<String> providerNames, long waitDuration, TimeUnit waitUnit) {
         this.retryer = RetryerBuilder
                 .<ConfigProvider>newBuilder()
                 .retryIfResult(Predicates.isNull())
                 .withWaitStrategy(WaitStrategies.fibonacciWait())
                 .withStopStrategy(StopStrategies.stopAfterDelay(waitDuration, waitUnit))
                 .build();
+        this.overrideProviderNames = overrideProviderNames;
         this.providerNames = providerNames;
     }
 
@@ -60,21 +67,38 @@ public abstract class AbstractConfigService implements ConfigService {
 
     @Override
     public Config getProxyConfig(Class<?> serviceInterface) {
-        return getProviderConfigs(provider -> provider.getProxyConfig(serviceInterface));
+        return getProxyConfig(serviceInterface, EmptyConfig.INSTANCE);
+    }
+
+    @Override
+    public Config getProxyConfig(Class<?> serviceInterface, Config overrides) {
+        return getProviderConfigs(overrides, provider -> provider.getProxyConfig(serviceInterface));
     }
 
     @Override
     public Config getServerConfig(Class<?> serviceInterface) {
-        return getProviderConfigs(provider -> provider.getServerConfig(serviceInterface));
+        return getServerConfig(serviceInterface, EmptyConfig.INSTANCE);
+    }
+
+    @Override
+    public Config getServerConfig(Class<?> serviceInterface, Config overrides) {
+        return getProviderConfigs(overrides, provider -> provider.getServerConfig(serviceInterface));
     }
 
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    private Config getProviderConfigs(Function<ConfigProvider, Config> fn) {
-        final List<Config> members = providerNames.stream().map(this::retryProvider).map(fn).collect(Collectors.toList());
-        return new CompositeConfig(members);
+    private Config getProviderConfigs(Config overrides, Function<ConfigProvider, Config> fn) {
+        List<Config> configs = new LinkedList<>();
+        collectConfigs(overrideProviderNames, fn, configs);
+        configs.add(overrides);
+        collectConfigs(providerNames, fn, configs);
+        return new CompositeConfig(configs);
+    }
+
+    private void collectConfigs(List<String> names, Function<ConfigProvider, Config> fn, List<Config> target) {
+        names.stream().map(this::retryProvider).map(fn).collect(Collectors.toCollection(() -> target));
     }
 
     private ConfigProvider retryProvider(String name) {

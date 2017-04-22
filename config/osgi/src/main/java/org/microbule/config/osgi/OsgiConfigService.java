@@ -19,8 +19,8 @@ public class OsgiConfigService extends AbstractConfigService {
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public OsgiConfigService(BundleContext bundleContext, String providerNamesCsv, long waitDuration, TimeUnit waitUnit) {
-        super(providerNamesCsv, waitDuration, waitUnit);
+    public OsgiConfigService(BundleContext bundleContext, String overrideProviderNamesCsv, String providerNamesCsv, long waitDuration, TimeUnit waitUnit) {
+        super(overrideProviderNamesCsv, providerNamesCsv, waitDuration, waitUnit);
         whiteboard = new KeyedWhiteboard<>(bundleContext, ConfigProvider.class, (svc, props) -> props.getProperty(NAME_PROP));
     }
 

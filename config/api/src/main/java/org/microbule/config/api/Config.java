@@ -8,6 +8,7 @@ public interface Config {
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
+
     default Optional<Boolean> booleanValue(String key) {
         return value(key, Boolean::valueOf);
     }

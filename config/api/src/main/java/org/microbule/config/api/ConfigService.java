@@ -8,4 +8,8 @@ public interface ConfigService {
     Config getProxyConfig(Class<?> serviceInterface);
 
     Config getServerConfig(Class<?> serviceInterface);
+
+    Config getProxyConfig(Class<?> serviceInterface, Config overrides);
+
+    Config getServerConfig(Class<?> serviceInterface, Config overrides);
 }

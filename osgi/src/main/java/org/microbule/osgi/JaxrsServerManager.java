@@ -19,7 +19,6 @@ import org.microbule.api.JaxrsServer;
 import org.microbule.api.JaxrsServerFactory;
 import org.microbule.config.api.Config;
 import org.microbule.config.api.ConfigService;
-import org.microbule.config.core.CompositeConfig;
 import org.microbule.config.core.MapConfig;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
@@ -118,13 +117,11 @@ public class JaxrsServerManager {
                 if (serviceInterface.isAnnotationPresent(Path.class)) {
                     lastUpdated.set(System.nanoTime());
                     final Long serviceId = serviceId(ref);
-                    final Config serverConfig = configService.getServerConfig(serviceInterface);
                     final Config serviceConfig = new MapConfig(toMap(ref)).group(MICROBULE_GROUP);
-                    final Config config = new CompositeConfig(serviceConfig, serverConfig);
+                    final Config config = configService.getServerConfig(serviceInterface, serviceConfig);
                     final String address = config.value(JaxrsServerFactory.ADDRESS_PROP).orElse(null);
                     LOGGER.info("Detected JAX-RS service {} ({}) at address {} from bundle {} ({}).", serviceInterfaceName, serviceId, address, ref.getBundle().getSymbolicName(), ref.getBundle().getBundleId());
                     final Object serviceImplementation = bundleContext.getService(ref);
-
                     JaxrsServer server = factory.createJaxrsServer(serviceInterface, serviceImplementation, config);
                     servers.put(serviceId, server);
                 }
