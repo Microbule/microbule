@@ -27,7 +27,7 @@ public class DefaultConfigServiceTest extends Assert {
 
     @Test
     public void testGetProxyConfigWithNoProviderNames() {
-        DefaultConfigService svc = new DefaultConfigService(Collections.emptyList(), 100, TimeUnit.MILLISECONDS);
+        DefaultConfigService svc = new DefaultConfigService(Collections.emptyList(), Collections.emptyList(), 100, TimeUnit.MILLISECONDS);
         final Config config = svc.getProxyConfig(HelloService.class);
         final Optional<String> val = config.group("foo").value("bar");
         assertFalse(val.isPresent());
@@ -35,7 +35,7 @@ public class DefaultConfigServiceTest extends Assert {
 
     @Test
     public void testGetServerConfigWithNoProviderNames() {
-        DefaultConfigService svc = new DefaultConfigService(Collections.emptyList(),100, TimeUnit.MILLISECONDS);
+        DefaultConfigService svc = new DefaultConfigService(Collections.emptyList(), Collections.emptyList(),100, TimeUnit.MILLISECONDS);
         final Config config = svc.getServerConfig(HelloService.class);
         final Optional<String> val = config.group("foo").value("bar");
         assertFalse(val.isPresent());
@@ -43,7 +43,7 @@ public class DefaultConfigServiceTest extends Assert {
 
     @Test
     public void testGetProxyConfigWithNoProviders() {
-        DefaultConfigService svc = new DefaultConfigService(Lists.newArrayList("provider1", "provider2s"),100, TimeUnit.MILLISECONDS);
+        DefaultConfigService svc = new DefaultConfigService(Collections.emptyList(), Lists.newArrayList("provider1", "provider2s"),100, TimeUnit.MILLISECONDS);
         final Config config = svc.getProxyConfig(HelloService.class);
         final Optional<String> val = config.group("foo").value("bar");
         assertFalse(val.isPresent());
@@ -51,7 +51,7 @@ public class DefaultConfigServiceTest extends Assert {
 
     @Test
     public void testGetServerConfigWithNoProviders() {
-        DefaultConfigService svc = new DefaultConfigService(Lists.newArrayList("provider1", "provider2"),100, TimeUnit.MILLISECONDS);
+        DefaultConfigService svc = new DefaultConfigService(Collections.emptyList(), Lists.newArrayList("provider1", "provider2"),100, TimeUnit.MILLISECONDS);
         final Config config = svc.getServerConfig(HelloService.class);
         final Optional<String> val = config.group("foo").value("bar");
         assertFalse(val.isPresent());
@@ -59,7 +59,7 @@ public class DefaultConfigServiceTest extends Assert {
 
     @Test
     public void testWithProviders() {
-        DefaultConfigService svc = new DefaultConfigService(Lists.newArrayList("empty", "mock"), 1, TimeUnit.SECONDS);
+        DefaultConfigService svc = new DefaultConfigService(Collections.emptyList(), Lists.newArrayList("empty", "mock"), 1, TimeUnit.SECONDS);
         svc.registerConfigProvider("mock", mockProvider);
         svc.registerConfigProvider("empty", EmptyConfigProvider.INSTANCE);
 
