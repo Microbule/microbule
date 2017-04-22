@@ -6,5 +6,8 @@ public interface JaxrsServer {
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
+    /**
+     * Shuts down the JAX-RS server.
+     */
     void shutdown();
 }

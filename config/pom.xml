@@ -22,5 +22,6 @@
         <module>etcd</module>
         <module>env</module>
         <module>sysprop</module>
+        <module>annotation</module>
     </modules>
 </project>

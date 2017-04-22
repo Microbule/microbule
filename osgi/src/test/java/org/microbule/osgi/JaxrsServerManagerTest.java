@@ -10,7 +10,6 @@ import org.microbule.api.JaxrsServer;
 import org.microbule.api.JaxrsServerFactory;
 import org.microbule.config.api.Config;
 import org.microbule.config.api.ConfigService;
-import org.microbule.config.core.EmptyConfig;
 import org.microbule.test.MockObjectTestCase;
 import org.microbule.test.hello.HelloService;
 import org.microbule.test.hello.HelloServiceImpl;
@@ -54,7 +53,7 @@ public class JaxrsServerManagerTest extends MockObjectTestCase {
 
     @Before
     public void trainMocks() {
-        when(configService.getServerConfig(HelloService.class)).thenReturn(EmptyConfig.INSTANCE);
+        when(configService.getServerConfig(eq(HelloService.class), any(Config.class))).thenAnswer(invocationOnMock -> invocationOnMock.getArgument(1));
     }
 
     @Test
