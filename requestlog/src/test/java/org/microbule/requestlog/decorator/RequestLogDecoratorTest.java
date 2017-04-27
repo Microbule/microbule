@@ -1,7 +1,7 @@
 package org.microbule.requestlog.decorator;
 
 import org.microbule.core.DefaultJaxrsServerFactory;
-import org.microbule.test.hello.HelloTestCase;
+import org.microbule.test.server.hello.HelloTestCase;
 
 public class RequestLogDecoratorTest extends HelloTestCase {
 //----------------------------------------------------------------------------------------------------------------------

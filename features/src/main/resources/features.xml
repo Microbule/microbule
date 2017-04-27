@@ -104,6 +104,7 @@
         <bundle dependency="true">mvn:javax.el/javax.el-api/${javax.el.api.version}</bundle>
         <bundle dependency="true">mvn:org.glassfish.web/javax.el/${glassfish.el.version}</bundle>
         <bundle dependency="true">mvn:org.hibernate/hibernate-validator/${hibernate.validator.version}</bundle>
+        <bundle>mvn:org.microbule/microbule-validation-annotation/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-validation-decorator/${project.version}</bundle>
     </feature>
 

@@ -5,9 +5,9 @@ import javax.ws.rs.ServiceUnavailableException;
 
 import org.junit.Test;
 import org.microbule.core.DefaultJaxrsProxyFactory;
-import org.microbule.test.hello.HelloService;
-import org.microbule.test.hello.HelloServiceImpl;
-import org.microbule.test.hello.HelloTestCase;
+import org.microbule.test.server.hello.HelloService;
+import org.microbule.test.server.hello.HelloServiceImpl;
+import org.microbule.test.server.hello.HelloTestCase;
 
 public class CircuitBreakerFilterTest extends HelloTestCase {
 //----------------------------------------------------------------------------------------------------------------------

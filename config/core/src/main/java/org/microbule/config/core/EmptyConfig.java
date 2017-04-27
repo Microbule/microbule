@@ -9,7 +9,7 @@ public class EmptyConfig implements Config {
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    public static Config INSTANCE = new EmptyConfig();
+    public static final Config INSTANCE = new EmptyConfig();
 
 //----------------------------------------------------------------------------------------------------------------------
 // Config Implementation

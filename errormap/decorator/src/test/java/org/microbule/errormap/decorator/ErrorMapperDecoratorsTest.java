@@ -6,15 +6,15 @@ import org.junit.Test;
 import org.microbule.core.DefaultJaxrsProxyFactory;
 import org.microbule.core.DefaultJaxrsServerFactory;
 import org.microbule.errormap.api.ErrorMapperService;
-import org.microbule.test.hello.HelloService;
-import org.microbule.test.hello.HelloServiceImpl;
-import org.microbule.test.hello.HelloTestCase;
+import org.microbule.test.server.hello.HelloService;
+import org.microbule.test.server.hello.HelloServiceImpl;
+import org.microbule.test.server.hello.HelloTestCase;
 import org.mockito.Mock;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class ErrorMapperDecoratorsTest extends HelloTestCase{
+public class ErrorMapperDecoratorsTest extends HelloTestCase {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------

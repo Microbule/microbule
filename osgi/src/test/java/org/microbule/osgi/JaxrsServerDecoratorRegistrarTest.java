@@ -5,7 +5,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.microbule.core.DefaultJaxrsServerFactory;
 import org.microbule.spi.JaxrsServerDecorator;
-import org.microbule.test.MockObjectTestCase;
+import org.microbule.test.core.MockObjectTestCase;
 import org.microbule.test.osgi.OsgiRule;
 import org.microbule.test.osgi.ServicePropsBuilder;
 import org.mockito.Mock;

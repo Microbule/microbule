@@ -8,8 +8,8 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.microbule.core.DefaultJaxrsServerFactory;
-import org.microbule.test.hello.HelloTestCase;
 import org.microbule.test.osgi.OsgiRule;
+import org.microbule.test.server.hello.HelloTestCase;
 
 public class TracerServerDecoratorTest extends HelloTestCase {
 //----------------------------------------------------------------------------------------------------------------------

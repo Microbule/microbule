@@ -18,7 +18,7 @@ import javax.ws.rs.core.Response;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.microbule.errormap.spi.ErrorResponseStrategy;
-import org.microbule.test.MockObjectTestCase;
+import org.microbule.test.core.MockObjectTestCase;
 
 public class PlainTextErrorResponseStrategyTest extends MockObjectTestCase {
 //----------------------------------------------------------------------------------------------------------------------

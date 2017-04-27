@@ -10,11 +10,11 @@ import org.microbule.api.JaxrsServer;
 import org.microbule.api.JaxrsServerFactory;
 import org.microbule.config.api.Config;
 import org.microbule.config.api.ConfigService;
-import org.microbule.test.MockObjectTestCase;
-import org.microbule.test.hello.HelloService;
-import org.microbule.test.hello.HelloServiceImpl;
+import org.microbule.test.core.MockObjectTestCase;
 import org.microbule.test.osgi.OsgiRule;
 import org.microbule.test.osgi.ServicePropsBuilder;
+import org.microbule.test.server.hello.HelloService;
+import org.microbule.test.server.hello.HelloServiceImpl;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
@@ -31,7 +31,8 @@ public class JaxrsServerManagerTest extends MockObjectTestCase {
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    public static final String BASE_ADDRESS = "http://localhost:8383/test";
+    private static final String BASE_ADDRESS = "http://localhost:8383/test";
+
     @Rule
     public final OsgiRule osgiRule = new OsgiRule();
 

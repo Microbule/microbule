@@ -84,7 +84,7 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
         this.allowedHeaders = parseWhitelist(config.value(ALLOWED_HEADERS_PROP).orElse(ALLOW_ALL).toUpperCase());
         this.exposedHeaders = parseCommaSeparatedSet(config.value(EXPOSED_HEADERS_PROP).orElse(EMPTY_STRING));
         this.maxAge = config.longValue(MAX_AGE_PROP).orElse(DEFAULT_MAX_AGE);
-        this.allowCredentials = config.booleanValue(ALLOW_CREDENTIALS_PROP).orElse(false);
+        this.allowCredentials = config.booleanValue(ALLOW_CREDENTIALS_PROP).orElse(Boolean.FALSE);
     }
 
     private static Set<String> parseWhitelist(String whitelist) {

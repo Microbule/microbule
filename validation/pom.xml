@@ -9,40 +9,13 @@
         <version>0.2.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>microbule-validation-decorator</artifactId>
-    <name>Microbule :: Validation :: Decorator</name>
-    <packaging>bundle</packaging>
-    <dependencies>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-spi</artifactId>
-            <version>0.2.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.el</groupId>
-            <artifactId>javax.el-api</artifactId>
-            <version>3.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>${hibernate.validator.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-frontend-jaxrs</artifactId>
-            <version>${cxf.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-errormap-spi</artifactId>
-            <version>0.2.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-test</artifactId>
-            <version>0.2.0-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+    <artifactId>microbule-validation-parent</artifactId>
+    <name>Microbule :: Validation :: Parent</name>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>decorator</module>
+        <module>annotation</module>
+    </modules>
+
 </project>

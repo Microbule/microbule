@@ -6,9 +6,13 @@ import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Response;
 
 import org.junit.Test;
-import org.microbule.test.MockObjectTestCase;
+import org.microbule.test.core.MockObjectTestCase;
 
 public class WebApplicationExceptionErrorMapperTest extends MockObjectTestCase {
+//----------------------------------------------------------------------------------------------------------------------
+// Other Methods
+//----------------------------------------------------------------------------------------------------------------------
+
     @Test
     public void testGetErrorMessages() {
         final WebApplicationExceptionErrorMapper errorMapper = new WebApplicationExceptionErrorMapper();

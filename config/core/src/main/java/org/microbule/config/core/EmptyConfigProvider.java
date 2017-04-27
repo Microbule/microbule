@@ -8,7 +8,7 @@ public class EmptyConfigProvider implements ConfigProvider {
 // ConfigProvider Implementation
 //----------------------------------------------------------------------------------------------------------------------
 
-    public static ConfigProvider INSTANCE = new EmptyConfigProvider();
+    public static final ConfigProvider INSTANCE = new EmptyConfigProvider();
 
     @Override
     public Config getProxyConfig(Class<?> serviceInterface) {

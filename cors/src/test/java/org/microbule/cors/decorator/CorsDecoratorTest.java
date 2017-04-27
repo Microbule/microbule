@@ -9,7 +9,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.microbule.config.core.MapConfig;
 import org.microbule.core.DefaultJaxrsServerFactory;
-import org.microbule.test.hello.HelloTestCase;
+import org.microbule.test.server.hello.HelloTestCase;
 
 public class CorsDecoratorTest extends HelloTestCase {
 

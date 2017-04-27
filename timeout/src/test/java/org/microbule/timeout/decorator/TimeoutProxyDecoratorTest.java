@@ -5,9 +5,9 @@ import javax.ws.rs.ProcessingException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.microbule.core.DefaultJaxrsProxyFactory;
-import org.microbule.test.JaxrsTestCase;
+import org.microbule.test.server.JaxrsServerTestCase;
 
-public class TimeoutProxyDecoratorTest extends JaxrsTestCase<DelayResource> {
+public class TimeoutProxyDecoratorTest extends JaxrsServerTestCase<DelayResource> {
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------

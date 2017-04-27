@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.microbule.errormap.spi.ErrorMapper;
-import org.microbule.test.MockObjectTestCase;
+import org.microbule.test.core.MockObjectTestCase;
 import org.microbule.test.osgi.OsgiRule;
 import org.microbule.test.osgi.ServicePropsBuilder;
 

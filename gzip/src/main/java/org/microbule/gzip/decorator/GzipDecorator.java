@@ -22,7 +22,7 @@ public class GzipDecorator implements JaxrsServerDecorator, JaxrsProxyDecorator 
     @Override
     public void decorate(JaxrsServiceDescriptor descriptor, Config config) {
         final GZIPFeature feature = new GZIPFeature();
-        feature.setForce(config.booleanValue(FORCE_PROP).orElse(false));
+        feature.setForce(config.booleanValue(FORCE_PROP).orElse(Boolean.FALSE));
         feature.setThreshold(config.integerValue(THRESHOLD_PROP).orElse(DEFAULT_TRESHOLD));
         descriptor.addFeature(feature);
     }

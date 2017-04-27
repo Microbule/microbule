@@ -6,9 +6,9 @@ import javax.ws.rs.core.Response;
 
 import com.google.common.collect.Lists;
 import org.junit.Test;
-import org.microbule.test.MockObjectTestCase;
+import org.microbule.test.core.MockObjectTestCase;
 
-public class ConstantErrorMapperTest extends MockObjectTestCase{
+public class ConstantErrorMapperTest extends MockObjectTestCase {
     @Test
     public void testMapping() {
         final ConstantErrorMapper mapper = new ConstantErrorMapper(SQLException.class, Response.Status.INTERNAL_SERVER_ERROR);
