@@ -1,13 +1,35 @@
 package org.microbule.config.env;
 
+import java.util.Map;
+import java.util.function.Supplier;
+
 import org.microbule.config.api.Config;
 import org.microbule.config.core.MapConfig;
 import org.microbule.config.spi.ConfigProvider;
 
-public class EnvironmentVariablesConfig implements ConfigProvider {
+public class EnvironmentVariablesConfigProvider implements ConfigProvider {
+//----------------------------------------------------------------------------------------------------------------------
+// Fields
+//----------------------------------------------------------------------------------------------------------------------
+
+    private Supplier<Map<String,String>> envSupplier;
+
+//----------------------------------------------------------------------------------------------------------------------
+// Constructors
+//----------------------------------------------------------------------------------------------------------------------
+
+    public EnvironmentVariablesConfigProvider() {
+        this(System::getenv);
+    }
+
+    public EnvironmentVariablesConfigProvider(Supplier<Map<String, String>> envSupplier) {
+        this.envSupplier = envSupplier;
+    }
+
 //----------------------------------------------------------------------------------------------------------------------
 // ConfigProvider Implementation
 //----------------------------------------------------------------------------------------------------------------------
+
 
     @Override
     public Config getProxyConfig(Class<?> serviceInterface) {
@@ -24,7 +46,7 @@ public class EnvironmentVariablesConfig implements ConfigProvider {
 //----------------------------------------------------------------------------------------------------------------------
 
     private Config envConfig(Class<?> serviceInterface, String subtype) {
-        return new MapConfig(System.getenv(), "_")
+        return new MapConfig(envSupplier.get(), "_")
                 .group("microbule")
                 .group(serviceInterface.getSimpleName())
                 .group(subtype);

@@ -4,7 +4,7 @@ import org.microbule.config.api.Config;
 import org.microbule.config.core.PropertiesConfig;
 import org.microbule.config.spi.ConfigProvider;
 
-public class SystemPropertiesConfig implements ConfigProvider {
+public class SystemPropertiesConfigProvider implements ConfigProvider {
 //----------------------------------------------------------------------------------------------------------------------
 // ConfigProvider Implementation
 //----------------------------------------------------------------------------------------------------------------------

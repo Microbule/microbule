@@ -2,7 +2,7 @@
 
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 
-    <bean id="configProvider" class="org.microbule.config.sysprop.SystemPropertiesConfig" />
+    <bean id="configProvider" class="org.microbule.config.sysprop.SystemPropertiesConfigProvider" />
 
     <service ref="configProvider" interface="org.microbule.config.spi.ConfigProvider">
         <service-properties>
