@@ -2,6 +2,7 @@ package org.microbule.config.core;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
@@ -14,6 +15,7 @@ import com.github.rholder.retry.RetryerBuilder;
 import com.github.rholder.retry.StopStrategies;
 import com.github.rholder.retry.WaitStrategies;
 import com.google.common.base.Predicates;
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.microbule.config.api.Config;
 import org.microbule.config.api.ConfigService;
@@ -41,7 +43,10 @@ public abstract class AbstractConfigService implements ConfigService {
     }
 
     private static List<String> toList(String csv) {
-        return Stream.of(StringUtils.split(csv, COMMA_SEPARATOR)).map(String::trim).collect(Collectors.toList());
+        return Optional.ofNullable(csv)
+                .map(val -> Stream.of(StringUtils.split(val, COMMA_SEPARATOR)).map(String::trim).collect(Collectors.toList()))
+                .orElse(Lists.newArrayList());
+
     }
 
     public AbstractConfigService(List<String> overrideProviderNames, List<String> providerNames, long waitDuration, TimeUnit waitUnit) {

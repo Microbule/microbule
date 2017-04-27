@@ -71,6 +71,20 @@ public class DefaultConfigServiceTest extends Assert {
         assertEquals("baz", result.group("foo").value("bar").get());
     }
 
+    @Test
+    public void testWithProvidersCsvConstructor() {
+        DefaultConfigService svc = new DefaultConfigService(null, "empty,mock", 1, TimeUnit.SECONDS);
+        svc.registerConfigProvider("mock", mockProvider);
+        svc.registerConfigProvider("empty", EmptyConfigProvider.INSTANCE);
+
+        MapConfig expected = new MapConfig();
+        expected.group("foo").addValue("bar", "baz");
+        when(mockProvider.getServerConfig(HelloService.class)).thenReturn(expected);
+
+        final Config result = svc.getServerConfig(HelloService.class);
+        assertEquals("baz", result.group("foo").value("bar").get());
+    }
+
     public interface HelloService {
 
     }
