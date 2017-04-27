@@ -23,5 +23,11 @@
             <artifactId>cxf-rt-rs-service-description-swagger</artifactId>
             <version>${cxf.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.microbule</groupId>
+            <artifactId>microbule-test-core</artifactId>
+            <version>0.2.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>
