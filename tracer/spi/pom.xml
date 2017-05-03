@@ -4,18 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.microbule</groupId>
-        <artifactId>microbule-parent</artifactId>
+        <artifactId>microbule-tracer-parent</artifactId>
         <version>0.3.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>microbule-spring-parent</artifactId>
-    <name>Microbule :: Spring :: Parent</name>
-    <packaging>pom</packaging>
+    <artifactId>microbule-tracer-spi</artifactId>
+    <name>Microbule :: Tracer :: SPI</name>
+    <packaging>bundle</packaging>
 
-    <modules>
-        <module>annotation</module>
-        <module>beanfinder</module>
-        <module>config</module>
-        <module>bootstrap</module>
-    </modules>
 </project>

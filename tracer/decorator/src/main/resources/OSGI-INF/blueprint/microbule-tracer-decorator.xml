@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xmlns:microbule="http://www.microbule.org/blueprint">
+
+    <microbule:beanFinder id="beanFinder" />
+
+    <bean id="serverDecorator" class="org.microbule.tracer.decorator.TracerServerDecorator">
+        <argument ref="beanFinder" />
+    </bean>
+
+    <service ref="serverDecorator" interface="org.microbule.spi.JaxrsServerDecorator"/>
+
+    <bean id="proxyDecorator" class="org.microbule.tracer.decorator.TracerProxyDecorator"/>
+
+    <service ref="proxyDecorator" interface="org.microbule.spi.JaxrsProxyDecorator"/>
+
+</blueprint>

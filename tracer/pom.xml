@@ -8,26 +8,12 @@
         <version>0.3.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>microbule-tracer-decorator</artifactId>
-    <name>Microbule :: Tracer :: Decorator</name>
-    <packaging>bundle</packaging>
-    <dependencies>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-spi</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-test-server</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-test-osgi</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+    <artifactId>microbule-tracer-parent</artifactId>
+    <name>Microbule :: Tracer :: Parent</name>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>spi</module>
+        <module>decorator</module>
+    </modules>
 </project>

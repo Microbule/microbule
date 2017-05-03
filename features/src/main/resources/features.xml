@@ -69,6 +69,7 @@
     </feature>
 
     <feature name="microbule-tracer" version="${project.version}">
+        <bundle>mvn:org.microbule/microbule-tracer-spi/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-tracer-decorator/${project.version}</bundle>
     </feature>
 
