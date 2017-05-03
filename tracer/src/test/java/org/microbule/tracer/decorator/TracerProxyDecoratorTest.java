@@ -2,7 +2,7 @@ package org.microbule.tracer.decorator;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.microbule.core.DefaultJaxrsProxyFactory;
+import org.microbule.beanfinder.core.SimpleBeanFinder;
 import org.microbule.test.server.hello.HelloService;
 import org.microbule.test.server.hello.HelloTestCase;
 import org.slf4j.MDC;
@@ -13,8 +13,8 @@ public class TracerProxyDecoratorTest extends HelloTestCase {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    protected void addDecorators(DefaultJaxrsProxyFactory factory) {
-        factory.addDecorator("tracer", new TracerProxyDecorator(TracerConstants.DEFAULT_TRACE_ID_HEADER));
+    protected void addBeans(SimpleBeanFinder finder) {
+        finder.addBean(new TracerProxyDecorator());
     }
 
     @Test

@@ -7,5 +7,7 @@ public interface JaxrsServiceDecorator {
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
+    String name();
+
     void decorate(JaxrsServiceDescriptor descriptor, Config config);
 }

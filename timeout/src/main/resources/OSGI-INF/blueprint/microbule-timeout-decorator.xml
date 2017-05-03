@@ -1,19 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
-           xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0">
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 
-    <cm:property-placeholder persistent-id="org.microbule.timeout.decorator" update-strategy="reload">
-        <cm:default-properties>
-            <cm:property name="receiveTimeout" value="60000"/>
-            <cm:property name="connectionTimeout" value="30000"/>
-        </cm:default-properties>
-    </cm:property-placeholder>
-
-    <bean id="decorator" class="org.microbule.timeout.decorator.TimeoutProxyDecorator">
-        <argument value="${connectionTimeout}"/>
-        <argument value="${receiveTimeout}"/>
-    </bean>
+    <bean id="decorator" class="org.microbule.timeout.decorator.TimeoutProxyDecorator"/>
 
     <service ref="decorator" interface="org.microbule.spi.JaxrsProxyDecorator">
         <service-properties>

@@ -1,0 +1,37 @@
+<xsd:schema xmlns="http://www.cengage.com/omnibus"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:beans="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+            targetNamespace="http://www.microbule.org/blueprint"
+            elementFormDefault="qualified"
+            attributeFormDefault="unqualified">
+
+    <xsd:import namespace="http://www.osgi.org/xmlns/blueprint/v1.0.0" schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd"/>
+
+    <xsd:element name="beanFinder">
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="beans:Tcomponent">
+
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="server">
+        <xsd:complexType>
+            <xsd:attribute name="ref" type="xsd:string" />
+            <xsd:attribute name="serviceInterface" type="xsd:string" />
+        </xsd:complexType>
+    </xsd:element>
+
+
+    <xsd:element name="proxy">
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="beans:Tcomponent">
+                    <xsd:attribute name="serviceInterface" type="xsd:string" />
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>

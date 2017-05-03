@@ -4,22 +4,20 @@ import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Response;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.microbule.errormap.spi.ErrorMapper;
+import org.microbule.beanfinder.core.SimpleBeanFinder;
 import org.microbule.test.core.MockObjectTestCase;
-import org.microbule.test.osgi.OsgiRule;
-import org.microbule.test.osgi.ServicePropsBuilder;
 
 public class ErrorMapperServiceImplTest extends MockObjectTestCase {
-    @Rule
-    public final OsgiRule osgiRule = new OsgiRule();
+
     private ErrorMapperServiceImpl service;
 
     @Before
     public void initService() {
-        service = new ErrorMapperServiceImpl(osgiRule.getBundleContext());
-        osgiRule.registerService(ErrorMapper.class, new WebApplicationExceptionErrorMapper(), ServicePropsBuilder.props());
+        SimpleBeanFinder finder = new SimpleBeanFinder();
+        finder.addBean(new WebApplicationExceptionErrorMapper());
+        finder.initialize();
+        service = new ErrorMapperServiceImpl(finder);
     }
 
     @Test

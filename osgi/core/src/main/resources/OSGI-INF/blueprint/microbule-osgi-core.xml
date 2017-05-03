@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+           xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0">
+
+    <cm:property-placeholder persistent-id="org.microbule.osgi.core" update-strategy="reload">
+        <cm:default-properties>
+            <cm:property name="quietTimeInMs" value="3000"/>
+        </cm:default-properties>
+    </cm:property-placeholder>
+
+    <reference id="configService" interface="org.microbule.config.api.ConfigService" />
+
+    <bean id="latch" class="org.microbule.osgi.core.QuietTimeLatch">
+        <argument value="${quietTimeInMs}" />
+    </bean>
+
+    <bean id="serverFactory" class="org.microbule.osgi.core.OsgiJaxrsServerFactory">
+        <argument ref="blueprintBundleContext" />
+        <argument ref="latch" />
+    </bean>
+    
+    <service ref="serverFactory" interface="org.microbule.api.JaxrsServerFactory" />
+
+    <bean id="proxyFactory" class="org.microbule.osgi.core.OsgiJaxrsProxyFactory">
+        <argument ref="blueprintBundleContext" />
+        <argument ref="latch" />
+    </bean>
+
+    <service ref="proxyFactory" interface="org.microbule.api.JaxrsProxyFactory" />
+
+    <bean id="serverManager" class="org.microbule.osgi.core.JaxrsServerManager">
+        <argument ref="blueprintBundleContext" />
+        <argument ref="configService" />
+        <argument ref="serverFactory" />
+    </bean>
+
+</blueprint>

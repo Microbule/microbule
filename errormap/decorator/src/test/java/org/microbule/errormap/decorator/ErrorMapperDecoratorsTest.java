@@ -3,8 +3,7 @@ package org.microbule.errormap.decorator;
 import javax.ws.rs.core.Response;
 
 import org.junit.Test;
-import org.microbule.core.DefaultJaxrsProxyFactory;
-import org.microbule.core.DefaultJaxrsServerFactory;
+import org.microbule.beanfinder.core.SimpleBeanFinder;
 import org.microbule.errormap.api.ErrorMapperService;
 import org.microbule.test.server.hello.HelloService;
 import org.microbule.test.server.hello.HelloServiceImpl;
@@ -27,15 +26,11 @@ public class ErrorMapperDecoratorsTest extends HelloTestCase {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    protected void addDecorators(DefaultJaxrsServerFactory factory) {
+    protected void addBeans(SimpleBeanFinder finder) {
         when(errorMapperService.createResponse(any(Exception.class))).thenReturn(Response.serverError().build());
-        factory.addDecorator("errormap", new ErrorMapperServerDecorator(errorMapperService));
-    }
-
-    @Override
-    protected void addDecorators(DefaultJaxrsProxyFactory factory) {
         when(errorMapperService.createException(any(Response.class))).thenReturn(new IllegalArgumentException("I'm not saying hello to you!"));
-        factory.addDecorator("errormap", new ErrorMapperProxyDecorator(errorMapperService));
+        finder.addBean(new ErrorMapperServerDecorator(errorMapperService));
+        finder.addBean(new ErrorMapperProxyDecorator(errorMapperService));
     }
 
     @Override

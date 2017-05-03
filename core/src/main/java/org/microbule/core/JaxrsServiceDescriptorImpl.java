@@ -19,7 +19,7 @@ public class JaxrsServiceDescriptorImpl implements JaxrsServiceDescriptor {
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public JaxrsServiceDescriptorImpl(Class<?> serviceInterface) {
+    JaxrsServiceDescriptorImpl(Class<?> serviceInterface) {
         this.serviceInterface = serviceInterface;
     }
 

@@ -37,4 +37,9 @@ public class ValidationDecorator implements JaxrsServerDecorator {
     public void decorate(JaxrsServiceDescriptor descriptor, Config config) {
         descriptor.addFeature(feature);
     }
+
+    @Override
+    public String name() {
+        return "validation";
+    }
 }

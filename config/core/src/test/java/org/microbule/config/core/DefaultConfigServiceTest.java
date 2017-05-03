@@ -8,6 +8,7 @@ import com.google.common.collect.Lists;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.microbule.beanfinder.core.SimpleBeanFinder;
 import org.microbule.config.api.Config;
 import org.microbule.config.spi.ConfigProvider;
 import org.mockito.Mock;
@@ -16,18 +17,38 @@ import org.mockito.MockitoAnnotations;
 import static org.mockito.Mockito.when;
 
 public class DefaultConfigServiceTest extends Assert {
+//----------------------------------------------------------------------------------------------------------------------
+// Fields
+//----------------------------------------------------------------------------------------------------------------------
 
     @Mock
     private ConfigProvider mockProvider;
 
+//----------------------------------------------------------------------------------------------------------------------
+// Other Methods
+//----------------------------------------------------------------------------------------------------------------------
+
     @Before
     public void initMocks() {
         MockitoAnnotations.initMocks(this);
+        when(mockProvider.name()).thenReturn("mock");
     }
 
     @Test
     public void testGetProxyConfigWithNoProviderNames() {
-        DefaultConfigService svc = new DefaultConfigService(Collections.emptyList(), Collections.emptyList(), 100, TimeUnit.MILLISECONDS);
+        final SimpleBeanFinder finder = new SimpleBeanFinder();
+        finder.initialize();
+        DefaultConfigService svc = new DefaultConfigService(finder, Collections.emptyList(), Collections.emptyList(), 100, TimeUnit.MILLISECONDS);
+        final Config config = svc.getProxyConfig(HelloService.class);
+        final Optional<String> val = config.group("foo").value("bar");
+        assertFalse(val.isPresent());
+    }
+
+    @Test
+    public void testGetProxyConfigWithNoProviders() {
+        final SimpleBeanFinder finder = new SimpleBeanFinder();
+        finder.initialize();
+        DefaultConfigService svc = new DefaultConfigService(finder, Collections.emptyList(), Lists.newArrayList("provider1", "provider2s"),100, TimeUnit.MILLISECONDS);
         final Config config = svc.getProxyConfig(HelloService.class);
         final Optional<String> val = config.group("foo").value("bar");
         assertFalse(val.isPresent());
@@ -35,23 +56,18 @@ public class DefaultConfigServiceTest extends Assert {
 
     @Test
     public void testGetServerConfigWithNoProviderNames() {
-        DefaultConfigService svc = new DefaultConfigService(Collections.emptyList(), Collections.emptyList(),100, TimeUnit.MILLISECONDS);
+        final SimpleBeanFinder finder = new SimpleBeanFinder();
+        finder.initialize();
+        DefaultConfigService svc = new DefaultConfigService(finder, Collections.emptyList(), Collections.emptyList(),100, TimeUnit.MILLISECONDS);
         final Config config = svc.getServerConfig(HelloService.class);
         final Optional<String> val = config.group("foo").value("bar");
         assertFalse(val.isPresent());
     }
 
     @Test
-    public void testGetProxyConfigWithNoProviders() {
-        DefaultConfigService svc = new DefaultConfigService(Collections.emptyList(), Lists.newArrayList("provider1", "provider2s"),100, TimeUnit.MILLISECONDS);
-        final Config config = svc.getProxyConfig(HelloService.class);
-        final Optional<String> val = config.group("foo").value("bar");
-        assertFalse(val.isPresent());
-    }
-
-    @Test
     public void testGetServerConfigWithNoProviders() {
-        DefaultConfigService svc = new DefaultConfigService(Collections.emptyList(), Lists.newArrayList("provider1", "provider2"),100, TimeUnit.MILLISECONDS);
+        final SimpleBeanFinder finder = new SimpleBeanFinder();
+        DefaultConfigService svc = new DefaultConfigService(finder, Collections.emptyList(), Lists.newArrayList("provider1", "provider2"),100, TimeUnit.MILLISECONDS);
         final Config config = svc.getServerConfig(HelloService.class);
         final Optional<String> val = config.group("foo").value("bar");
         assertFalse(val.isPresent());
@@ -59,10 +75,11 @@ public class DefaultConfigServiceTest extends Assert {
 
     @Test
     public void testWithProviders() {
-        DefaultConfigService svc = new DefaultConfigService(Collections.emptyList(), Lists.newArrayList("empty", "mock"), 1, TimeUnit.SECONDS);
-        svc.registerConfigProvider("mock", mockProvider);
-        svc.registerConfigProvider("empty", EmptyConfigProvider.INSTANCE);
-
+        final SimpleBeanFinder finder = new SimpleBeanFinder();
+        finder.addBean(mockProvider);
+        finder.addBean(EmptyConfigProvider.INSTANCE);
+        DefaultConfigService svc = new DefaultConfigService(finder, Collections.emptyList(), Lists.newArrayList("empty", "mock"), 1, TimeUnit.SECONDS);
+        finder.initialize();
         MapConfig expected = new MapConfig();
         expected.group("foo").addValue("bar", "baz");
         when(mockProvider.getServerConfig(HelloService.class)).thenReturn(expected);
@@ -73,10 +90,11 @@ public class DefaultConfigServiceTest extends Assert {
 
     @Test
     public void testWithProvidersCsvConstructor() {
-        DefaultConfigService svc = new DefaultConfigService(null, "empty,mock", 1, TimeUnit.SECONDS);
-        svc.registerConfigProvider("mock", mockProvider);
-        svc.registerConfigProvider("empty", EmptyConfigProvider.INSTANCE);
-
+        final SimpleBeanFinder finder = new SimpleBeanFinder();
+        finder.addBean(mockProvider);
+        finder.addBean(EmptyConfigProvider.INSTANCE);
+        DefaultConfigService svc = new DefaultConfigService(finder, null, "empty,mock", 1, TimeUnit.SECONDS);
+        finder.initialize();
         MapConfig expected = new MapConfig();
         expected.group("foo").addValue("bar", "baz");
         when(mockProvider.getServerConfig(HelloService.class)).thenReturn(expected);
@@ -85,7 +103,10 @@ public class DefaultConfigServiceTest extends Assert {
         assertEquals("baz", result.group("foo").value("bar").get());
     }
 
-    public interface HelloService {
+//----------------------------------------------------------------------------------------------------------------------
+// Inner Classes
+//----------------------------------------------------------------------------------------------------------------------
 
+    public interface HelloService {
     }
 }

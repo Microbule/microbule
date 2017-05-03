@@ -4,7 +4,7 @@ import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.ServiceUnavailableException;
 
 import org.junit.Test;
-import org.microbule.core.DefaultJaxrsProxyFactory;
+import org.microbule.beanfinder.core.SimpleBeanFinder;
 import org.microbule.test.server.hello.HelloService;
 import org.microbule.test.server.hello.HelloServiceImpl;
 import org.microbule.test.server.hello.HelloTestCase;
@@ -15,8 +15,8 @@ public class CircuitBreakerFilterTest extends HelloTestCase {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    protected void addDecorators(DefaultJaxrsProxyFactory factory) {
-        factory.addDecorator("circuitbreaker", new CircuitBreakerDecorator());
+    protected void addBeans(SimpleBeanFinder finder) {
+        finder.addBean(new CircuitBreakerDecorator());
     }
 
     @Override

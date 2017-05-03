@@ -4,10 +4,6 @@
 
     <bean id="configProvider" class="org.microbule.config.env.EnvironmentVariablesConfigProvider" />
 
-    <service ref="configProvider" interface="org.microbule.config.spi.ConfigProvider">
-        <service-properties>
-            <entry key="name" value="env"/>
-        </service-properties>
-    </service>
+    <service ref="configProvider" interface="org.microbule.config.spi.ConfigProvider"/>
 
 </blueprint>

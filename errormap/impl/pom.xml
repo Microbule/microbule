@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.microbule</groupId>
         <artifactId>microbule-errormap-parent</artifactId>
-        <version>0.2.0-SNAPSHOT</version>
+        <version>0.3.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>microbule-errormap-impl</artifactId>
@@ -19,18 +19,23 @@
     <dependencies>
         <dependency>
             <groupId>org.microbule</groupId>
+            <artifactId>microbule-beanfinder-api</artifactId>
+            <version>0.3.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.microbule</groupId>
             <artifactId>microbule-errormap-api</artifactId>
-            <version>0.2.0-SNAPSHOT</version>
+            <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.microbule</groupId>
             <artifactId>microbule-errormap-spi</artifactId>
-            <version>0.2.0-SNAPSHOT</version>
+            <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.savoirtech.eos</groupId>
-            <artifactId>eos-core</artifactId>
-            <version>${eos.version}</version>
+            <groupId>org.microbule</groupId>
+            <artifactId>microbule-spi</artifactId>
+            <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
@@ -38,15 +43,20 @@
             <version>${cxf.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.microbule</groupId>
             <artifactId>microbule-test-server</artifactId>
-            <version>0.2.0-SNAPSHOT</version>
+            <version>0.3.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.microbule</groupId>
             <artifactId>microbule-test-osgi</artifactId>
-            <version>0.2.0-SNAPSHOT</version>
+            <version>0.3.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
 

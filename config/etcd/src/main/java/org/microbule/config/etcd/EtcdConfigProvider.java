@@ -3,6 +3,7 @@ package org.microbule.config.etcd;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.inject.Named;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
@@ -12,6 +13,7 @@ import org.microbule.config.http.HttpConfigProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Named
 public class EtcdConfigProvider extends HttpConfigProvider<EtcdResponse> {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
@@ -30,6 +32,16 @@ public class EtcdConfigProvider extends HttpConfigProvider<EtcdResponse> {
                 .path("v2")
                 .path("keys")
                 .path("microbule");
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
+// ConfigProvider Implementation
+//----------------------------------------------------------------------------------------------------------------------
+
+
+    @Override
+    public String name() {
+        return "etcd";
     }
 
 //----------------------------------------------------------------------------------------------------------------------

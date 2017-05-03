@@ -27,6 +27,8 @@ public class TimeoutFilter implements ClientRequestFilter {
     private static final String DEFAULT_CONNECTION_TIMEOUT_PROP = "connectionTimeout";
     private static final String DEFAULT_RECEIVE_TIMEOUT_PROP = "receiveTimeout";
     private static final String OPERATION_NAME_PROP = "org.apache.cxf.resource.operation.name";
+    private static final long DEFAULT_CONNECTION_TIMEOUT = 30000;
+    private static final long DEFAULT_RECEIVE_TIMEOUT = 60000;
 
     private final Map<String, HTTPClientPolicy> policyMap = new HashMap<>();
 
@@ -34,9 +36,9 @@ public class TimeoutFilter implements ClientRequestFilter {
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public TimeoutFilter(JaxrsServiceDescriptor descriptor, Config config, long globalConnectionTimeout, long globalReceiveTimeout) {
-        final long defaultConnectionTimeout = getTimeout(config, DEFAULT_CONNECTION_TIMEOUT_PROP, globalConnectionTimeout);
-        final long defaultReceiveTimeout = getTimeout(config, DEFAULT_RECEIVE_TIMEOUT_PROP, globalReceiveTimeout);
+    public TimeoutFilter(JaxrsServiceDescriptor descriptor, Config config) {
+        final long defaultConnectionTimeout = getTimeout(config, DEFAULT_CONNECTION_TIMEOUT_PROP, DEFAULT_CONNECTION_TIMEOUT);
+        final long defaultReceiveTimeout = getTimeout(config, DEFAULT_RECEIVE_TIMEOUT_PROP, DEFAULT_RECEIVE_TIMEOUT);
         Stream.of(descriptor.serviceInterface().getMethods())
                 .forEach(method -> {
                     final String methodName = method.getName();

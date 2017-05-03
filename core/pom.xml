@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.microbule</groupId>
         <artifactId>microbule-parent</artifactId>
-        <version>0.2.0-SNAPSHOT</version>
+        <version>0.3.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>microbule-core</artifactId>
@@ -15,8 +15,13 @@
     <dependencies>
         <dependency>
             <groupId>org.microbule</groupId>
+            <artifactId>microbule-beanfinder-api</artifactId>
+            <version>0.3.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.microbule</groupId>
             <artifactId>microbule-api</artifactId>
-            <version>0.2.0-SNAPSHOT</version>
+            <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -31,7 +36,7 @@
         <dependency>
             <groupId>org.microbule</groupId>
             <artifactId>microbule-spi</artifactId>
-            <version>0.2.0-SNAPSHOT</version>
+            <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
@@ -62,13 +67,13 @@
         <dependency>
             <groupId>org.microbule</groupId>
             <artifactId>microbule-config-core</artifactId>
-            <version>0.2.0-SNAPSHOT</version>
+            <version>0.3.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.microbule</groupId>
             <artifactId>microbule-test-core</artifactId>
-            <version>0.2.0-SNAPSHOT</version>
+            <version>0.3.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

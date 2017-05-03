@@ -1,6 +1,6 @@
 package org.microbule.requestlog.decorator;
 
-import org.microbule.core.DefaultJaxrsServerFactory;
+import org.microbule.beanfinder.core.SimpleBeanFinder;
 import org.microbule.test.server.hello.HelloTestCase;
 
 public class RequestLogDecoratorTest extends HelloTestCase {
@@ -9,7 +9,7 @@ public class RequestLogDecoratorTest extends HelloTestCase {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    protected void addDecorators(DefaultJaxrsServerFactory factory) {
-        factory.addDecorator("requestlog", new RequestLogDecorator());
+    protected void addBeans(SimpleBeanFinder finder) {
+        finder.addBean(new RequestLogDecorator());
     }
 }

@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.microbule.api.JaxrsProxyFactory;
 import org.microbule.api.JaxrsServer;
 import org.microbule.api.JaxrsServerFactory;
+import org.microbule.beanfinder.core.SimpleBeanFinder;
 import org.microbule.config.core.MapConfig;
 import org.microbule.core.DefaultJaxrsProxyFactory;
 import org.microbule.core.DefaultJaxrsServerFactory;
@@ -27,8 +28,11 @@ public abstract class JaxrsServerTestCase<T> extends MockObjectTestCase {
     public static final String BASE_ADDRESS_PATTERN = "http://localhost:%d/%s";
     public static final int DEFAULT_PORT = 8383;
     public static final String USE_ASYNC_HTTP_CONDUIT_PROP = "use.async.http.conduit";
+
     private JaxrsServer server;
     private String baseAddress;
+    private final SimpleBeanFinder finder = new SimpleBeanFinder();
+    private DefaultJaxrsProxyFactory proxyFactory;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Abstract Methods
@@ -48,11 +52,7 @@ public abstract class JaxrsServerTestCase<T> extends MockObjectTestCase {
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    protected void addDecorators(DefaultJaxrsServerFactory factory) {
-        // Do nothing!
-    }
-
-    protected void addDecorators(DefaultJaxrsProxyFactory factory) {
+    protected void addBeans(SimpleBeanFinder finder) {
         // Do nothing!
     }
 
@@ -65,9 +65,6 @@ public abstract class JaxrsServerTestCase<T> extends MockObjectTestCase {
     }
 
     protected T createProxy() {
-        final DefaultJaxrsProxyFactory proxyFactory = new DefaultJaxrsProxyFactory();
-        addDecorators(proxyFactory);
-
         MapConfig config = createConfig();
         config.addValue(JaxrsProxyFactory.ADDRESS_PROP, baseAddress);
         final T proxy = proxyFactory.createProxy(getServiceInterface(), config);
@@ -99,8 +96,14 @@ public abstract class JaxrsServerTestCase<T> extends MockObjectTestCase {
 
     @Before
     public void startServer() {
-        final DefaultJaxrsServerFactory factory = new DefaultJaxrsServerFactory();
-        addDecorators(factory);
+        addBeans(finder);
+
+        finder.initialize();
+
+        final DefaultJaxrsServerFactory factory = new DefaultJaxrsServerFactory(finder);
+        factory.start();
+        proxyFactory = new DefaultJaxrsProxyFactory(finder);
+        proxyFactory.start();
         baseAddress = createBaseAddress();
 
         final MapConfig config = createConfig();

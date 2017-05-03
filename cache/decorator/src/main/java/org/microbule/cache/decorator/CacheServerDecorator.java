@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.inject.Named;
 import javax.ws.rs.GET;
 
 import org.apache.commons.lang3.reflect.MethodUtils;
@@ -12,6 +13,7 @@ import org.microbule.config.api.Config;
 import org.microbule.spi.JaxrsServerDecorator;
 import org.microbule.spi.JaxrsServiceDescriptor;
 
+@Named
 public class CacheServerDecorator implements JaxrsServerDecorator {
 //----------------------------------------------------------------------------------------------------------------------
 // JaxrsServiceDecorator Implementation
@@ -24,5 +26,10 @@ public class CacheServerDecorator implements JaxrsServerDecorator {
             object.addProvider(new CacheDynamicFeature(object.serviceInterface(), methods));
         }
         object.addProvider(new CacheInfoProvider());
+    }
+
+    @Override
+    public String name() {
+        return "cache";
     }
 }

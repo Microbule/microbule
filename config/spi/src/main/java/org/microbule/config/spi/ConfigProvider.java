@@ -22,4 +22,6 @@ public interface ConfigProvider {
      * @return the proxy configuration
      */
     Config getProxyConfig(Class<?> serviceInterface);
+
+    String name();
 }

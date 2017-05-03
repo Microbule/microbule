@@ -5,10 +5,15 @@ import org.microbule.config.spi.ConfigProvider;
 
 public class EmptyConfigProvider implements ConfigProvider {
 //----------------------------------------------------------------------------------------------------------------------
-// ConfigProvider Implementation
+// Fields
 //----------------------------------------------------------------------------------------------------------------------
 
     public static final ConfigProvider INSTANCE = new EmptyConfigProvider();
+
+//----------------------------------------------------------------------------------------------------------------------
+// ConfigProvider Implementation
+//----------------------------------------------------------------------------------------------------------------------
+
 
     @Override
     public Config getProxyConfig(Class<?> serviceInterface) {
@@ -18,5 +23,10 @@ public class EmptyConfigProvider implements ConfigProvider {
     @Override
     public Config getServerConfig(Class<?> serviceInterface) {
         return EmptyConfig.INSTANCE;
+    }
+
+    @Override
+    public String name() {
+        return "empty";
     }
 }

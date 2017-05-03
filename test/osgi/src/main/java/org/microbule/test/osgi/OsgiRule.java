@@ -22,7 +22,7 @@ public class OsgiRule implements TestRule {
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    private String bundleFilter = "(Bundle-SymbolicName=com.cengage.*)";
+    private String bundleFilter = "(Bundle-SymbolicName=org.microbule.*)";
     private PojoServiceRegistry registry;
 
 //----------------------------------------------------------------------------------------------------------------------

@@ -1,40 +1,37 @@
 package org.microbule.errormap.impl;
 
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.ws.rs.core.Response;
 
-import com.savoirtech.eos.pattern.whiteboard.KeyedWhiteboard;
-import com.savoirtech.eos.pattern.whiteboard.SingleWhiteboard;
 import org.microbule.errormap.api.ErrorMapperService;
 import org.microbule.errormap.spi.ErrorMapper;
 import org.microbule.errormap.spi.ErrorResponseStrategy;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.FrameworkUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.microbule.beanfinder.api.BeanFinder;
 
 import static org.microbule.errormap.impl.PlainTextErrorResponseStrategy.INSTANCE;
 
-public class ErrorMapperServiceImpl extends KeyedWhiteboard<String, ErrorMapper> implements ErrorMapperService {
+@Named
+public class ErrorMapperServiceImpl implements ErrorMapperService {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ErrorMapperServiceImpl.class);
-
-    private final SingleWhiteboard<ErrorResponseStrategy> responseStrategy;
+    private final Map<Class<?>, ErrorMapper> errorMappers;
+    private final AtomicReference<ErrorResponseStrategy> responseStrategyRef;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public ErrorMapperServiceImpl(BundleContext bundleContext) {
-        super(bundleContext, ErrorMapper.class, (svc, props) -> nameOf(svc.getExceptionType()));
-        this.responseStrategy = new SingleWhiteboard<>(bundleContext, ErrorResponseStrategy.class);
-    }
-
-    private static String nameOf(Class<?> type) {
-        return type.getCanonicalName();
+    @Inject
+    public ErrorMapperServiceImpl(BeanFinder finder) {
+        this.errorMappers = finder.beanMap(ErrorMapper.class, ErrorMapper::getExceptionType);
+        this.responseStrategyRef = finder.beanReference(ErrorResponseStrategy.class, PlainTextErrorResponseStrategy.INSTANCE);
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -57,25 +54,18 @@ public class ErrorMapperServiceImpl extends KeyedWhiteboard<String, ErrorMapper>
 //----------------------------------------------------------------------------------------------------------------------
 
     private ErrorResponseStrategy getErrorResponseStrategy() {
-        return responseStrategy.getService(INSTANCE);
+        return Optional.ofNullable(responseStrategyRef.get()).orElse(INSTANCE);
     }
 
     private ErrorMapper getExceptionHandler(Exception exception) {
-        final ErrorMapper handler = findExceptionHandler(exception.getClass());
-        if (!handler.getExceptionType().isInstance(exception)) {
-            final Bundle expectedBundle = FrameworkUtil.getBundle(handler.getExceptionType());
-            final Bundle actualBundle = FrameworkUtil.getBundle(exception.getClass());
-            LOGGER.warn("Mismatched exception type {} expected bundle {} ({}), actual bundle {} ({}).", nameOf(handler.getExceptionType()), expectedBundle.getSymbolicName(), expectedBundle.getBundleId(), actualBundle.getSymbolicName(), actualBundle.getBundleId());
-            return DefaultErrorMapper.INSTANCE;
-        }
-        return handler;
+        return findExceptionHandler(exception.getClass());
     }
 
     private ErrorMapper findExceptionHandler(Class<?> targetType) {
         if (Exception.class.equals(targetType)) {
             return DefaultErrorMapper.INSTANCE;
         }
-        ErrorMapper mapper = getService(nameOf(targetType));
+        final ErrorMapper mapper = errorMappers.get(targetType);
         if (mapper == null) {
             return findExceptionHandler(targetType.getSuperclass());
         }

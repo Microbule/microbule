@@ -3,10 +3,13 @@ package org.microbule.config.env;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import javax.inject.Named;
+
 import org.microbule.config.api.Config;
 import org.microbule.config.core.MapConfig;
 import org.microbule.config.spi.ConfigProvider;
 
+@Named
 public class EnvironmentVariablesConfigProvider implements ConfigProvider {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
@@ -30,7 +33,6 @@ public class EnvironmentVariablesConfigProvider implements ConfigProvider {
 // ConfigProvider Implementation
 //----------------------------------------------------------------------------------------------------------------------
 
-
     @Override
     public Config getProxyConfig(Class<?> serviceInterface) {
         return envConfig(serviceInterface, "proxy");
@@ -39,6 +41,11 @@ public class EnvironmentVariablesConfigProvider implements ConfigProvider {
     @Override
     public Config getServerConfig(Class<?> serviceInterface) {
         return envConfig(serviceInterface, "server");
+    }
+
+    @Override
+    public String name() {
+        return "env";
     }
 
 //----------------------------------------------------------------------------------------------------------------------

@@ -1,34 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
-           xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0">
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 
-    <cm:property-placeholder persistent-id="org.microbule.decorator.tracer" update-strategy="reload">
-        <cm:default-properties>
-            <cm:property name="traceIdHeader" value="Microbule-Trace-ID"/>
-            <cm:property name="requestIdHeader" value="Microbule-Request-ID"/>
-        </cm:default-properties>
-    </cm:property-placeholder>
+    <bean id="serverDecorator" class="org.microbule.tracer.decorator.TracerServerDecorator"/>
 
-    <bean id="serverDecorator" class="org.microbule.tracer.decorator.TracerServerDecorator">
-        <argument value="${traceIdHeader}"/>
-        <argument value="${requestIdHeader}"/>
-    </bean>
+    <service ref="serverDecorator" interface="org.microbule.spi.JaxrsServerDecorator"/>
 
-    <service ref="serverDecorator" interface="org.microbule.spi.JaxrsServerDecorator">
-        <service-properties>
-            <entry key="name" value="tracer"/>
-        </service-properties>
-    </service>
+    <bean id="proxyDecorator" class="org.microbule.tracer.decorator.TracerProxyDecorator"/>
 
-    <bean id="proxyDecorator" class="org.microbule.tracer.decorator.TracerProxyDecorator">
-        <argument value="${traceIdHeader}"/>
-    </bean>
-
-    <service ref="proxyDecorator" interface="org.microbule.spi.JaxrsProxyDecorator">
-        <service-properties>
-            <entry key="name" value="tracer"/>
-        </service-properties>
-    </service>
+    <service ref="proxyDecorator" interface="org.microbule.spi.JaxrsProxyDecorator"/>
 
 </blueprint>

@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.microbule</groupId>
         <artifactId>microbule-gson-parent</artifactId>
-        <version>0.2.0-SNAPSHOT</version>
+        <version>0.3.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>microbule-gson-core</artifactId>
@@ -15,13 +15,18 @@
     <dependencies>
         <dependency>
             <groupId>org.microbule</groupId>
+            <artifactId>microbule-beanfinder-api</artifactId>
+            <version>0.3.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.microbule</groupId>
             <artifactId>microbule-gson-api</artifactId>
-            <version>0.2.0-SNAPSHOT</version>
+            <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.microbule</groupId>
             <artifactId>microbule-gson-spi</artifactId>
-            <version>0.2.0-SNAPSHOT</version>
+            <version>0.3.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

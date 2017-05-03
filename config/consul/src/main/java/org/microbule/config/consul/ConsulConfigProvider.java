@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.inject.Named;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
@@ -16,6 +17,7 @@ import org.microbule.config.http.HttpConfigProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Named
 public class ConsulConfigProvider extends HttpConfigProvider<List<ConsulNode>> {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
@@ -36,6 +38,16 @@ public class ConsulConfigProvider extends HttpConfigProvider<List<ConsulNode>> {
                 .path("v1")
                 .path("kv")
                 .path("microbule");
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
+// ConfigProvider Implementation
+//----------------------------------------------------------------------------------------------------------------------
+
+
+    @Override
+    public String name() {
+        return "consul";
     }
 
 //----------------------------------------------------------------------------------------------------------------------

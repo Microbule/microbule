@@ -10,7 +10,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
 import org.junit.Test;
-import org.microbule.core.DefaultJaxrsServerFactory;
+import org.microbule.beanfinder.core.SimpleBeanFinder;
+import org.microbule.config.api.Config;
+import org.microbule.spi.JaxrsServerDecorator;
+import org.microbule.spi.JaxrsServiceDescriptor;
 import org.microbule.test.server.hello.HelloTestCase;
 
 public class ValidationDecoratorTest extends HelloTestCase {
@@ -19,9 +22,19 @@ public class ValidationDecoratorTest extends HelloTestCase {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    protected void addDecorators(DefaultJaxrsServerFactory factory) {
-        factory.addDecorator("validation", new ValidationDecorator());
-        factory.addDecorator("errorhandler", (desc, config) -> desc.addProvider(new CveMapper()));
+    protected void addBeans(SimpleBeanFinder finder) {
+        finder.addBean(new ValidationDecorator());
+        finder.addBean(new JaxrsServerDecorator() {
+            @Override
+            public String name() {
+                return "errorhandler";
+            }
+
+            @Override
+            public void decorate(JaxrsServiceDescriptor descriptor, Config config) {
+                descriptor.addProvider(new CveMapper());
+            }
+        });
     }
 
     @Test

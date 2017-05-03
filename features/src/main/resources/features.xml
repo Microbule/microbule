@@ -25,26 +25,28 @@
     <feature name="microbule-core" version="${project.version}">
         <feature version="${cxf.version}">cxf-jaxrs</feature>
         <feature version="${cxf.version}">cxf-rs-description-swagger2</feature>
-        <feature prerequisite="true">wrap</feature>
 
+        <bundle dependency="true">mvn:org.apache.geronimo.specs/geronimo-atinject_1.0_spec/1.0</bundle>
         <bundle dependency="true">mvn:com.google.guava/guava/${guava.version}</bundle>
         <bundle dependency="true">mvn:org.apache.commons/commons-lang3/${commons.lang3.version}</bundle>
         <bundle dependency="true">mvn:com.savoirtech.eos/eos-core/${eos.version}</bundle>
 
+        <bundle>mvn:org.microbule/microbule-beanfinder-api/${project.version}</bundle>
+        <bundle>mvn:org.microbule/microbule-beanfinder-core/${project.version}</bundle>
+
         <bundle>mvn:org.microbule/microbule-config-api/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-config-spi/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-config-core/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-config-osgi/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-config-http/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-config-consul/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-config-etcd/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-config-env/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-config-sysprop/${project.version}</bundle>
 
         <bundle>mvn:org.microbule/microbule-api/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-spi/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-core/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-osgi/${project.version}</bundle>
+        <bundle>mvn:org.microbule/microbule-osgi-beanfinder/${project.version}</bundle>
+        <bundle>mvn:org.microbule/microbule-osgi-blueprint/${project.version}</bundle>
+        <bundle>mvn:org.microbule/microbule-osgi-config/${project.version}</bundle>
+        <bundle>mvn:org.microbule/microbule-osgi-core/${project.version}</bundle>
     </feature>
 
     <feature name="microbule-errormap" version="${project.version}">
@@ -59,7 +61,6 @@
         <bundle>mvn:org.microbule/microbule-gson-api/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-gson-spi/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-gson-core/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-gson-osgi/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-gson-decorator/${project.version}</bundle>
     </feature>
 

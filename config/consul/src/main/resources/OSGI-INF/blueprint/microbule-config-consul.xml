@@ -13,10 +13,6 @@
         <argument value="${baseAddress}" />
     </bean>
 
-    <service ref="configProvider" interface="org.microbule.config.spi.ConfigProvider">
-        <service-properties>
-            <entry key="name" value="consul"/>
-        </service-properties>
-    </service>
+    <service ref="configProvider" interface="org.microbule.config.spi.ConfigProvider"/>
 
 </blueprint>
