@@ -3,7 +3,7 @@ package org.microbule.beanfinder.core;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.SortedSet;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicReference;
@@ -42,15 +42,13 @@ public abstract class AbstractBeanFinder implements BeanFinder {
     }
 
     @Override
-    public <B> Set<B> sortedBeanSet(Class<B> beanType, Comparator<? super B> comparator) {
-        final Set<B> beans = new ConcurrentSkipListSet<>(comparator);
-        findBeans(beanType, new CollectionBeanFinderListener<>(beans));
-        return beans;
+    public <B extends Comparable<? super B>> SortedSet<B> beanSortedSet(Class<B> beanType) {
+        return beanSortedSet(beanType, Comparator.naturalOrder());
     }
 
     @Override
-    public <B extends Comparable> Set<B> sortedBeanSet(Class<B> beanType) {
-        final Set<B> beans = new ConcurrentSkipListSet<>();
+    public <B> SortedSet<B> beanSortedSet(Class<B> beanType, Comparator<? super B> comparator) {
+        final SortedSet<B> beans = new ConcurrentSkipListSet<>(comparator);
         findBeans(beanType, new CollectionBeanFinderListener<>(beans));
         return beans;
     }

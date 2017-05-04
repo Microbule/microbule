@@ -3,8 +3,10 @@ package org.microbule.beanfinder.core;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
 import java.util.concurrent.atomic.AtomicReference;
 
+import com.google.common.collect.Sets;
 import org.junit.Test;
 import org.microbule.test.core.MockObjectTestCase;
 
@@ -60,5 +62,18 @@ public class SimpleBeanFinderTest extends MockObjectTestCase {
         assertEquals("Hello", ref.get());
         finder.removeBean("Hello");
         assertEquals("DEFAULT", ref.get());
+    }
+
+    @Test
+    public void testWithSortedSet() {
+        final SimpleBeanFinder finder = new SimpleBeanFinder();
+        final SortedSet<String> set = finder.beanSortedSet(String.class);
+
+        finder.addBean("1");
+        finder.addBean("2");
+        finder.start();
+        assertEquals(Sets.newHashSet("1", "2"), set);
+
+
     }
 }

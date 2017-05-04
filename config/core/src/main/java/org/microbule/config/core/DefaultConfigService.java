@@ -34,7 +34,7 @@ public class DefaultConfigService implements ConfigService {
 
     @Inject
     public DefaultConfigService(BeanFinder beanFinder) {
-        this.providers = beanFinder.sortedBeanSet(ConfigProvider.class, Comparator.comparingInt(ConfigProvider::priority));
+        this.providers = beanFinder.beanSortedSet(ConfigProvider.class, Comparator.comparingInt(ConfigProvider::priority));
     }
 
 //----------------------------------------------------------------------------------------------------------------------
