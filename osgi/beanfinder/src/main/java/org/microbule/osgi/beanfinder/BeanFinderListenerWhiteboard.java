@@ -19,6 +19,7 @@ public class BeanFinderListenerWhiteboard<B> extends AbstractWhiteboard<B, B> {
     public BeanFinderListenerWhiteboard(BundleContext bundleContext, Class<B> beanType, BeanFinderListener<B> listener) {
         super(bundleContext, beanType);
         this.listener = listener;
+        start();
     }
 
 //----------------------------------------------------------------------------------------------------------------------
