@@ -1,10 +1,19 @@
-# Pushing to Cloud Foundry
+# Microbule Cloud Foundry Example
 
-- Run the build
+## Building
 
-```
+```text
 mvn clean package
 ```
+
+## Running Locally
+
+```text
+export CF_INSTANCE_ADDR=localhost:8080
+mvn spring-boot:run
+```
+
+## Running in Cloud Foundry
 
 - Login to Cloud Foundry
 

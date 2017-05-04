@@ -14,6 +14,7 @@ public class QuietTimeLatch {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
+
     private static final Logger LOGGER = LoggerFactory.getLogger(QuietTimeLatch.class);
     private final AtomicLong lastUpdated;
     private final CountDownLatch latch = new CountDownLatch(1);
@@ -31,15 +32,7 @@ public class QuietTimeLatch {
         checkLastUpdate();
     }
 
-//----------------------------------------------------------------------------------------------------------------------
-// Other Methods
-//----------------------------------------------------------------------------------------------------------------------
-
-    public void await() {
-        Uninterruptibles.awaitUninterruptibly(latch);
-    }
-
-    public void checkLastUpdate() {
+    private void checkLastUpdate() {
         final long elapsed = System.nanoTime() - lastUpdated.get();
         if (elapsed >= quietTime) {
             LOGGER.info("Quiet time ({} ms) expired, releasing latch...", TimeUnit.NANOSECONDS.toMillis(quietTime));
@@ -48,6 +41,14 @@ public class QuietTimeLatch {
         } else {
             executorService.schedule(this::checkLastUpdate, quietTime - elapsed, TimeUnit.NANOSECONDS);
         }
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
+// Other Methods
+//----------------------------------------------------------------------------------------------------------------------
+
+    public void await() {
+        Uninterruptibles.awaitUninterruptibly(latch);
     }
 
     public void updated() {
