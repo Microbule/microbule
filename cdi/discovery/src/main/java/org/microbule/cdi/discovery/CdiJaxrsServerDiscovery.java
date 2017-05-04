@@ -2,12 +2,12 @@ package org.microbule.cdi.discovery;
 
 import java.util.Set;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.ws.rs.Path;
 
 import org.apache.commons.lang3.ClassUtils;
@@ -17,7 +17,7 @@ import org.microbule.config.api.ConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@ApplicationScoped
+@Singleton
 @Named("cdiJaxrsServerDiscovery")
 public class CdiJaxrsServerDiscovery {
 //----------------------------------------------------------------------------------------------------------------------

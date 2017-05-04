@@ -5,20 +5,29 @@ import javax.enterprise.context.Initialized;
 import javax.enterprise.event.Event;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Instance;
+import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import com.google.common.collect.Lists;
 import org.microbule.beanfinder.core.StaticBeanFinder;
 import org.microbule.cdi.core.event.BeanFinderStarted;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@ApplicationScoped
+@Singleton
 @Named("cdiBeanFinder")
 public class CdiBeanFinder extends StaticBeanFinder {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CdiBeanFinder.class);
+
+    @Inject
+    private BeanManager beanManager;
 
     @Inject
     private Event<BeanFinderStarted> event;

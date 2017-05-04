@@ -11,6 +11,7 @@ import org.springframework.context.annotation.PropertySource;
 public class Startup {
 
     public static void main(String[] args) {
+        System.setProperty("CF_INSTANCE_ADDR", "localhost:8080");
         SpringApplication.run(Startup.class, args);
     }
 }
