@@ -18,5 +18,6 @@
         <module>scr</module>
         <module>blueprint</module>
         <module>activator</module>
+        <module>cloudfoundry</module>
     </modules>
 </project>

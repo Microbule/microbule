@@ -1,0 +1,4 @@
+---
+applications:
+- name: microbule-example-cloudfoundry
+  memory: 512M

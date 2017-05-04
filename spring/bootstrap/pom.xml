@@ -12,7 +12,6 @@
 
     <artifactId>microbule-spring-bootstrap</artifactId>
     <name>Microbule :: Spring :: Bootstrap</name>
-    <packaging>bundle</packaging>
 
     <dependencies>
         <dependency>
@@ -27,12 +26,12 @@
         </dependency>
         <dependency>
             <groupId>org.microbule</groupId>
-            <artifactId>microbule-spring-config</artifactId>
+            <artifactId>microbule-spring-discovery</artifactId>
             <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.microbule</groupId>
-            <artifactId>microbule-config-core</artifactId>
+            <artifactId>microbule-spring-config</artifactId>
             <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
@@ -97,16 +96,6 @@
         </dependency>
         <dependency>
             <groupId>org.microbule</groupId>
-            <artifactId>microbule-config-sysprop</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-config-env</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
             <artifactId>microbule-validation-decorator</artifactId>
             <version>0.3.0-SNAPSHOT</version>
         </dependency>
@@ -121,22 +110,23 @@
             <version>${spring.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-test-core</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-transports-http-jetty</artifactId>
             <version>${cxf.version}</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-transports-http-hc</artifactId>
             <version>${cxf.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.microbule</groupId>
+            <artifactId>microbule-test-core</artifactId>
+            <version>0.3.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
+
+
 </project>

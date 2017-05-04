@@ -17,5 +17,6 @@
         <module>beanfinder</module>
         <module>config</module>
         <module>bootstrap</module>
+        <module>discovery</module>
     </modules>
 </project>

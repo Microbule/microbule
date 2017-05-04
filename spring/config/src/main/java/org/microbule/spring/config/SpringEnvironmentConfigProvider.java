@@ -12,6 +12,8 @@ public class SpringEnvironmentConfigProvider implements ConfigProvider {
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
+    public static final String NAME = "spring";
+
     @Autowired
     private Environment environment;
 
@@ -31,6 +33,6 @@ public class SpringEnvironmentConfigProvider implements ConfigProvider {
 
     @Override
     public String name() {
-        return "spring";
+        return NAME;
     }
 }

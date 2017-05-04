@@ -17,7 +17,7 @@ public class SimpleBeanFinderTest extends MockObjectTestCase {
         final List<Serializable> list = finder.beanList(Serializable.class);
         finder.addBean("Hello");
         assertEquals(0, list.size());
-        finder.initialize();
+        finder.start();
         assertEquals(1, list.size());
         finder.addBean("World");
         assertEquals(2, finder.beanList(Serializable.class).size());
@@ -38,7 +38,7 @@ public class SimpleBeanFinderTest extends MockObjectTestCase {
         finder.addBean("Hello");
         finder.addBean("World");
         assertEquals(0, map.size());
-        finder.initialize();
+        finder.start();
         assertEquals(2, map.size());
         assertEquals("Hello", map.get("Hello"));
         assertEquals("World", map.get("World"));
@@ -56,7 +56,7 @@ public class SimpleBeanFinderTest extends MockObjectTestCase {
         finder.addBean("Hello");
         finder.addBean("World");
         assertEquals("DEFAULT", ref.get());
-        finder.initialize();
+        finder.start();
         assertEquals("Hello", ref.get());
         finder.removeBean("Hello");
         assertEquals("DEFAULT", ref.get());

@@ -10,25 +10,20 @@
         <version>0.3.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>microbule-spring-config</artifactId>
-    <name>Microbule :: Spring :: Config</name>
+    <artifactId>microbule-spring-discovery</artifactId>
+    <name>Microbule :: Spring :: Discovery</name>
     <packaging>bundle</packaging>
 
     <dependencies>
         <dependency>
             <groupId>org.microbule</groupId>
-            <artifactId>microbule-config-spi</artifactId>
+            <artifactId>microbule-api</artifactId>
             <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-config-core</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.microbule</groupId>
