@@ -10,7 +10,7 @@ import org.microbule.api.JaxrsServer;
 import org.microbule.api.JaxrsServerFactory;
 import org.microbule.beanfinder.api.BeanFinder;
 import org.microbule.config.api.Config;
-import org.microbule.core.exception.ConfigurationException;
+import org.microbule.config.api.ConfigurationException;
 import org.microbule.spi.JaxrsServerDecorator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

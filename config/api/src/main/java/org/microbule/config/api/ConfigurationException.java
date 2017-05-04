@@ -1,4 +1,4 @@
-package org.microbule.core.exception;
+package org.microbule.config.api;
 
 public class ConfigurationException extends RuntimeException {
 //----------------------------------------------------------------------------------------------------------------------

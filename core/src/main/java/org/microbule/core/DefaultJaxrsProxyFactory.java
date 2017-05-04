@@ -7,7 +7,7 @@ import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
 import org.microbule.api.JaxrsProxyFactory;
 import org.microbule.beanfinder.api.BeanFinder;
 import org.microbule.config.api.Config;
-import org.microbule.core.exception.ConfigurationException;
+import org.microbule.config.api.ConfigurationException;
 import org.microbule.spi.JaxrsProxyDecorator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

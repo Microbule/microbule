@@ -12,6 +12,7 @@ import javax.ws.rs.client.WebTarget;
 import com.google.common.base.Charsets;
 import com.google.gson.reflect.TypeToken;
 import org.microbule.config.api.Config;
+import org.microbule.config.core.ConfigUtils;
 import org.microbule.config.core.MapConfig;
 import org.microbule.config.http.HttpConfigProvider;
 import org.slf4j.Logger;
@@ -23,14 +24,22 @@ public class ConsulConfigProvider extends HttpConfigProvider<List<ConsulNode>> {
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
+    public static final String DEFAULT_BASE_ADDRESS = "http://localhost:8500";
+    public static final String BASE_ADDRESS_PROP = "baseAddress";
+    public static final String NAME = "consul";
     private static final Logger LOGGER = LoggerFactory.getLogger(ConsulConfigProvider.class);
     private static final TypeToken<List<ConsulNode>> TYPE_TOKEN = new TypeToken<List<ConsulNode>>() {
     };
+
     private final WebTarget baseTarget;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
+
+    public ConsulConfigProvider() {
+        this(ConfigUtils.bootstrapConfig(NAME).value(BASE_ADDRESS_PROP).orElse(DEFAULT_BASE_ADDRESS));
+    }
 
     public ConsulConfigProvider(String baseAddress) {
         super(TYPE_TOKEN);
@@ -44,10 +53,9 @@ public class ConsulConfigProvider extends HttpConfigProvider<List<ConsulNode>> {
 // ConfigProvider Implementation
 //----------------------------------------------------------------------------------------------------------------------
 
-
     @Override
     public String name() {
-        return "consul";
+        return NAME;
     }
 
 //----------------------------------------------------------------------------------------------------------------------

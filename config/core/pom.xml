@@ -12,9 +12,6 @@
     <name>Microbule :: Config :: Core</name>
     <packaging>bundle</packaging>
 
-    <properties>
-        <osgi.private>{local-packages},com.github.rholder.retry</osgi.private>
-    </properties>
     <dependencies>
         <dependency>
             <groupId>org.microbule</groupId>
@@ -35,11 +32,6 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.rholder</groupId>
-            <artifactId>guava-retrying</artifactId>
-            <version>${guava.retrying.version}</version>
         </dependency>
         <dependency>
             <groupId>org.microbule</groupId>

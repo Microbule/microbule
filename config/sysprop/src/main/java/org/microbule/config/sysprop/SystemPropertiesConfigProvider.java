@@ -9,6 +9,12 @@ import org.microbule.config.spi.ConfigProvider;
 @Named
 public class SystemPropertiesConfigProvider implements ConfigProvider {
 //----------------------------------------------------------------------------------------------------------------------
+// Fields
+//----------------------------------------------------------------------------------------------------------------------
+
+    public static final String NAME = "sysprop";
+
+//----------------------------------------------------------------------------------------------------------------------
 // ConfigProvider Implementation
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -24,7 +30,12 @@ public class SystemPropertiesConfigProvider implements ConfigProvider {
 
     @Override
     public String name() {
-        return "sysprop";
+        return NAME;
+    }
+
+    @Override
+    public int priority() {
+        return PRIORITY_SYSPROP;
     }
 
 //----------------------------------------------------------------------------------------------------------------------

@@ -51,4 +51,9 @@ public class OsgiConfigProvider implements ConfigProvider, ManagedService {
             configRef.set(new MapConfig(values));
         }
     }
+
+    @Override
+    public int priority() {
+        return DEFAULT_PRIORITY;
+    }
 }

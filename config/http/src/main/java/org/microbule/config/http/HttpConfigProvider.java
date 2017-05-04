@@ -25,8 +25,6 @@ public abstract class HttpConfigProvider<R> implements ConfigProvider {
 
     private final TypeToken<R> responseType;
 
-    protected abstract Logger getLogger();
-
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
@@ -43,29 +41,15 @@ public abstract class HttpConfigProvider<R> implements ConfigProvider {
 // Abstract Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    protected Config dereferenceGroups(Config base, String... groups) {
-        return Stream.of(groups).reduce(base, Config::group, (c1, c2) -> c2);
-    }
-
     protected abstract WebTarget createTarget(String... paths);
 
-    protected abstract Config toConfig(R response, String... paths);
+    protected abstract Logger getLogger();
 
-    private Config getConfig(String... paths) {
-        final WebTarget target = createTarget(paths);
-        getLogger().info("Loading configuration from {}.", target.getUri());
-        final Response response = target.request(MediaType.APPLICATION_JSON_TYPE).get();
-        if (Response.Status.OK.getStatusCode() == response.getStatus()) {
-            final R webResponse = GSON.fromJson(response.readEntity(String.class), responseType.getType());
-            return toConfig(webResponse, paths);
-        }
-        return EmptyConfig.INSTANCE;
-    }
+    protected abstract Config toConfig(R response, String... paths);
 
 //----------------------------------------------------------------------------------------------------------------------
 // ConfigProvider Implementation
 //----------------------------------------------------------------------------------------------------------------------
-
 
     @Override
     public Config getProxyConfig(Class<?> serviceInterface) {
@@ -83,11 +67,31 @@ public abstract class HttpConfigProvider<R> implements ConfigProvider {
         );
     }
 
+    @Override
+    public int priority() {
+        return DEFAULT_PRIORITY;
+    }
+
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
+    protected Config dereferenceGroups(Config base, String... groups) {
+        return Stream.of(groups).reduce(base, Config::group, (c1, c2) -> c2);
+    }
+
     protected WebTarget extend(WebTarget baseTarget, String... paths) {
         return Stream.of(paths).reduce(baseTarget, WebTarget::path, (left, right) -> right);
+    }
+
+    private Config getConfig(String... paths) {
+        final WebTarget target = createTarget(paths);
+        getLogger().info("Loading configuration from {}.", target.getUri());
+        final Response response = target.request(MediaType.APPLICATION_JSON_TYPE).get();
+        if (Response.Status.OK.getStatusCode() == response.getStatus()) {
+            final R webResponse = GSON.fromJson(response.readEntity(String.class), responseType.getType());
+            return toConfig(webResponse, paths);
+        }
+        return EmptyConfig.INSTANCE;
     }
 }

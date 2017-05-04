@@ -1,22 +1,22 @@
 package org.microbule.beanfinder.core.listener;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.microbule.beanfinder.api.BeanFinderListener;
 
-public class ListBeanFinderListener<B> implements BeanFinderListener<B> {
+public class CollectionBeanFinderListener<B> implements BeanFinderListener<B> {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    private final List<B> list;
+    private final Collection<B> collection;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public ListBeanFinderListener(List<B> list) {
-        this.list = list;
+    public CollectionBeanFinderListener(Collection<B> collection) {
+        this.collection = collection;
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -25,11 +25,11 @@ public class ListBeanFinderListener<B> implements BeanFinderListener<B> {
 
     @Override
     public boolean beanFound(B bean) {
-        return list.add(bean);
+        return collection.add(bean);
     }
 
     @Override
     public void beanLost(B bean) {
-        list.remove(bean);
+        collection.remove(bean);
     }
 }

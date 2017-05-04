@@ -48,6 +48,11 @@ public class EnvironmentVariablesConfigProvider implements ConfigProvider {
         return "env";
     }
 
+    @Override
+    public int priority() {
+        return PRIORITY_ENV;
+    }
+
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------

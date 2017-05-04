@@ -4,11 +4,7 @@
 
     <cm:property-placeholder persistent-id="org.microbule.config.core" update-strategy="reload">
         <cm:default-properties>
-            <cm:property name="overrideProviderNames" value="sysprop,env"/>
-            <cm:property name="providerNames" value="osgi"/>
             <cm:property name="configPid" value="org.microbule.config.osgi.provider"/>
-            <cm:property name="waitDuration" value="5" />
-            <cm:property name="waitUnit" value="SECONDS" />
         </cm:default-properties>
     </cm:property-placeholder>
 
@@ -16,10 +12,6 @@
 
     <bean id="configService" class="org.microbule.config.core.DefaultConfigService">
         <argument ref="beanFinder"/>
-        <argument value="${overrideProviderNames}"/>
-        <argument value="${providerNames}"/>
-        <argument value="${waitDuration}" />
-        <argument value="${waitUnit}" />
     </bean>
 
     <service ref="configService" interface="org.microbule.config.api.ConfigService" />

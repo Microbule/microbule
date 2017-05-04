@@ -67,7 +67,7 @@ public class MicrobuleServerDiscovery implements BeanPostProcessor {
         specs.forEach(spec -> {
             LOGGER.info("Starting {} service for bean named \"{}\"...", spec.getServiceInterface().getSimpleName(), spec.getBeanName());
             factory.createJaxrsServer(spec.getServiceInterface(), spec.getServiceImplementation(), configService.getServerConfig(spec.getServiceInterface()));
-            LOGGER.info("{} service started.");
+            LOGGER.info("{} service started.", spec.getServiceInterface().getSimpleName());
         });
     }
 

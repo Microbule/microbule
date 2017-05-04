@@ -29,7 +29,7 @@ Microbule is an extension of the [Apache Karaf](http://karaf.apache.org) contain
 
    Apache Karaf (4.0.7)
 
- Hit '<tab>' for a list of available commands
+ Hit '<tab>' for a collection of available commands
  and '[cmd] --help' for help on a specific command.
  Hit '<ctrl-d>' or type 'system:shutdown' or 'logout' to shutdown Karaf.
 

@@ -7,6 +7,12 @@ public interface ConfigProvider {
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
+    int PRIORITY_SYSPROP = -200;
+
+    int PRIORITY_ENV = -100;
+
+    int DEFAULT_PRIORITY = 0;
+
     /**
      * Retrieves the server configuration for a specified service interface.
      *
@@ -22,6 +28,8 @@ public interface ConfigProvider {
      * @return the proxy configuration
      */
     Config getProxyConfig(Class<?> serviceInterface);
+
+    int priority();
 
     String name();
 }

@@ -35,4 +35,9 @@ public class SpringEnvironmentConfigProvider implements ConfigProvider {
     public String name() {
         return NAME;
     }
+
+    @Override
+    public int priority() {
+        return DEFAULT_PRIORITY;
+    }
 }
