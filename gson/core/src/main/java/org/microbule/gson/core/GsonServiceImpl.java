@@ -8,6 +8,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -16,7 +17,8 @@ import org.microbule.beanfinder.api.BeanFinderListener;
 import org.microbule.gson.api.GsonService;
 import org.microbule.gson.spi.GsonCustomizer;
 
-@Named
+@Singleton
+@Named("gsonService")
 public class GsonServiceImpl implements GsonService {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields

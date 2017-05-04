@@ -1,6 +1,7 @@
 package org.microbule.gson.decorator;
 
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import org.microbule.config.api.Config;
 import org.microbule.gson.api.GsonService;
@@ -8,7 +9,8 @@ import org.microbule.spi.JaxrsProxyDecorator;
 import org.microbule.spi.JaxrsServerDecorator;
 import org.microbule.spi.JaxrsServiceDescriptor;
 
-@Named
+@Singleton
+@Named("gsonDecorator")
 public class GsonDecorator implements JaxrsProxyDecorator, JaxrsServerDecorator {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields

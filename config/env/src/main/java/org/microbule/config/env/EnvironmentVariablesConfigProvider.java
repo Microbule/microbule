@@ -4,12 +4,14 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import org.microbule.config.api.Config;
 import org.microbule.config.core.MapConfig;
 import org.microbule.config.spi.ConfigProvider;
 
-@Named
+@Singleton
+@Named("envConfigProvider")
 public class EnvironmentVariablesConfigProvider implements ConfigProvider {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields

@@ -2,6 +2,7 @@ package org.microbule.core;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import org.apache.cxf.BusFactory;
 import org.apache.cxf.endpoint.Server;
@@ -15,6 +16,7 @@ import org.microbule.spi.JaxrsServerDecorator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Singleton
 @Named("jaxrsServerFactory")
 public class DefaultJaxrsServerFactory extends JaxrsServiceDecoratorRegistry<JaxrsServerDecorator> implements JaxrsServerFactory {
 //----------------------------------------------------------------------------------------------------------------------

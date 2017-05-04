@@ -21,12 +21,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Order(-1)
-public class MicrobuleServerDiscovery implements BeanPostProcessor {
+public class SpringJaxrsServerDiscovery implements BeanPostProcessor {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MicrobuleServerDiscovery.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SpringJaxrsServerDiscovery.class);
 
     @Autowired
     private ConfigService configService;
@@ -65,7 +65,7 @@ public class MicrobuleServerDiscovery implements BeanPostProcessor {
     @EventListener
     public void onRefreshed(ContextRefreshedEvent event) {
         specs.forEach(spec -> {
-            LOGGER.info("Starting {} service for bean named \"{}\"...", spec.getServiceInterface().getSimpleName(), spec.getBeanName());
+            LOGGER.info("Creating {} JAX-RS server for bean named \"{}\".", spec.getServiceInterface().getSimpleName(), spec.getBeanName());
             factory.createJaxrsServer(spec.getServiceInterface(), spec.getServiceImplementation(), configService.getServerConfig(spec.getServiceInterface()));
             LOGGER.info("{} service started.", spec.getServiceInterface().getSimpleName());
         });

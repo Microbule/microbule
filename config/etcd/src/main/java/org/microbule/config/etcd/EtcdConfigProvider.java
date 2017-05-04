@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
@@ -15,7 +16,8 @@ import org.microbule.config.http.HttpConfigProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Named
+@Singleton
+@Named("etcdConfigProvider")
 public class EtcdConfigProvider extends HttpConfigProvider<EtcdResponse> {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields

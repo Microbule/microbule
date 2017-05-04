@@ -1,12 +1,14 @@
 package org.microbule.tracer.decorator;
 
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import org.microbule.config.api.Config;
 import org.microbule.spi.JaxrsProxyDecorator;
 import org.microbule.spi.JaxrsServiceDescriptor;
 
-@Named
+@Singleton
+@Named("tracerProxyDecorator")
 public class TracerProxyDecorator implements JaxrsProxyDecorator, TracerConstants {
 //----------------------------------------------------------------------------------------------------------------------
 // JaxrsServiceDecorator Implementation

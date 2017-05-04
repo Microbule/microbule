@@ -2,6 +2,7 @@ package org.microbule.core;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
 import org.microbule.api.JaxrsProxyFactory;
@@ -12,6 +13,7 @@ import org.microbule.spi.JaxrsProxyDecorator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Singleton
 @Named("jaxrsProxyFactory")
 public class DefaultJaxrsProxyFactory extends JaxrsServiceDecoratorRegistry<JaxrsProxyDecorator> implements JaxrsProxyFactory {
 //----------------------------------------------------------------------------------------------------------------------

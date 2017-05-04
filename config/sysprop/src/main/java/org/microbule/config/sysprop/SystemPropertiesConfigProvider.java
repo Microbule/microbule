@@ -1,12 +1,14 @@
 package org.microbule.config.sysprop;
 
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import org.microbule.config.api.Config;
 import org.microbule.config.core.PropertiesConfig;
 import org.microbule.config.spi.ConfigProvider;
 
-@Named
+@Singleton
+@Named("systemPropertiesConfigProvider")
 public class SystemPropertiesConfigProvider implements ConfigProvider {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields

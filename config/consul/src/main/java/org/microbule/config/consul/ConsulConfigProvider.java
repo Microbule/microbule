@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
@@ -18,7 +19,8 @@ import org.microbule.config.http.HttpConfigProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Named
+@Singleton
+@Named("consulConfigProvider")
 public class ConsulConfigProvider extends HttpConfigProvider<List<ConsulNode>> {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields

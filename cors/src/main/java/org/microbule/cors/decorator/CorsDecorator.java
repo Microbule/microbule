@@ -1,12 +1,14 @@
 package org.microbule.cors.decorator;
 
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import org.microbule.config.api.Config;
 import org.microbule.spi.JaxrsServerDecorator;
 import org.microbule.spi.JaxrsServiceDescriptor;
 
-@Named
+@Singleton
+@Named("corsDecorator")
 public class CorsDecorator implements JaxrsServerDecorator {
 //----------------------------------------------------------------------------------------------------------------------
 // JaxrsServiceDecorator Implementation

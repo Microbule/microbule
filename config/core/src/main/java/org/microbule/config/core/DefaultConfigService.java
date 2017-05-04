@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import org.microbule.beanfinder.api.BeanFinder;
 import org.microbule.config.api.Config;
@@ -17,6 +18,7 @@ import org.microbule.config.spi.ConfigProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Singleton
 @Named("configService")
 public class DefaultConfigService implements ConfigService {
 //----------------------------------------------------------------------------------------------------------------------

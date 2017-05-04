@@ -1,6 +1,7 @@
 package org.microbule.gzip.decorator;
 
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import org.apache.cxf.transport.common.gzip.GZIPFeature;
 import org.microbule.config.api.Config;
@@ -8,7 +9,8 @@ import org.microbule.spi.JaxrsProxyDecorator;
 import org.microbule.spi.JaxrsServerDecorator;
 import org.microbule.spi.JaxrsServiceDescriptor;
 
-@Named
+@Singleton
+@Named("gzipDecorator")
 public class GzipDecorator implements JaxrsServerDecorator, JaxrsProxyDecorator {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields

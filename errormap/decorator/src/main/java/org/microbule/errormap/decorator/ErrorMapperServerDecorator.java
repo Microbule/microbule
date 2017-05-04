@@ -2,13 +2,15 @@ package org.microbule.errormap.decorator;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import org.microbule.config.api.Config;
 import org.microbule.errormap.api.ErrorMapperService;
 import org.microbule.spi.JaxrsServerDecorator;
 import org.microbule.spi.JaxrsServiceDescriptor;
 
-@Named
+@Singleton
+@Named("errorMapperServerDecorator")
 public class ErrorMapperServerDecorator implements JaxrsServerDecorator {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields

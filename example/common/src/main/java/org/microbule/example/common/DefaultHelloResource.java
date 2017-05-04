@@ -1,11 +1,13 @@
 package org.microbule.example.common;
 
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Named
+@Singleton
+@Named("helloResource")
 public class DefaultHelloResource implements HelloResource {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields

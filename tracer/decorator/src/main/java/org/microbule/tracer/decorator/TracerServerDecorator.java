@@ -4,6 +4,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import org.microbule.beanfinder.api.BeanFinder;
 import org.microbule.config.api.Config;
@@ -11,7 +12,8 @@ import org.microbule.spi.JaxrsServerDecorator;
 import org.microbule.spi.JaxrsServiceDescriptor;
 import org.microbule.tracer.spi.TracerIdStrategy;
 
-@Named
+@Singleton
+@Named("tracerServerDecorator")
 public class TracerServerDecorator implements JaxrsServerDecorator, TracerConstants {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields

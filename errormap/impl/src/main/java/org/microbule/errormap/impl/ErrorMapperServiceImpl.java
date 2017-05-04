@@ -6,16 +6,18 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.ws.rs.core.Response;
 
+import org.microbule.beanfinder.api.BeanFinder;
 import org.microbule.errormap.api.ErrorMapperService;
 import org.microbule.errormap.spi.ErrorMapper;
 import org.microbule.errormap.spi.ErrorResponseStrategy;
-import org.microbule.beanfinder.api.BeanFinder;
 
 import static org.microbule.errormap.impl.PlainTextErrorResponseStrategy.INSTANCE;
 
-@Named
+@Singleton
+@Named("errorMapperService")
 public class ErrorMapperServiceImpl implements ErrorMapperService {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields

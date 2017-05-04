@@ -16,7 +16,7 @@
     <dependencies>
         <dependency>
             <groupId>org.microbule</groupId>
-            <artifactId>microbule-core</artifactId>
+            <artifactId>microbule-all</artifactId>
             <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
@@ -31,104 +31,13 @@
         </dependency>
         <dependency>
             <groupId>org.microbule</groupId>
-            <artifactId>microbule-config-core</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
             <artifactId>microbule-spring-config</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-errormap-impl</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-errormap-decorator</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-cors-decorator</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-tracer-decorator</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-gzip-decorator</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-swagger-decorator</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-cache-decorator</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-circuitbreaker-decorator</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-logging-decorator</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-requestlog-decorator</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-gson-core</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-timeout-decorator</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-validation-decorator</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-gson-decorator</artifactId>
             <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-transports-http-jetty</artifactId>
-            <version>${cxf.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-transports-http-hc</artifactId>
-            <version>${cxf.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-test-core</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-            <scope>test</scope>
         </dependency>
 
     </dependencies>

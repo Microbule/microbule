@@ -1,12 +1,14 @@
 package org.microbule.timeout.decorator;
 
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import org.microbule.config.api.Config;
 import org.microbule.spi.JaxrsProxyDecorator;
 import org.microbule.spi.JaxrsServiceDescriptor;
 
-@Named
+@Singleton
+@Named("timeoutProxyDecorator")
 public class TimeoutProxyDecorator implements JaxrsProxyDecorator {
 //----------------------------------------------------------------------------------------------------------------------
 // JaxrsServiceDecorator Implementation
