@@ -6,15 +6,12 @@ import java.util.Optional;
 
 import org.microbule.config.api.Config;
 
-public class MapConfig implements Config {
+public class MapConfig extends AbstractConfig {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    private static final String DEFAULT_SEPARATOR = ".";
     private final Map<String, String> values;
-    private final String groupPrefix;
-    private final String separator;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
@@ -33,23 +30,8 @@ public class MapConfig implements Config {
     }
 
     private MapConfig(Map<String, String> values, String groupPrefix, String separator) {
+        super(groupPrefix, separator);
         this.values = values;
-        this.groupPrefix = groupPrefix;
-        this.separator = separator;
-    }
-
-//----------------------------------------------------------------------------------------------------------------------
-// Config Implementation
-//----------------------------------------------------------------------------------------------------------------------
-
-    @Override
-    public MapConfig group(String groupKey) {
-        return new MapConfig(values, qualify(groupKey), separator);
-    }
-
-    @Override
-    public Optional<String> value(String key) {
-        return Optional.ofNullable(values.get(qualify(key)));
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -61,7 +43,13 @@ public class MapConfig implements Config {
         return this;
     }
 
-    private String qualify(String key) {
-        return Optional.ofNullable(groupPrefix).map(prefix -> prefix + separator + key).orElse(key);
+    @Override
+    protected Config qualifiedConfig(String qualifiedGroupPrefix, String separator) {
+        return new MapConfig(values, qualifiedGroupPrefix, separator);
+    }
+
+    @Override
+    protected Optional<String> qualifiedValue(String qualifiedKey) {
+        return Optional.ofNullable(values.get(qualifiedKey));
     }
 }

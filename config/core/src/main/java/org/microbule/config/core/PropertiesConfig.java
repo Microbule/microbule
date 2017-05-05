@@ -5,12 +5,12 @@ import java.util.Properties;
 
 import org.microbule.config.api.Config;
 
-public class PropertiesConfig implements Config {
+public class PropertiesConfig extends AbstractConfig {
+//----------------------------------------------------------------------------------------------------------------------
+// Fields
+//----------------------------------------------------------------------------------------------------------------------
 
-    private static final String DEFAULT_SEPARATOR = ".";
     private final Properties values;
-    private final String groupPrefix;
-    private final String separator;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
@@ -29,23 +29,8 @@ public class PropertiesConfig implements Config {
     }
 
     private PropertiesConfig(Properties values, String groupPrefix, String separator) {
+        super(groupPrefix, separator);
         this.values = values;
-        this.groupPrefix = groupPrefix;
-        this.separator = separator;
-    }
-
-//----------------------------------------------------------------------------------------------------------------------
-// Config Implementation
-//----------------------------------------------------------------------------------------------------------------------
-
-    @Override
-    public PropertiesConfig group(String groupKey) {
-        return new PropertiesConfig(values, qualify(groupKey), separator);
-    }
-
-    @Override
-    public Optional<String> value(String key) {
-        return Optional.ofNullable(values.getProperty(qualify(key)));
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -57,7 +42,13 @@ public class PropertiesConfig implements Config {
         return this;
     }
 
-    private String qualify(String key) {
-        return Optional.ofNullable(groupPrefix).map(prefix -> prefix + separator + key).orElse(key);
+    @Override
+    protected Config qualifiedConfig(String qualifiedGroupPrefix, String separator) {
+        return new PropertiesConfig(values, qualifiedGroupPrefix, separator);
+    }
+
+    @Override
+    protected Optional<String> qualifiedValue(String qualifiedKey) {
+        return Optional.ofNullable(values.getProperty(qualifiedKey));
     }
 }
