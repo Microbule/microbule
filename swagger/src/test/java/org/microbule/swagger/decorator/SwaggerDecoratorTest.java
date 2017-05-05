@@ -27,4 +27,9 @@ public class SwaggerDecoratorTest extends MockObjectTestCase {
         assertTrue(feature.isPrettyPrint());
     }
 
+    @Test
+    public void testName() {
+        assertEquals("swagger", new SwaggerDecorator().name());
+    }
+
 }

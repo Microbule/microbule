@@ -16,6 +16,7 @@
         <module>core</module>
         <module>osgi</module>
         <module>server</module>
+        <module>cdi</module>
     </modules>
 
 </project>

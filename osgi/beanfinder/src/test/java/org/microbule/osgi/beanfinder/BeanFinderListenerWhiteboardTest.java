@@ -32,7 +32,7 @@ public class BeanFinderListenerWhiteboardTest extends MockObjectTestCase {
 
     @Test
     public void testBeanFound() {
-        new BeanFinderListenerWhiteboard<>(osgiRule.getBundleContext(), MyService.class, listener);
+        new BeanFinderListenerWhiteboard<>(osgiRule.getBundleContext(), MyService.class, listener).start();
         when(listener.beanFound(service)).thenReturn(true);
         osgiRule.registerService(MyService.class, service, props());
         verify(listener).beanFound(service);
@@ -41,6 +41,7 @@ public class BeanFinderListenerWhiteboardTest extends MockObjectTestCase {
     @Test
     public void testBeanFoundWhenNotAccepted() {
         final BeanFinderListenerWhiteboard<MyService> whiteboard = new BeanFinderListenerWhiteboard<>(osgiRule.getBundleContext(), MyService.class, listener);
+        whiteboard.start();
         when(listener.beanFound(service)).thenReturn(false);
         osgiRule.registerService(MyService.class, service, props());
         verify(listener).beanFound(service);
@@ -49,7 +50,7 @@ public class BeanFinderListenerWhiteboardTest extends MockObjectTestCase {
 
     @Test
     public void testBeanLost() {
-        new BeanFinderListenerWhiteboard<>(osgiRule.getBundleContext(), MyService.class, listener);
+        new BeanFinderListenerWhiteboard<>(osgiRule.getBundleContext(), MyService.class, listener).start();
         when(listener.beanFound(service)).thenReturn(true);
         final ServiceRegistration<MyService> registration = osgiRule.registerService(MyService.class, service, props());
         verify(listener).beanFound(service);

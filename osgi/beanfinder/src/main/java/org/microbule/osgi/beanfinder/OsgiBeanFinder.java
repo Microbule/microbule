@@ -25,6 +25,7 @@ public class OsgiBeanFinder extends AbstractBeanFinder {
 
     @Override
     public <B> void findBeans(Class<B> beanType, BeanFinderListener<B> listener) {
-        new BeanFinderListenerWhiteboard<>(bundleContext, beanType, listener);
+        final BeanFinderListenerWhiteboard<B> whiteboard = new BeanFinderListenerWhiteboard<>(bundleContext, beanType, listener);
+        whiteboard.start();
     }
 }
