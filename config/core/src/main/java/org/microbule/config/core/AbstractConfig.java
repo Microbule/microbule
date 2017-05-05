@@ -18,14 +18,6 @@ public abstract class AbstractConfig implements Config {
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public AbstractConfig() {
-        this(null, DEFAULT_SEPARATOR);
-    }
-
-    public AbstractConfig(String separator) {
-        this(null, separator);
-    }
-
     public AbstractConfig(String groupPrefix, String separator) {
         this.groupPrefix = groupPrefix;
         this.separator = separator;

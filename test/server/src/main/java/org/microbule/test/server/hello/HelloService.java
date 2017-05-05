@@ -14,4 +14,9 @@ public interface HelloService {
     @Path("/hello/{name}")
     @Produces(MediaType.TEXT_PLAIN)
     String sayHello(@PathParam("name") @Size(min = 5, message="Name must be at least 5 characters long.") String name);
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/version")
+    String version();
 }

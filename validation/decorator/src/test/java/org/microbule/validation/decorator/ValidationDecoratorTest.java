@@ -38,6 +38,11 @@ public class ValidationDecoratorTest extends HelloTestCase {
     }
 
     @Test
+    public void validateWithNoParameters() {
+        assertEquals("1.0", createProxy().version());
+    }
+
+    @Test
     public void testSayHelloWithShortName() {
         expectException(BadRequestException.class, "HTTP 400 Bad Request");
         createProxy().sayHello("foo");
