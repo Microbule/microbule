@@ -16,8 +16,8 @@ public class ErrorMapperServiceImplTest extends MockObjectTestCase {
     public void initService() {
         SimpleBeanFinder finder = new SimpleBeanFinder();
         finder.addBean(new WebApplicationExceptionErrorMapper());
-        finder.start();
         service = new ErrorMapperServiceImpl(finder);
+        finder.initialize();
     }
 
     @Test

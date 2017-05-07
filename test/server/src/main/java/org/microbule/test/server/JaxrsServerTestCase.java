@@ -96,14 +96,15 @@ public abstract class JaxrsServerTestCase<T> extends MockObjectTestCase {
 
     @Before
     public void startServer() {
-        addBeans(finder);
-
-        finder.start();
-
         final DefaultJaxrsServerFactory factory = new DefaultJaxrsServerFactory(finder);
         factory.start();
+
         proxyFactory = new DefaultJaxrsProxyFactory(finder);
         proxyFactory.start();
+
+        addBeans(finder);
+        finder.initialize();
+
         baseAddress = createBaseAddress();
 
         final MapConfig config = createConfig();

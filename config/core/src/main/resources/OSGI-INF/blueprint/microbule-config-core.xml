@@ -10,10 +10,10 @@
 
     <microbule:beanFinder id="beanFinder" />
 
-    <bean id="configService" class="org.microbule.config.core.DefaultConfigService">
+    <bean id="configService" class="org.microbule.config.core.DefaultConfigBuilderFactory">
         <argument ref="beanFinder"/>
     </bean>
 
-    <service ref="configService" interface="org.microbule.config.api.ConfigService" />
+    <service ref="configService" interface="org.microbule.config.api.ConfigBuilderFactory" />
 
 </blueprint>

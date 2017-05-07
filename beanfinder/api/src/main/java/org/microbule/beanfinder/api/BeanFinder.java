@@ -23,4 +23,6 @@ public interface BeanFinder {
     <B> SortedSet<B> beanSortedSet(Class<B> beanType, Comparator<? super B> comparator);
 
     <B extends Comparable<? super B>> SortedSet<B> beanSortedSet(Class<B> beanType);
+
+    void awaitCompletion();
 }

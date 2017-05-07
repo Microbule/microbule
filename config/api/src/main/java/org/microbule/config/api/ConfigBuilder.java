@@ -1,15 +1,13 @@
 package org.microbule.config.api;
 
-public interface ConfigService {
+public interface ConfigBuilder {
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    Config getProxyConfig(Class<?> serviceInterface);
+    Config build();
 
-    Config getServerConfig(Class<?> serviceInterface);
+    ConfigBuilder withCustom(Config custom);
 
-    Config getProxyConfig(Class<?> serviceInterface, Config overrides);
-
-    Config getServerConfig(Class<?> serviceInterface, Config overrides);
+    ConfigBuilder withPath(String... path);
 }

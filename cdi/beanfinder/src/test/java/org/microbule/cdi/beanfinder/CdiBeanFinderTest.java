@@ -10,11 +10,11 @@ import org.microbule.test.cdi.CdiTestCase;
 public class CdiBeanFinderTest extends CdiTestCase {
 
     @Inject
-    private CdiBeanFinder finder;
+    private Greeter greeter;
 
     @Test
     public void testFind() {
-        final List<HelloBean> hellos = finder.beanList(HelloBean.class);
+        final List<HelloBean> hellos = greeter.getList();
         assertEquals(1, hellos.size());
     }
 }

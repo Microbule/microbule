@@ -12,11 +12,11 @@ public abstract class StaticBeanFinder extends AbstractBeanFinder {
 //----------------------------------------------------------------------------------------------------------------------
 
     private final List<FinderRegistration<?>> registrations = new CopyOnWriteArrayList<>();
+    private final AtomicBoolean initialized = new AtomicBoolean(false);
 
 //----------------------------------------------------------------------------------------------------------------------
 // Abstract Methods
 //----------------------------------------------------------------------------------------------------------------------
-    private final AtomicBoolean started = new AtomicBoolean(false);
 
     protected abstract <B> Iterable<B> beansOfType(Class<B> beanType);
 
@@ -28,7 +28,7 @@ public abstract class StaticBeanFinder extends AbstractBeanFinder {
     public <B> void findBeans(Class<B> beanType, BeanFinderListener<B> listener) {
         final FinderRegistration<B> reg = new FinderRegistration<>(beanType, listener);
         registrations.add(reg);
-        if(started.get()) {
+        if(initialized.get()) {
             beanFound(reg);
         }
     }
@@ -49,8 +49,9 @@ public abstract class StaticBeanFinder extends AbstractBeanFinder {
                 .forEach(reg -> reg.getListener().beanLost(bean));
     }
 
-    public void start() {
-        started.set(true);
+    public void initialize() {
+        initialized.set(true);
         registrations.forEach(this::beanFound);
+        complete();
     }
 }

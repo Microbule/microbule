@@ -3,17 +3,20 @@ package org.microbule.osgi.core;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.microbule.api.JaxrsConfigService;
+import org.microbule.api.JaxrsProxyFactory;
 import org.microbule.api.JaxrsServerFactory;
+import org.microbule.beanfinder.api.BeanFinder;
 import org.microbule.config.api.Config;
-import org.microbule.config.api.ConfigService;
 import org.microbule.config.core.MapConfig;
+import org.microbule.core.DefaultJaxrsProxyFactory;
+import org.microbule.core.DefaultJaxrsServerFactory;
+import org.microbule.osgi.beanfinder.OsgiBeanFinder;
 import org.microbule.spi.JaxrsProxyDecorator;
 import org.microbule.spi.JaxrsServerDecorator;
 import org.microbule.test.core.MockObjectTestCase;
 import org.microbule.test.osgi.OsgiRule;
 import org.microbule.test.osgi.ServicePropsBuilder;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.osgi.framework.ServiceRegistration;
 
@@ -21,7 +24,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-public class JaxrsServerManagerTest extends MockObjectTestCase {
+public class OsgiJaxrsServerDiscoveryTest extends MockObjectTestCase {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
@@ -31,9 +34,6 @@ public class JaxrsServerManagerTest extends MockObjectTestCase {
     @Rule
     public final OsgiRule osgiRule = new OsgiRule();
 
-    @Captor
-    private ArgumentCaptor<Config> configCaptor;
-
     @Mock
     private JaxrsServerDecorator serverDecorator;
 
@@ -41,8 +41,9 @@ public class JaxrsServerManagerTest extends MockObjectTestCase {
     private JaxrsProxyDecorator proxyDecorator;
 
     @Mock
-    private ConfigService configService;
-    private QuietTimeLatch latch;
+    private JaxrsConfigService configFactory;
+
+    private BeanFinder finder;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
@@ -50,28 +51,28 @@ public class JaxrsServerManagerTest extends MockObjectTestCase {
 
     @Before
     public void trainMocks() {
-        latch = new QuietTimeLatch(10);
         when(serverDecorator.name()).thenReturn("mock");
         when(proxyDecorator.name()).thenReturn("mock");
         osgiRule.registerService(JaxrsServerDecorator.class, serverDecorator, ServicePropsBuilder.props());
         osgiRule.registerService(JaxrsProxyDecorator.class, proxyDecorator, ServicePropsBuilder.props());
-        when(configService.getServerConfig(eq(HelloService.class), any(Config.class))).thenAnswer(invocationOnMock -> invocationOnMock.getArgument(1));
+        when(configFactory.createServerConfig(eq(HelloService.class), any(Config.class))).thenAnswer(invocationOnMock -> invocationOnMock.getArgument(1));
+        this.finder = new OsgiBeanFinder(osgiRule.getBundleContext(), 10);
     }
 
-    private OsgiJaxrsProxyFactory createProxyFactory() {
-        return new OsgiJaxrsProxyFactory(osgiRule.getBundleContext(), latch);
+    private JaxrsProxyFactory createProxyFactory() {
+        return new DefaultJaxrsProxyFactory(finder);
     }
 
-    private OsgiJaxrsServerFactory createServerFactory() {
-        return new OsgiJaxrsServerFactory(osgiRule.getBundleContext(), latch);
+    private JaxrsServerFactory createServerFactory() {
+        return new DefaultJaxrsServerFactory(finder);
     }
 
     @Test
     public void testServiceDiscoveryWithExistingServices() {
         final HelloServiceImpl impl = new HelloServiceImpl();
         registerServer(impl);
-        final OsgiJaxrsServerFactory serverFactory = createServerFactory();
-        JaxrsServerManager manager = new JaxrsServerManager(osgiRule.getBundleContext(), configService, serverFactory);
+        final JaxrsServerFactory serverFactory = createServerFactory();
+        OsgiJaxrsServerDiscovery manager = new OsgiJaxrsServerDiscovery(osgiRule.getBundleContext(), configFactory, serverFactory);
         MapConfig proxyConfig = new MapConfig();
         proxyConfig.addValue("proxyAddress", BASE_ADDRESS);
         final HelloService proxy = createProxyFactory().createProxy(HelloService.class, proxyConfig);
@@ -84,9 +85,9 @@ public class JaxrsServerManagerTest extends MockObjectTestCase {
         osgiRule.registerService(JaxrsServerDecorator.class, serverDecorator, ServicePropsBuilder.props());
         osgiRule.registerService(JaxrsProxyDecorator.class, proxyDecorator, ServicePropsBuilder.props());
 
-        final OsgiJaxrsServerFactory serverFactory = createServerFactory();
-        JaxrsServerManager manager = new JaxrsServerManager(osgiRule.getBundleContext(), configService, serverFactory);
-        latch.await();
+        final JaxrsServerFactory serverFactory = createServerFactory();
+        OsgiJaxrsServerDiscovery manager = new OsgiJaxrsServerDiscovery(osgiRule.getBundleContext(), configFactory, serverFactory);
+
         final HelloServiceImpl impl = new HelloServiceImpl();
         registerServer(impl);
         MapConfig proxyConfig = new MapConfig();
@@ -98,9 +99,8 @@ public class JaxrsServerManagerTest extends MockObjectTestCase {
 
     @Test
     public void testServiceDiscoveryWithDuplicateDecorators() {
-        final OsgiJaxrsServerFactory serverFactory = createServerFactory();
-        JaxrsServerManager manager = new JaxrsServerManager(osgiRule.getBundleContext(), configService, serverFactory);
-        latch.await();
+        final JaxrsServerFactory serverFactory = createServerFactory();
+        OsgiJaxrsServerDiscovery manager = new OsgiJaxrsServerDiscovery(osgiRule.getBundleContext(), configFactory, serverFactory);
         final HelloServiceImpl impl = new HelloServiceImpl();
         registerServer(impl);
         MapConfig proxyConfig = new MapConfig();
@@ -112,9 +112,8 @@ public class JaxrsServerManagerTest extends MockObjectTestCase {
 
     @Test
     public void testServiceDiscoveryWhenUnregistered() {
-        final OsgiJaxrsServerFactory serverFactory = createServerFactory();
-        JaxrsServerManager manager = new JaxrsServerManager(osgiRule.getBundleContext(), configService, serverFactory);
-        latch.await();
+        final JaxrsServerFactory serverFactory = createServerFactory();
+        OsgiJaxrsServerDiscovery manager = new OsgiJaxrsServerDiscovery(osgiRule.getBundleContext(), configFactory, serverFactory);
         final HelloServiceImpl impl = new HelloServiceImpl();
         final ServiceRegistration<HelloServiceImpl> registration = registerServer(impl);
         MapConfig proxyConfig = new MapConfig();

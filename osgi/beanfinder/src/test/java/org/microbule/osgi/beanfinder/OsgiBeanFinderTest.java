@@ -30,7 +30,7 @@ public class OsgiBeanFinderTest extends MockObjectTestCase {
 
     @Test
     public void testFindBeans() {
-        final OsgiBeanFinder finder = new OsgiBeanFinder(osgiRule.getBundleContext());
+        final OsgiBeanFinder finder = new OsgiBeanFinder(osgiRule.getBundleContext(), 10);
         finder.findBeans(MyService.class, listener);
 
         osgiRule.registerService(MyService.class, service, props());

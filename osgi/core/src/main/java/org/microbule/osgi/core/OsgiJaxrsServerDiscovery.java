@@ -9,10 +9,10 @@ import java.util.stream.Stream;
 import javax.ws.rs.Path;
 
 import com.google.common.collect.MapMaker;
+import org.microbule.api.JaxrsConfigService;
 import org.microbule.api.JaxrsServer;
 import org.microbule.api.JaxrsServerFactory;
 import org.microbule.config.api.Config;
-import org.microbule.config.api.ConfigService;
 import org.microbule.config.core.MapConfig;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
@@ -22,7 +22,7 @@ import org.osgi.framework.ServiceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class JaxrsServerManager {
+public class OsgiJaxrsServerDiscovery {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
@@ -31,14 +31,15 @@ public class JaxrsServerManager {
     private static final String MICROBULE_FILTER = "(microbule.server=*)";
 
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JaxrsServerManager.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OsgiJaxrsServerDiscovery.class);
 
     private final BundleContext bundleContext;
 
     private final JaxrsServerFactory factory;
+
     private final Map<Long, JaxrsServer> servers = new MapMaker().makeMap();
 
-    private final ConfigService configService;
+    private final JaxrsConfigService configService;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Static Methods
@@ -52,7 +53,7 @@ public class JaxrsServerManager {
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public JaxrsServerManager(BundleContext bundleContext, ConfigService configService, JaxrsServerFactory factory) {
+    public OsgiJaxrsServerDiscovery(BundleContext bundleContext, JaxrsConfigService configService, JaxrsServerFactory factory) {
         this.bundleContext = bundleContext;
         this.configService = configService;
         this.factory = factory;
@@ -90,7 +91,7 @@ public class JaxrsServerManager {
                 if (serviceInterface.isAnnotationPresent(Path.class)) {
                     final Long serviceId = serviceId(ref);
                     final Config serviceConfig = new MapConfig(toMap(ref)).group(MICROBULE_GROUP);
-                    final Config config = configService.getServerConfig(serviceInterface, serviceConfig);
+                    final Config config = configService.createServerConfig(serviceInterface, serviceConfig);
                     final String address = config.value(JaxrsServerFactory.ADDRESS_PROP).orElse(null);
                     LOGGER.info("Detected JAX-RS service {} ({}) at address {} from bundle {} ({}).", serviceInterfaceName, serviceId, address, ref.getBundle().getSymbolicName(), ref.getBundle().getBundleId());
                     final Object serviceImplementation = bundleContext.getService(ref);
@@ -112,7 +113,7 @@ public class JaxrsServerManager {
             LOGGER.info("Searching for existing JAX-RS services (filter=\"{}\")...", MICROBULE_FILTER);
             ServiceReference<?>[] serviceReferences = bundleContext.getAllServiceReferences(null, MICROBULE_FILTER);
             if (serviceReferences != null) {
-                Arrays.stream(serviceReferences).forEach(JaxrsServerManager.this::processService);
+                Arrays.stream(serviceReferences).forEach(OsgiJaxrsServerDiscovery.this::processService);
             }
         } catch (InvalidSyntaxException e) {
             LOGGER.error("Unable to search for JAX-RS services using filter \"{}\".", MICROBULE_FILTER, e);

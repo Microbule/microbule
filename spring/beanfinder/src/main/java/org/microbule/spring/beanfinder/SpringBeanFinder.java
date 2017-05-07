@@ -33,7 +33,7 @@ public class SpringBeanFinder extends StaticBeanFinder {
     @EventListener
     @Order(0)
     public void onContextRefreshed(ContextRefreshedEvent event) {
-        LOGGER.info("Starting SpringBeanFinder...");
-        start();
+        LOGGER.info("Initializing SpringBeanFinder...");
+        initialize();
     }
 }

@@ -40,6 +40,7 @@ public class DefaultJaxrsServerFactory extends JaxrsServiceDecoratorRegistry<Jax
 
     @Override
     public JaxrsServer createJaxrsServer(Class<?> serviceInterface, Object serviceImplementation, Config config) {
+        getFinder().awaitCompletion();
         final String address = config.value(ADDRESS_PROP).orElseThrow(() -> new ConfigurationException("Missing '%s' property.", ADDRESS_PROP));
         final JaxrsServiceDescriptorImpl descriptor = new JaxrsServiceDescriptorImpl(serviceInterface);
         decorate(descriptor, config);

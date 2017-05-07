@@ -5,6 +5,7 @@ import java.util.Dictionary;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Stream;
 
 import com.google.common.collect.Maps;
 import org.microbule.config.api.Config;
@@ -26,13 +27,8 @@ public class OsgiConfigProvider implements ConfigProvider, ManagedService {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public Config getProxyConfig(Class<?> serviceInterface) {
-        return configRef.get().group(serviceInterface.getSimpleName()).group("proxy");
-    }
-
-    @Override
-    public Config getServerConfig(Class<?> serviceInterface) {
-        return configRef.get().group(serviceInterface.getSimpleName()).group("server");
+    public Config getConfig(String... path) {
+        return Stream.of(path).reduce(configRef.get(), Config::group, (left, right) -> right);
     }
 
     @Override

@@ -7,27 +7,15 @@ public interface ConfigProvider {
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    int PRIORITY_SYSPROP = -200;
+    int PRIORITY_SYSPROP = -2000;
 
-    int PRIORITY_ENV = -100;
+    int PRIORITY_ENV = -1000;
 
     int DEFAULT_PRIORITY = 0;
 
-    /**
-     * Retrieves the server configuration for a specified service interface.
-     *
-     * @param serviceInterface the service interface
-     * @return the server configuration
-     */
-    Config getServerConfig(Class<?> serviceInterface);
+    int EXTERNAL_PRIORITY = 1000;
 
-    /**
-     * Retrieves the proxy configuration for a specified service interface.
-     *
-     * @param serviceInterface the service interface
-     * @return the proxy configuration
-     */
-    Config getProxyConfig(Class<?> serviceInterface);
+    Config getConfig(String... path);
 
     int priority();
 

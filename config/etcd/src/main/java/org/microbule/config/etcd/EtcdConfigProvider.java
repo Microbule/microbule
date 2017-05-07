@@ -9,7 +9,6 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
 import org.microbule.config.api.Config;
-import org.microbule.config.api.ConfigurationException;
 import org.microbule.config.core.ConfigUtils;
 import org.microbule.config.core.MapConfig;
 import org.microbule.config.http.HttpConfigProvider;
@@ -23,8 +22,10 @@ public class EtcdConfigProvider extends HttpConfigProvider<EtcdResponse> {
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    public static final String NAME = "etcd";
-    public static final String BASE_ADDRESS_PROP = "baseAddress";
+    private static final String NAME = "etcd";
+    private static final String BASE_ADDRESS_PROP = "baseAddress";
+    private static final String DEFAULT_BASE_ADDRESS = "http://localhost:2379";
+
     private static final Logger LOGGER = LoggerFactory.getLogger(EtcdConfigProvider.class);
     private final WebTarget baseTarget;
 
@@ -33,7 +34,7 @@ public class EtcdConfigProvider extends HttpConfigProvider<EtcdResponse> {
 //----------------------------------------------------------------------------------------------------------------------
 
     public EtcdConfigProvider() {
-        this(ConfigUtils.bootstrapConfig(NAME).value(BASE_ADDRESS_PROP).orElseThrow(() -> new ConfigurationException("No Etcd \"%s\" property defined.", BASE_ADDRESS_PROP)));
+        this(ConfigUtils.bootstrapConfig(NAME).value(BASE_ADDRESS_PROP).orElse(DEFAULT_BASE_ADDRESS));
     }
 
     public EtcdConfigProvider(String baseAddress) {

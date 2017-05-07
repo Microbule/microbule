@@ -2,6 +2,7 @@ package org.microbule.config.env;
 
 import java.util.Map;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -17,7 +18,8 @@ public class EnvironmentVariablesConfigProvider implements ConfigProvider {
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    private Supplier<Map<String,String>> envSupplier;
+    private static final String SEPARATOR = "_";
+    private final Supplier<Map<String,String>> envSupplier;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
@@ -36,13 +38,9 @@ public class EnvironmentVariablesConfigProvider implements ConfigProvider {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public Config getProxyConfig(Class<?> serviceInterface) {
-        return envConfig(serviceInterface, "proxy");
-    }
-
-    @Override
-    public Config getServerConfig(Class<?> serviceInterface) {
-        return envConfig(serviceInterface, "server");
+    public Config getConfig(String... path) {
+        final Config base = new MapConfig(envSupplier.get(), SEPARATOR);
+        return Stream.of(path).reduce(base, Config::group, (left, right) -> right);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package org.microbule.spring.config;
 
+import java.util.stream.Stream;
+
 import org.microbule.config.api.Config;
 import org.microbule.config.spi.ConfigProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +24,9 @@ public class SpringEnvironmentConfigProvider implements ConfigProvider {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public Config getProxyConfig(Class<?> serviceInterface) {
-        return new SpringEnvironmentConfig(environment).group(serviceInterface.getSimpleName()).group("proxy");
-    }
-
-    @Override
-    public Config getServerConfig(Class<?> serviceInterface) {
-        return new SpringEnvironmentConfig(environment).group(serviceInterface.getSimpleName()).group("server");
+    public Config getConfig(String... path) {
+        Config base = new SpringEnvironmentConfig(environment);
+        return Stream.of(path).reduce(base, Config::group, (left, right) -> right);
     }
 
     @Override

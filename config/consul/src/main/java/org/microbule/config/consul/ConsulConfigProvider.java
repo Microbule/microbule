@@ -26,9 +26,9 @@ public class ConsulConfigProvider extends HttpConfigProvider<List<ConsulNode>> {
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    public static final String DEFAULT_BASE_ADDRESS = "http://localhost:8500";
-    public static final String BASE_ADDRESS_PROP = "baseAddress";
-    public static final String NAME = "consul";
+    private static final String DEFAULT_BASE_ADDRESS = "http://localhost:8500";
+    private static final String BASE_ADDRESS_PROP = "baseAddress";
+    private static final String NAME = "consul";
     private static final Logger LOGGER = LoggerFactory.getLogger(ConsulConfigProvider.class);
     private static final TypeToken<List<ConsulNode>> TYPE_TOKEN = new TypeToken<List<ConsulNode>>() {
     };

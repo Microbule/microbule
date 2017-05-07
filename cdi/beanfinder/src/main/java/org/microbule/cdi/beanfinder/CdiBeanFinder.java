@@ -13,6 +13,8 @@ import javax.inject.Singleton;
 import com.google.common.collect.Lists;
 import org.microbule.beanfinder.core.StaticBeanFinder;
 import org.microbule.cdi.core.event.BeanFinderStarted;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Singleton
 @Named("cdiBeanFinder")
@@ -20,6 +22,8 @@ public class CdiBeanFinder extends StaticBeanFinder {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CdiBeanFinder.class);
 
     @Inject
     private Event<BeanFinderStarted> event;
@@ -35,7 +39,8 @@ public class CdiBeanFinder extends StaticBeanFinder {
     }
 
     public void start(@Observes @Initialized(ApplicationScoped.class) Object init) {
-        start();
+        LOGGER.info("Initializing CdiBeanFinder...");
+        initialize();
         event.fire(new BeanFinderStarted());
     }
 }

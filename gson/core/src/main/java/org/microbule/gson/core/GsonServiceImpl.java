@@ -26,6 +26,7 @@ public class GsonServiceImpl implements GsonService {
 
     private final List<GsonCustomizer> customizers = new CopyOnWriteArrayList<>();
     private final AtomicReference<Gson> gson = new AtomicReference<>(new GsonBuilder().create());
+    private final BeanFinder finder;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
@@ -33,6 +34,7 @@ public class GsonServiceImpl implements GsonService {
 
     @Inject
     public GsonServiceImpl(BeanFinder beanFinder) {
+        this.finder = beanFinder;
         beanFinder.findBeans(GsonCustomizer.class, new GsonCustomizerListener());
     }
 
@@ -42,12 +44,12 @@ public class GsonServiceImpl implements GsonService {
 
     @Override
     public <T> T fromJson(Reader json, Type type) {
-        return gson.get().fromJson(json, type);
+        return getGson().fromJson(json, type);
     }
 
     @Override
     public void toJson(Object src, Type type, Appendable writer) {
-        gson.get().toJson(src, type, writer);
+        getGson().toJson(src, type, writer);
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -64,6 +66,11 @@ public class GsonServiceImpl implements GsonService {
         builder.setPrettyPrinting();
         customizers.forEach(customizer -> customizer.customize(builder));
         gson.set(builder.create());
+    }
+
+    private Gson getGson() {
+        finder.awaitCompletion();
+        return gson.get();
     }
 
     private void removeCustomizer(GsonCustomizer customizer) {

@@ -12,8 +12,8 @@ import javax.ws.rs.Path;
 
 import org.apache.commons.lang3.ClassUtils;
 import org.microbule.api.JaxrsServerFactory;
+import org.microbule.api.JaxrsConfigService;
 import org.microbule.cdi.core.event.BeanFinderStarted;
-import org.microbule.config.api.ConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +33,7 @@ public class CdiJaxrsServerDiscovery {
     private JaxrsServerFactory serverFactory;
 
     @Inject
-    private ConfigService configService;
+    private JaxrsConfigService configService;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
@@ -46,7 +46,7 @@ public class CdiJaxrsServerDiscovery {
                 if (serviceInterface.isAnnotationPresent(Path.class)) {
                     final Object serviceImplementation = beanManager.getReference(bean, Object.class, beanManager.createCreationalContext(bean));
                     LOGGER.info("Creating {} JAX-RS server for bean named \"{}\".", serviceInterface.getSimpleName(), bean.getName());
-                    serverFactory.createJaxrsServer(serviceInterface, serviceImplementation, configService.getServerConfig(serviceInterface));
+                    serverFactory.createJaxrsServer(serviceInterface, serviceImplementation, configService.createServerConfig(serviceInterface));
                     LOGGER.info("{} service started.", serviceInterface.getSimpleName());
                 }
             });

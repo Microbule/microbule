@@ -1,5 +1,7 @@
 package org.microbule.config.sysprop;
 
+import java.util.stream.Stream;
+
 import javax.inject.Named;
 import javax.inject.Singleton;
 
@@ -21,13 +23,9 @@ public class SystemPropertiesConfigProvider implements ConfigProvider {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public Config getProxyConfig(Class<?> serviceInterface) {
-        return sysPropertiesConfig(serviceInterface, "proxy");
-    }
-
-    @Override
-    public Config getServerConfig(Class<?> serviceInterface) {
-        return sysPropertiesConfig(serviceInterface, "server");
+    public Config getConfig(String... path) {
+        Config base = new PropertiesConfig(System.getProperties());
+        return Stream.of(path).reduce(base, Config::group, (left, right) -> right);
     }
 
     @Override
@@ -38,16 +36,5 @@ public class SystemPropertiesConfigProvider implements ConfigProvider {
     @Override
     public int priority() {
         return PRIORITY_SYSPROP;
-    }
-
-//----------------------------------------------------------------------------------------------------------------------
-// Other Methods
-//----------------------------------------------------------------------------------------------------------------------
-
-    private Config sysPropertiesConfig(Class<?> serviceInterface, String subtype) {
-        return new PropertiesConfig(System.getProperties())
-                .group("microbule")
-                .group(serviceInterface.getSimpleName())
-                .group(subtype);
     }
 }

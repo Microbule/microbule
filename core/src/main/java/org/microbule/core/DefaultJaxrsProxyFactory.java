@@ -35,9 +35,9 @@ public class DefaultJaxrsProxyFactory extends JaxrsServiceDecoratorRegistry<Jaxr
 // JaxrsProxyFactory Implementation
 //----------------------------------------------------------------------------------------------------------------------
 
-
     @Override
     public <T> T createProxy(Class<T> serviceInterface, Config config) {
+        getFinder().awaitCompletion();
         final String baseAddress = config.value(ADDRESS_PROP).orElseThrow(() -> new ConfigurationException("Missing '%s' property.", ADDRESS_PROP));
         final JaxrsServiceDescriptorImpl descriptor = new JaxrsServiceDescriptorImpl(serviceInterface);
         decorate(descriptor, config);

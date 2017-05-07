@@ -1,5 +1,7 @@
 package org.microbule.osgi.beanfinder;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 import com.savoirtech.eos.pattern.whiteboard.AbstractWhiteboard;
 import com.savoirtech.eos.util.ServiceProperties;
 import org.microbule.beanfinder.api.BeanFinderListener;
@@ -11,14 +13,16 @@ public class BeanFinderListenerWhiteboard<B> extends AbstractWhiteboard<B, B> {
 //----------------------------------------------------------------------------------------------------------------------
 
     private final BeanFinderListener<B> listener;
+    private final AtomicLong lastUpdated;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public BeanFinderListenerWhiteboard(BundleContext bundleContext, Class<B> beanType, BeanFinderListener<B> listener) {
+    public BeanFinderListenerWhiteboard(BundleContext bundleContext, Class<B> beanType, BeanFinderListener<B> listener, AtomicLong lastUpdated) {
         super(bundleContext, beanType);
         this.listener = listener;
+        this.lastUpdated = lastUpdated;
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -28,6 +32,7 @@ public class BeanFinderListenerWhiteboard<B> extends AbstractWhiteboard<B, B> {
     @Override
     protected B addService(B service, ServiceProperties props) {
         if (listener.beanFound(service)) {
+            lastUpdated.set(System.nanoTime());
             return service;
         }
         return null;

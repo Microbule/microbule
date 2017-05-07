@@ -23,8 +23,8 @@
     Microbule Core
     -->
     <feature name="microbule-core" version="${project.version}">
-        <feature version="${cxf.version}">cxf-jaxrs</feature>
-        <feature version="${cxf.version}">cxf-rs-description-swagger2</feature>
+        <feature version="${cxf.version}" dependency="true">cxf-jaxrs</feature>
+        <feature version="${cxf.version}" dependency="true">cxf-rs-description-swagger2</feature>
 
         <bundle dependency="true">mvn:org.apache.geronimo.specs/geronimo-atinject_1.0_spec/1.0</bundle>
         <bundle dependency="true">mvn:com.google.guava/guava/${guava.version}</bundle>
