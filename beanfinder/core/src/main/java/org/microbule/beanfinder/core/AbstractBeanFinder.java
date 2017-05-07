@@ -16,11 +16,15 @@ import org.microbule.beanfinder.api.BeanFinder;
 import org.microbule.beanfinder.core.listener.CollectionBeanFinderListener;
 import org.microbule.beanfinder.core.listener.MapBeanFinderListener;
 import org.microbule.beanfinder.core.listener.RefBeanFinderListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class AbstractBeanFinder implements BeanFinder {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractBeanFinder.class);
 
     private final CountDownLatch completionLatch = new CountDownLatch(1);
 
@@ -30,6 +34,7 @@ public abstract class AbstractBeanFinder implements BeanFinder {
 
     @Override
     public void awaitCompletion() {
+        LOGGER.debug("Awaiting completion latch...");
         Uninterruptibles.awaitUninterruptibly(completionLatch);
     }
 
@@ -71,6 +76,7 @@ public abstract class AbstractBeanFinder implements BeanFinder {
 //----------------------------------------------------------------------------------------------------------------------
 
     protected void complete() {
+        LOGGER.debug("Releasing completion latch...");
         completionLatch.countDown();
     }
 }

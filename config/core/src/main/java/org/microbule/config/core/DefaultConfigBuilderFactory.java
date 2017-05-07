@@ -29,6 +29,7 @@ public class DefaultConfigBuilderFactory implements ConfigBuilderFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultConfigBuilderFactory.class);
 
     private final Set<ConfigProvider> providers;
+    private final BeanFinder finder;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
@@ -36,6 +37,7 @@ public class DefaultConfigBuilderFactory implements ConfigBuilderFactory {
 
     @Inject
     public DefaultConfigBuilderFactory(BeanFinder beanFinder) {
+        this.finder = beanFinder;
         this.providers = beanFinder.beanSortedSet(ConfigProvider.class, Comparator.comparingInt(ConfigProvider::priority));
     }
 
@@ -45,6 +47,7 @@ public class DefaultConfigBuilderFactory implements ConfigBuilderFactory {
 
     @Override
     public ConfigBuilder createBuilder() {
+        finder.awaitCompletion();
         return new ConfigBuilderImpl();
     }
 

@@ -25,6 +25,7 @@ public class ErrorMapperServiceImpl implements ErrorMapperService {
 
     private final Map<Class<?>, ErrorMapper> errorMappers;
     private final AtomicReference<ErrorResponseStrategy> responseStrategyRef;
+    private final BeanFinder finder;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
@@ -32,6 +33,7 @@ public class ErrorMapperServiceImpl implements ErrorMapperService {
 
     @Inject
     public ErrorMapperServiceImpl(BeanFinder finder) {
+        this.finder = finder;
         this.errorMappers = finder.beanMap(ErrorMapper.class, ErrorMapper::getExceptionType);
         this.responseStrategyRef = finder.beanReference(ErrorResponseStrategy.class, PlainTextErrorResponseStrategy.INSTANCE);
     }
@@ -42,11 +44,13 @@ public class ErrorMapperServiceImpl implements ErrorMapperService {
 
     @Override
     public Exception createException(Response response) {
+        finder.awaitCompletion();
         return getErrorResponseStrategy().createException(response);
     }
 
     @Override
     public Response createResponse(Exception e) {
+        finder.awaitCompletion();
         ErrorMapper handler = getExceptionHandler(e);
         return getErrorResponseStrategy().createResponse(handler.getStatus(e), handler.getErrorMessages(e));
     }

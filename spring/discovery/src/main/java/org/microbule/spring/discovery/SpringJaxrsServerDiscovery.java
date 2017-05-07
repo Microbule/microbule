@@ -9,6 +9,7 @@ import javax.ws.rs.Path;
 
 import org.microbule.api.JaxrsConfigService;
 import org.microbule.api.JaxrsServerFactory;
+import org.microbule.config.api.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -30,7 +31,6 @@ public class SpringJaxrsServerDiscovery implements BeanPostProcessor {
 
     @Autowired
     private JaxrsConfigService configService;
-
 
     @Autowired
     private JaxrsServerFactory factory;
@@ -66,7 +66,8 @@ public class SpringJaxrsServerDiscovery implements BeanPostProcessor {
     public void onRefreshed(ContextRefreshedEvent event) {
         specs.forEach(spec -> {
             LOGGER.info("Creating {} JAX-RS server for bean named \"{}\".", spec.getServiceInterface().getSimpleName(), spec.getBeanName());
-            factory.createJaxrsServer(spec.getServiceInterface(), spec.getServiceImplementation(), configService.createServerConfig(spec.getServiceInterface()));
+            final Config config = configService.createServerConfig(spec.getServiceInterface());
+            factory.createJaxrsServer(spec.getServiceInterface(), spec.getServiceImplementation(), config);
             LOGGER.info("{} service started.", spec.getServiceInterface().getSimpleName());
         });
     }

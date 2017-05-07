@@ -42,6 +42,7 @@ public class DefaultJaxrsServerFactory extends JaxrsServiceDecoratorRegistry<Jax
     public JaxrsServer createJaxrsServer(Class<?> serviceInterface, Object serviceImplementation, Config config) {
         getFinder().awaitCompletion();
         final String address = config.value(ADDRESS_PROP).orElseThrow(() -> new ConfigurationException("Missing '%s' property.", ADDRESS_PROP));
+        LOGGER.info("Starting {} JAX-RS server ({})...",serviceInterface.getSimpleName(), address);
         final JaxrsServiceDescriptorImpl descriptor = new JaxrsServiceDescriptorImpl(serviceInterface);
         decorate(descriptor, config);
         final JAXRSServerFactoryBean sf = new JAXRSServerFactoryBean();
@@ -50,7 +51,9 @@ public class DefaultJaxrsServerFactory extends JaxrsServiceDecoratorRegistry<Jax
         sf.setAddress(address);
         sf.setFeatures(descriptor.getFeatures());
         sf.setProviders(descriptor.getProviders());
+
         final Server server = sf.create();
+        LOGGER.info("Successfully started {} JAX-RS server ({}).",serviceInterface.getSimpleName(), address);
         return server::destroy;
     }
 

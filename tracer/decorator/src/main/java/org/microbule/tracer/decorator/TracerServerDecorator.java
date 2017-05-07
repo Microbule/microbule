@@ -20,6 +20,7 @@ public class TracerServerDecorator implements JaxrsServerDecorator, TracerConsta
 //----------------------------------------------------------------------------------------------------------------------
 
     private final AtomicReference<TracerIdStrategy> idGeneratorRef;
+    private final BeanFinder finder;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
@@ -27,6 +28,7 @@ public class TracerServerDecorator implements JaxrsServerDecorator, TracerConsta
 
     @Inject
     public TracerServerDecorator(BeanFinder finder) {
+        this.finder = finder;
         this.idGeneratorRef = finder.beanReference(TracerIdStrategy.class, UuidStrategy.INSTANCE);
     }
 
@@ -36,6 +38,7 @@ public class TracerServerDecorator implements JaxrsServerDecorator, TracerConsta
 
     @Override
     public void decorate(JaxrsServiceDescriptor descriptor, Config config) {
+        finder.awaitCompletion();
         final String traceIdHeader = config.value("traceIdHeader").orElse(DEFAULT_TRACE_ID_HEADER);
         final String requestIdHeader = config.value("requestIdHeader").orElse(DEFAULT_REQUEST_ID_HEADER);
         descriptor.addProvider(new TracerContainerFilter(idGeneratorRef, traceIdHeader, requestIdHeader));
