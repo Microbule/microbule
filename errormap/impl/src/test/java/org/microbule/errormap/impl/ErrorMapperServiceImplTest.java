@@ -5,7 +5,7 @@ import javax.ws.rs.core.Response;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.microbule.beanfinder.core.SimpleBeanFinder;
+import org.microbule.container.core.SimpleContainer;
 import org.microbule.test.core.MockObjectTestCase;
 
 public class ErrorMapperServiceImplTest extends MockObjectTestCase {
@@ -14,10 +14,10 @@ public class ErrorMapperServiceImplTest extends MockObjectTestCase {
 
     @Before
     public void initService() {
-        SimpleBeanFinder finder = new SimpleBeanFinder();
-        finder.addBean(new WebApplicationExceptionErrorMapper());
-        service = new ErrorMapperServiceImpl(finder);
-        finder.initialize();
+        SimpleContainer container = new SimpleContainer();
+        container.addBean(new WebApplicationExceptionErrorMapper());
+        service = new ErrorMapperServiceImpl(container);
+        container.initialize();
     }
 
     @Test

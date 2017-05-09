@@ -14,10 +14,10 @@
 
     <modules>
         <module>annotation</module>
-        <module>beanfinder</module>
+        <module>container</module>
+
         <module>config</module>
         <module>bootstrap</module>
-        <module>discovery</module>
     </modules>
 
     <dependencies>

@@ -7,8 +7,8 @@ import javax.ws.rs.core.Response;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.microbule.beanfinder.core.SimpleBeanFinder;
 import org.microbule.config.core.MapConfig;
+import org.microbule.container.core.SimpleContainer;
 import org.microbule.test.server.hello.HelloTestCase;
 
 public class CorsDecoratorTest extends HelloTestCase {
@@ -23,8 +23,8 @@ public class CorsDecoratorTest extends HelloTestCase {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    protected void addBeans(SimpleBeanFinder finder) {
-        finder.addBean(new CorsDecorator());
+    protected void addBeans(SimpleContainer container) {
+        container.addBean(new CorsDecorator());
     }
 
     @Override

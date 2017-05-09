@@ -2,10 +2,10 @@
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
 xmlns:microbule="http://www.microbule.org/blueprint">
 
-    <microbule:beanFinder id="beanFinder" />
+    <microbule:container id="container" />
 
     <bean id="gsonService" class="org.microbule.gson.core.GsonServiceImpl">
-        <argument ref="beanFinder" />
+        <argument ref="container" />
     </bean>
 
     <service ref="gsonService" interface="org.microbule.gson.api.GsonService"/>

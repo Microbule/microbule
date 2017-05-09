@@ -31,8 +31,8 @@
         <bundle dependency="true">mvn:org.apache.commons/commons-lang3/${commons.lang3.version}</bundle>
         <bundle dependency="true">mvn:com.savoirtech.eos/eos-core/${eos.version}</bundle>
 
-        <bundle>mvn:org.microbule/microbule-beanfinder-api/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-beanfinder-core/${project.version}</bundle>
+        <bundle>mvn:org.microbule/microbule-container-api/${project.version}</bundle>
+        <bundle>mvn:org.microbule/microbule-container-core/${project.version}</bundle>
 
         <bundle>mvn:org.microbule/microbule-config-api/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-config-spi/${project.version}</bundle>
@@ -43,10 +43,9 @@
         <bundle>mvn:org.microbule/microbule-api/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-spi/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-core/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-osgi-beanfinder/${project.version}</bundle>
+        <bundle>mvn:org.microbule/microbule-osgi-container/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-osgi-blueprint/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-osgi-config/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-osgi-core/${project.version}</bundle>
     </feature>
 
     <feature name="microbule-errormap" version="${project.version}">

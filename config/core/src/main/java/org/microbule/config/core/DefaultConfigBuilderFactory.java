@@ -11,11 +11,11 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import org.microbule.beanfinder.api.BeanFinder;
 import org.microbule.config.api.Config;
 import org.microbule.config.api.ConfigBuilder;
 import org.microbule.config.api.ConfigBuilderFactory;
 import org.microbule.config.spi.ConfigProvider;
+import org.microbule.container.api.MicrobuleContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,16 +29,14 @@ public class DefaultConfigBuilderFactory implements ConfigBuilderFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultConfigBuilderFactory.class);
 
     private final Set<ConfigProvider> providers;
-    private final BeanFinder finder;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
     @Inject
-    public DefaultConfigBuilderFactory(BeanFinder beanFinder) {
-        this.finder = beanFinder;
-        this.providers = beanFinder.beanSortedSet(ConfigProvider.class, Comparator.comparingInt(ConfigProvider::priority));
+    public DefaultConfigBuilderFactory(MicrobuleContainer container) {
+        this.providers = container.pluginSortedSet(ConfigProvider.class, Comparator.comparingInt(ConfigProvider::priority));
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -47,7 +45,6 @@ public class DefaultConfigBuilderFactory implements ConfigBuilderFactory {
 
     @Override
     public ConfigBuilder createBuilder() {
-        finder.awaitCompletion();
         return new ConfigBuilderImpl();
     }
 

@@ -4,8 +4,8 @@ import javax.ws.rs.ProcessingException;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.microbule.beanfinder.core.SimpleBeanFinder;
 import org.microbule.config.core.MapConfig;
+import org.microbule.container.core.SimpleContainer;
 import org.microbule.test.server.JaxrsServerTestCase;
 
 public class TimeoutProxyDecoratorTest extends JaxrsServerTestCase<DelayResource> {
@@ -14,8 +14,8 @@ public class TimeoutProxyDecoratorTest extends JaxrsServerTestCase<DelayResource
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    protected void addBeans(SimpleBeanFinder finder) {
-        finder.addBean(new TimeoutProxyDecorator());
+    protected void addBeans(SimpleContainer container) {
+        container.addBean(new TimeoutProxyDecorator());
     }
 
     @Override

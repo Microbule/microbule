@@ -20,7 +20,7 @@
         </dependency>
         <dependency>
             <groupId>org.microbule</groupId>
-            <artifactId>microbule-beanfinder-core</artifactId>
+            <artifactId>microbule-container-core</artifactId>
             <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
@@ -30,7 +30,7 @@
         </dependency>
         <dependency>
             <groupId>org.microbule</groupId>
-            <artifactId>microbule-osgi-beanfinder</artifactId>
+            <artifactId>microbule-osgi-container</artifactId>
             <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>

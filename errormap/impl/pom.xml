@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>org.microbule</groupId>
-            <artifactId>microbule-beanfinder-api</artifactId>
+            <artifactId>microbule-container-api</artifactId>
             <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>

@@ -12,8 +12,8 @@ import javax.inject.Singleton;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.microbule.beanfinder.api.BeanFinder;
-import org.microbule.beanfinder.api.BeanFinderListener;
+import org.microbule.container.api.MicrobuleContainer;
+import org.microbule.container.api.PluginListener;
 import org.microbule.gson.api.GsonService;
 import org.microbule.gson.spi.GsonCustomizer;
 
@@ -26,16 +26,14 @@ public class GsonServiceImpl implements GsonService {
 
     private final List<GsonCustomizer> customizers = new CopyOnWriteArrayList<>();
     private final AtomicReference<Gson> gson = new AtomicReference<>(new GsonBuilder().create());
-    private final BeanFinder finder;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
     @Inject
-    public GsonServiceImpl(BeanFinder beanFinder) {
-        this.finder = beanFinder;
-        beanFinder.findBeans(GsonCustomizer.class, new GsonCustomizerListener());
+    public GsonServiceImpl(MicrobuleContainer container) {
+        container.addPluginListener(GsonCustomizer.class, new GsonCustomizerListener());
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -69,7 +67,6 @@ public class GsonServiceImpl implements GsonService {
     }
 
     private Gson getGson() {
-        finder.awaitCompletion();
         return gson.get();
     }
 
@@ -83,19 +80,19 @@ public class GsonServiceImpl implements GsonService {
 // Inner Classes
 //----------------------------------------------------------------------------------------------------------------------
 
-    private class GsonCustomizerListener implements BeanFinderListener<GsonCustomizer> {
+    private class GsonCustomizerListener implements PluginListener<GsonCustomizer> {
 //----------------------------------------------------------------------------------------------------------------------
-// BeanFinderListener Implementation
+// PluginListener Implementation
 //----------------------------------------------------------------------------------------------------------------------
 
         @Override
-        public boolean beanFound(GsonCustomizer bean) {
-            addCustomizer(bean);
+        public boolean registerPlugin(GsonCustomizer plugin) {
+            addCustomizer(plugin);
             return true;
         }
 
         @Override
-        public void beanLost(GsonCustomizer bean) {
+        public void unregisterPlugin(GsonCustomizer bean) {
             removeCustomizer(bean);
         }
     }

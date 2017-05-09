@@ -13,10 +13,9 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>beanfinder</module>
         <module>blueprint</module>
-        <module>core</module>
         <module>config</module>
+        <module>container</module>
     </modules>
     <dependencies>
         <dependency>

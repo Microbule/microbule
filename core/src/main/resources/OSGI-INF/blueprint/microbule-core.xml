@@ -2,27 +2,32 @@
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
            xmlns:microbule="http://www.microbule.org/blueprint">
 
-    <microbule:beanFinder id="finder" />
+    <microbule:container id="container" />
 
     <reference id="configBuilderFactory" interface="org.microbule.config.api.ConfigBuilderFactory" />
 
-    <bean id="proxyFactory" class="org.microbule.core.DefaultJaxrsProxyFactory" init-method="start">
-        <argument ref="finder" />
+    <bean id="proxyFactory" class="org.microbule.core.DefaultJaxrsProxyFactory">
+        <argument ref="container" />
     </bean>
 
     <service ref="proxyFactory" interface="org.microbule.api.JaxrsProxyFactory" />
 
-    <bean id="serverFactory" class="org.microbule.core.DefaultJaxrsServerFactory" init-method="start">
-        <argument ref="finder" />
+    <bean id="serverFactory" class="org.microbule.core.DefaultJaxrsServerFactory">
+        <argument ref="container" />
     </bean>
 
     <service ref="serverFactory" interface="org.microbule.api.JaxrsServerFactory" />
 
     <bean id="configService" class="org.microbule.core.DefaultJaxrsConfigService">
-        <argument ref="finder" />
+        <argument ref="container" />
         <argument ref="configBuilderFactory" />
     </bean>
 
     <service ref="configService" interface="org.microbule.api.JaxrsConfigService" />
 
+    <bean id="bootstrap" class="org.microbule.core.JaxrsServerBootstrap">
+        <argument ref="container" />
+        <argument ref="serverFactory" />
+        <argument ref="configService" />
+    </bean>
 </blueprint>

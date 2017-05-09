@@ -15,7 +15,7 @@
     <dependencies>
         <dependency>
             <groupId>org.microbule</groupId>
-            <artifactId>microbule-beanfinder-api</artifactId>
+            <artifactId>microbule-container-api</artifactId>
             <version>0.3.0-SNAPSHOT</version>
         </dependency>
         <dependency>
@@ -36,12 +36,6 @@
         <dependency>
             <groupId>org.microbule</groupId>
             <artifactId>microbule-test-core</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-beanfinder-core</artifactId>
             <version>0.3.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>

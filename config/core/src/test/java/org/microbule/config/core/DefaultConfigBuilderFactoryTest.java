@@ -1,12 +1,18 @@
 package org.microbule.config.core;
 
+import java.util.Comparator;
+import java.util.SortedSet;
+import java.util.concurrent.ConcurrentSkipListSet;
+
 import org.junit.Test;
-import org.microbule.beanfinder.core.SimpleBeanFinder;
 import org.microbule.config.api.Config;
 import org.microbule.config.spi.ConfigProvider;
+import org.microbule.container.api.MicrobuleContainer;
 import org.microbule.test.core.MockObjectTestCase;
 import org.mockito.Mock;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.when;
 
 public class DefaultConfigBuilderFactoryTest extends MockObjectTestCase  {
@@ -19,6 +25,9 @@ public class DefaultConfigBuilderFactoryTest extends MockObjectTestCase  {
 
     @Mock
     private ConfigProvider provider2;
+
+    @Mock
+    private MicrobuleContainer container;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
@@ -54,13 +63,17 @@ public class DefaultConfigBuilderFactoryTest extends MockObjectTestCase  {
         when(provider2.name()).thenReturn("provider2");
         when(provider2.priority()).thenReturn(ConfigProvider.EXTERNAL_PRIORITY);
 
-        final SimpleBeanFinder finder = new SimpleBeanFinder();
-        finder.addBean(provider1);
-        finder.addBean(provider2);
+
+        when(container.pluginSortedSet(same(ConfigProvider.class), any())).thenAnswer(invocation -> {
+            SortedSet<ConfigProvider> set = new ConcurrentSkipListSet<>((Comparator<ConfigProvider>)invocation.getArgument(1));
+            set.add(provider1);
+            set.add(provider2);
+            return set;
+        });
+
+        final DefaultConfigBuilderFactory configService = new DefaultConfigBuilderFactory(container);
 
 
-        final DefaultConfigBuilderFactory configService = new DefaultConfigBuilderFactory(finder);
-        finder.initialize();
 
         final Config config = configService.createBuilder()
                 .withPath("a")

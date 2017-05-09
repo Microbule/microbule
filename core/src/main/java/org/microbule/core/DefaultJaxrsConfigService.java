@@ -7,9 +7,9 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.microbule.api.JaxrsConfigService;
-import org.microbule.beanfinder.api.BeanFinder;
 import org.microbule.config.api.Config;
 import org.microbule.config.api.ConfigBuilderFactory;
+import org.microbule.container.api.MicrobuleContainer;
 import org.microbule.spi.JaxrsConfigBuilderStrategy;
 
 @Singleton
@@ -22,17 +22,14 @@ public class DefaultJaxrsConfigService implements JaxrsConfigService {
     private final AtomicReference<JaxrsConfigBuilderStrategy> serviceConfigBuilder;
     private final ConfigBuilderFactory configBuilderFactory;
 
-    private final BeanFinder finder;
-
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
     @Inject
-    public DefaultJaxrsConfigService(BeanFinder finder, ConfigBuilderFactory configBuilderFactory) {
-        this.finder = finder;
+    public DefaultJaxrsConfigService(MicrobuleContainer container, ConfigBuilderFactory configBuilderFactory) {
         this.configBuilderFactory = configBuilderFactory;
-        serviceConfigBuilder = finder.beanReference(JaxrsConfigBuilderStrategy.class, new DefaultJaxrsConfigBuilderStrategy());
+        serviceConfigBuilder = container.pluginReference(JaxrsConfigBuilderStrategy.class, new DefaultJaxrsConfigBuilderStrategy());
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -40,26 +37,12 @@ public class DefaultJaxrsConfigService implements JaxrsConfigService {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public <T> Config createProxyConfig(Class<T> serviceInterface) {
-        finder.awaitCompletion();
-        return serviceConfigBuilder.get().buildProxyConfig(serviceInterface, configBuilderFactory.createBuilder()).build();
-    }
-
-    @Override
     public <T> Config createProxyConfig(Class<T> serviceInterface, Config custom) {
-        finder.awaitCompletion();
         return serviceConfigBuilder.get().buildProxyConfig(serviceInterface, configBuilderFactory.createBuilder().withCustom(custom)).build();
     }
 
     @Override
-    public <T> Config createServerConfig(Class<T> serviceInterface) {
-        finder.awaitCompletion();
-        return serviceConfigBuilder.get().buildServerConfig(serviceInterface, configBuilderFactory.createBuilder()).build();
-    }
-
-    @Override
     public <T> Config createServerConfig(Class<T> serviceInterface, Config custom) {
-        finder.awaitCompletion();
         return serviceConfigBuilder.get().buildServerConfig(serviceInterface, configBuilderFactory.createBuilder().withCustom(custom)).build();
     }
 }

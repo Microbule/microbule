@@ -44,15 +44,15 @@ public class DefaultJaxrsServerFactoryTest extends Assert {
 //        listener.onBeanFound(mock);
 //        listener.onBeanFound(new )
 //        proxyFactory.addDecorator("mock", mock);
-//        proxyFactory.addDecorator("requestcount", (desc, config) -> desc.addProvider(clientRequestCount));
+//        proxyFactory.addDecorator("requestcount", (desc, customConfig) -> desc.addProvider(clientRequestCount));
 //        assertEquals(2, proxyFactory.getDecoratorCount());
 //        assertSame(mock, proxyFactory.getDecorator("mock"));
 //
-//        MapConfig config = new MapConfig();
+//        MapConfig customConfig = new MapConfig();
 //
-//        config.addValue(JaxrsProxyFactory.ADDRESS_PROP, BASE_ADDRESS);
+//        customConfig.addValue(JaxrsProxyFactory.ADDRESS_PROP, BASE_ADDRESS);
 //
-//        final HelloService proxy = proxyFactory.createProxy(HelloService.class, config);
+//        final HelloService proxy = proxyFactory.createProxy(HelloService.class, customConfig);
 //
 //        verify(mock).decorate(descriptorCaptor.capture(), any(Config.class));
 //        final JaxrsServiceDescriptor descriptor = descriptorCaptor.getValue();
@@ -68,12 +68,12 @@ public class DefaultJaxrsServerFactoryTest extends Assert {
 //    public void testCreateProxyWhenDecoratorDisabled() {
 //        final DefaultJaxrsProxyFactory proxyFactory = new DefaultJaxrsProxyFactory();
 //        proxyFactory.addDecorator("mock", mock);
-//        proxyFactory.addDecorator("requestcount", (desc, config) -> desc.addProvider(clientRequestCount));
+//        proxyFactory.addDecorator("requestcount", (desc, customConfig) -> desc.addProvider(clientRequestCount));
 //
-//        MapConfig config = new MapConfig();
-//        config.group("mock").addValue("enabled", "false");
-//        config.addValue(JaxrsProxyFactory.ADDRESS_PROP, BASE_ADDRESS);
-//        proxyFactory.createProxy(HelloService.class, config);
+//        MapConfig customConfig = new MapConfig();
+//        customConfig.group("mock").addValue("enabled", "false");
+//        customConfig.addValue(JaxrsProxyFactory.ADDRESS_PROP, BASE_ADDRESS);
+//        proxyFactory.createProxy(HelloService.class, customConfig);
 //        verifyNoMoreInteractions(mock);
 //    }
 //
@@ -96,13 +96,13 @@ public class DefaultJaxrsServerFactoryTest extends Assert {
 //            }
 //
 //            @Override
-//            public void decorate(JaxrsServiceDescriptor descriptor, Config config) {
+//            public void decorate(JaxrsServiceDescriptor descriptor, Config customConfig) {
 //                descriptor.addProvider(containerRequestCount);
 //            }
 //        });
-//        MapConfig config = new MapConfig();
-//        config.addValue(JaxrsServerFactory.ADDRESS_PROP, BASE_ADDRESS);
-//        server = serverFactory.createJaxrsServer(HelloService.class, new HelloServiceImpl(), config);
+//        MapConfig customConfig = new MapConfig();
+//        customConfig.addValue(JaxrsServerFactory.ADDRESS_PROP, BASE_ADDRESS);
+//        server = serverFactory.createJaxrsServer(HelloService.class, new HelloServiceImpl(), customConfig);
 //    }
 //
 //    @Test

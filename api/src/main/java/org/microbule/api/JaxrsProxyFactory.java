@@ -13,9 +13,18 @@ public interface JaxrsProxyFactory {
      * Creates a JAX-RS proxy which supports the JAX-RS annotated <code>serviceInterface</code>.
      *
      * @param serviceInterface the service interface
-     * @param config           the configuration
+     * @param custom           the custom configuration
      * @param <T>              the proxy type
      * @return the proxy
      */
-    <T> T createProxy(Class<T> serviceInterface, Config config);
+    <T> T createProxy(Class<T> serviceInterface, Config custom);
+
+    /**
+     * Creates a JAX-RS proxy which supports the JAX-RS annotated <code>serviceInterface</code>.
+     *
+     * @param serviceInterface the service interface
+     * @param <T>              the proxy type
+     * @return the
+     */
+    <T> T createProxy(Class<T> serviceInterface);
 }

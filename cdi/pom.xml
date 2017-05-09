@@ -13,9 +13,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>core</module>
-        <module>beanfinder</module>
-        <module>discovery</module>
+        <module>container</module>
     </modules>
 
     <dependencies>

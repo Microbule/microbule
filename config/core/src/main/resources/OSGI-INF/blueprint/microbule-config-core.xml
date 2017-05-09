@@ -8,12 +8,12 @@
         </cm:default-properties>
     </cm:property-placeholder>
 
-    <microbule:beanFinder id="beanFinder" />
+    <microbule:container id="container"/>
 
-    <bean id="configService" class="org.microbule.config.core.DefaultConfigBuilderFactory">
-        <argument ref="beanFinder"/>
+    <bean id="configBuilderFactory" class="org.microbule.config.core.DefaultConfigBuilderFactory">
+        <argument ref="container"/>
     </bean>
 
-    <service ref="configService" interface="org.microbule.config.api.ConfigBuilderFactory" />
+    <service ref="configBuilderFactory" interface="org.microbule.config.api.ConfigBuilderFactory" />
 
 </blueprint>

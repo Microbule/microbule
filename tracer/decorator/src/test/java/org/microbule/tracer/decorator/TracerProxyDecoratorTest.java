@@ -2,7 +2,7 @@ package org.microbule.tracer.decorator;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.microbule.beanfinder.core.SimpleBeanFinder;
+import org.microbule.container.core.SimpleContainer;
 import org.microbule.test.server.hello.HelloService;
 import org.microbule.test.server.hello.HelloTestCase;
 import org.slf4j.MDC;
@@ -13,8 +13,8 @@ public class TracerProxyDecoratorTest extends HelloTestCase {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    protected void addBeans(SimpleBeanFinder finder) {
-        finder.addBean(new TracerProxyDecorator());
+    protected void addBeans(SimpleContainer container) {
+        container.addBean(new TracerProxyDecorator());
     }
 
     @Test

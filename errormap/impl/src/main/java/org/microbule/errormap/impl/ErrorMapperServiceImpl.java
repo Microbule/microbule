@@ -9,7 +9,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.ws.rs.core.Response;
 
-import org.microbule.beanfinder.api.BeanFinder;
+import org.microbule.container.api.MicrobuleContainer;
 import org.microbule.errormap.api.ErrorMapperService;
 import org.microbule.errormap.spi.ErrorMapper;
 import org.microbule.errormap.spi.ErrorResponseStrategy;
@@ -25,17 +25,15 @@ public class ErrorMapperServiceImpl implements ErrorMapperService {
 
     private final Map<Class<?>, ErrorMapper> errorMappers;
     private final AtomicReference<ErrorResponseStrategy> responseStrategyRef;
-    private final BeanFinder finder;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
     @Inject
-    public ErrorMapperServiceImpl(BeanFinder finder) {
-        this.finder = finder;
-        this.errorMappers = finder.beanMap(ErrorMapper.class, ErrorMapper::getExceptionType);
-        this.responseStrategyRef = finder.beanReference(ErrorResponseStrategy.class, PlainTextErrorResponseStrategy.INSTANCE);
+    public ErrorMapperServiceImpl(MicrobuleContainer container) {
+        this.errorMappers = container.pluginMap(ErrorMapper.class, ErrorMapper::getExceptionType);
+        this.responseStrategyRef = container.pluginReference(ErrorResponseStrategy.class, PlainTextErrorResponseStrategy.INSTANCE);
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -44,13 +42,11 @@ public class ErrorMapperServiceImpl implements ErrorMapperService {
 
     @Override
     public Exception createException(Response response) {
-        finder.awaitCompletion();
         return getErrorResponseStrategy().createException(response);
     }
 
     @Override
     public Response createResponse(Exception e) {
-        finder.awaitCompletion();
         ErrorMapper handler = getExceptionHandler(e);
         return getErrorResponseStrategy().createResponse(handler.getStatus(e), handler.getErrorMessages(e));
     }

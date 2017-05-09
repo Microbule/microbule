@@ -10,7 +10,7 @@ import org.apache.aries.blueprint.mutable.MutableBeanMetadata;
 import org.apache.aries.blueprint.mutable.MutableRefMetadata;
 import org.apache.aries.blueprint.mutable.MutableValueMetadata;
 import org.apache.commons.lang3.StringUtils;
-import org.microbule.osgi.beanfinder.OsgiBeanFinder;
+import org.microbule.osgi.container.OsgiContainer;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.reflect.ComponentMetadata;
 import org.osgi.service.blueprint.reflect.Metadata;
@@ -61,7 +61,7 @@ public class MicrobuleNamespaceHandler implements NamespaceHandler {
     @Override
     public Metadata parse(Element element, ParserContext parserContext) {
         switch (element.getLocalName()) {
-            case "beanFinder":
+            case "container":
                 return parseBeanFinder(element, parserContext);
         }
         return null;
@@ -75,8 +75,8 @@ public class MicrobuleNamespaceHandler implements NamespaceHandler {
         final MutableBeanMetadata bean = parserContext.createMetadata(MutableBeanMetadata.class);
         final String attrValue = element.getAttribute("quietPeriodInMs");
         final long quietPeriodInMs = StringUtils.isNotEmpty(attrValue) ? Long.parseLong(attrValue) : defaultQuietPeriodInMs;
-        bean.setClassName(OsgiBeanFinder.class.getName());
-        bean.setRuntimeClass(OsgiBeanFinder.class);
+        bean.setClassName(OsgiContainer.class.getName());
+        bean.setRuntimeClass(OsgiContainer.class);
         bean.setId(element.getAttribute(ID_ATTR));
         bean.addDependsOn(BUNDLE_CONTEXT_ID);
         bean.addArgument(bundleContextRef(parserContext), BundleContext.class.getName(), 0);

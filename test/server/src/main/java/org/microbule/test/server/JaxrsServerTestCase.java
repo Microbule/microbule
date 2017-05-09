@@ -15,8 +15,8 @@ import org.junit.Before;
 import org.microbule.api.JaxrsProxyFactory;
 import org.microbule.api.JaxrsServer;
 import org.microbule.api.JaxrsServerFactory;
-import org.microbule.beanfinder.core.SimpleBeanFinder;
 import org.microbule.config.core.MapConfig;
+import org.microbule.container.core.SimpleContainer;
 import org.microbule.core.DefaultJaxrsProxyFactory;
 import org.microbule.core.DefaultJaxrsServerFactory;
 import org.microbule.test.core.MockObjectTestCase;
@@ -31,7 +31,7 @@ public abstract class JaxrsServerTestCase<T> extends MockObjectTestCase {
 
     private JaxrsServer server;
     private String baseAddress;
-    private final SimpleBeanFinder finder = new SimpleBeanFinder();
+    private final SimpleContainer container = new SimpleContainer();
     private DefaultJaxrsProxyFactory proxyFactory;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -52,7 +52,7 @@ public abstract class JaxrsServerTestCase<T> extends MockObjectTestCase {
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    protected void addBeans(SimpleBeanFinder finder) {
+    protected void addBeans(SimpleContainer container) {
         // Do nothing!
     }
 
@@ -96,14 +96,10 @@ public abstract class JaxrsServerTestCase<T> extends MockObjectTestCase {
 
     @Before
     public void startServer() {
-        final DefaultJaxrsServerFactory factory = new DefaultJaxrsServerFactory(finder);
-        factory.start();
-
-        proxyFactory = new DefaultJaxrsProxyFactory(finder);
-        proxyFactory.start();
-
-        addBeans(finder);
-        finder.initialize();
+        addBeans(container);
+        final DefaultJaxrsServerFactory factory = new DefaultJaxrsServerFactory(container);
+        proxyFactory = new DefaultJaxrsProxyFactory(container);
+        container.initialize();
 
         baseAddress = createBaseAddress();
 

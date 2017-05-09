@@ -10,8 +10,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 
 import org.junit.Test;
-import org.microbule.beanfinder.core.SimpleBeanFinder;
 import org.microbule.config.api.Config;
+import org.microbule.container.core.SimpleContainer;
 import org.microbule.spi.JaxrsServerDecorator;
 import org.microbule.spi.JaxrsServiceDescriptor;
 import org.microbule.test.server.hello.HelloTestCase;
@@ -22,9 +22,9 @@ public class ValidationDecoratorTest extends HelloTestCase {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    protected void addBeans(SimpleBeanFinder finder) {
-        finder.addBean(new ValidationDecorator());
-        finder.addBean(new JaxrsServerDecorator() {
+    protected void addBeans(SimpleContainer container) {
+        container.addBean(new ValidationDecorator());
+        container.addBean(new JaxrsServerDecorator() {
             @Override
             public String name() {
                 return "errorhandler";

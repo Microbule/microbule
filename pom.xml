@@ -40,8 +40,8 @@
         <module>itest</module>
         <module>config</module>
         <module>spring</module>
-        <module>beanfinder</module>
         <module>cdi</module>
+        <module>container</module>
     </modules>
 
     <properties>

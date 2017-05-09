@@ -30,7 +30,7 @@ public class TracerClientFilter implements ClientRequestFilter {
     @Override
     public void filter(ClientRequestContext requestContext) throws IOException {
         final String traceId = MDC.get(TracerConstants.TRACE_ID_KEY);
-        if(StringUtils.isNotBlank(traceId)) {
+        if (StringUtils.isNotBlank(traceId)) {
             requestContext.getHeaders().putSingle(traceIdHeader, traceId);
         }
     }

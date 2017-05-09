@@ -1,0 +1,28 @@
+package org.microbule.container.api;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.SortedSet;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
+
+public interface MicrobuleContainer {
+//----------------------------------------------------------------------------------------------------------------------
+// Other Methods
+//----------------------------------------------------------------------------------------------------------------------
+
+    <B> void addPluginListener(Class<B> beanType, PluginListener<B> listener);
+
+    void addServerListener(ServerListener listener);
+
+    <B> List<B> pluginList(Class<B> beanType);
+
+    <K, B> Map<K, B> pluginMap(Class<B> beanType, Function<B, K> keyFunction);
+
+    <B> AtomicReference<B> pluginReference(Class<B> beanType, B defaultValue);
+
+    <B extends Comparable<? super B>> SortedSet<B> pluginSortedSet(Class<B> pluginType);
+
+    <B> SortedSet<B> pluginSortedSet(Class<B> beanType, Comparator<? super B> comparator);
+}

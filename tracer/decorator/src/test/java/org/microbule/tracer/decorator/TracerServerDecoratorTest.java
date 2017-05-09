@@ -7,7 +7,7 @@ import javax.ws.rs.core.Response;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
-import org.microbule.beanfinder.core.SimpleBeanFinder;
+import org.microbule.container.core.SimpleContainer;
 import org.microbule.test.osgi.OsgiRule;
 import org.microbule.test.server.hello.HelloTestCase;
 
@@ -24,8 +24,8 @@ public class TracerServerDecoratorTest extends HelloTestCase {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    protected void addBeans(SimpleBeanFinder finder) {
-        finder.addBean(new TracerServerDecorator(finder));
+    protected void addBeans(SimpleContainer container) {
+        container.addBean(new TracerServerDecorator(container));
     }
 
     @Test

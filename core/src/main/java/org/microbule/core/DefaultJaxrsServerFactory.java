@@ -9,9 +9,9 @@ import org.apache.cxf.endpoint.Server;
 import org.apache.cxf.jaxrs.JAXRSServerFactoryBean;
 import org.microbule.api.JaxrsServer;
 import org.microbule.api.JaxrsServerFactory;
-import org.microbule.beanfinder.api.BeanFinder;
 import org.microbule.config.api.Config;
 import org.microbule.config.api.ConfigurationException;
+import org.microbule.container.api.MicrobuleContainer;
 import org.microbule.spi.JaxrsServerDecorator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +30,8 @@ public class DefaultJaxrsServerFactory extends JaxrsServiceDecoratorRegistry<Jax
 //----------------------------------------------------------------------------------------------------------------------
 
     @Inject
-    public DefaultJaxrsServerFactory(BeanFinder finder) {
-        super(JaxrsServerDecorator.class, finder);
+    public DefaultJaxrsServerFactory(MicrobuleContainer container) {
+        super(JaxrsServerDecorator.class, container);
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -40,7 +40,6 @@ public class DefaultJaxrsServerFactory extends JaxrsServiceDecoratorRegistry<Jax
 
     @Override
     public JaxrsServer createJaxrsServer(Class<?> serviceInterface, Object serviceImplementation, Config config) {
-        getFinder().awaitCompletion();
         final String address = config.value(ADDRESS_PROP).orElseThrow(() -> new ConfigurationException("Missing '%s' property.", ADDRESS_PROP));
         LOGGER.info("Starting {} JAX-RS server ({})...",serviceInterface.getSimpleName(), address);
         final JaxrsServiceDescriptorImpl descriptor = new JaxrsServiceDescriptorImpl(serviceInterface);
@@ -51,7 +50,6 @@ public class DefaultJaxrsServerFactory extends JaxrsServiceDecoratorRegistry<Jax
         sf.setAddress(address);
         sf.setFeatures(descriptor.getFeatures());
         sf.setProviders(descriptor.getProviders());
-
         final Server server = sf.create();
         LOGGER.info("Successfully started {} JAX-RS server ({}).",serviceInterface.getSimpleName(), address);
         return server::destroy;

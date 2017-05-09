@@ -11,9 +11,9 @@ import javax.ws.rs.core.Response;
 
 import org.apache.cxf.jaxrs.utils.HttpUtils;
 import org.junit.Test;
-import org.microbule.beanfinder.core.SimpleBeanFinder;
 import org.microbule.cache.decorator.resource.CacheResource;
 import org.microbule.cache.decorator.resource.CacheResourceImpl;
+import org.microbule.container.core.SimpleContainer;
 import org.microbule.test.server.JaxrsServerTestCase;
 
 public class CacheServerDecoratorTest extends JaxrsServerTestCase<CacheResource> {
@@ -22,8 +22,8 @@ public class CacheServerDecoratorTest extends JaxrsServerTestCase<CacheResource>
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    protected void addBeans(SimpleBeanFinder finder) {
-        finder.addBean(new CacheServerDecorator());
+    protected void addBeans(SimpleContainer container) {
+        container.addBean(new CacheServerDecorator());
     }
 
     @Override
