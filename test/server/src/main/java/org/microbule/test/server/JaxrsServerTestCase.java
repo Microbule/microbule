@@ -96,11 +96,11 @@ public abstract class JaxrsServerTestCase<T> extends MockObjectTestCase implemen
     }
 
     protected void configureProxy(MapConfig proxyConfig) {
-
+        // Do nothing!
     }
 
     protected void configureServer(MapConfig serverConfig) {
-
+        // Do nothing!
     }
 
     protected String createBaseAddress() {
