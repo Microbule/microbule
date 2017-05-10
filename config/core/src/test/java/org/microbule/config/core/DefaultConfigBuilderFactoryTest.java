@@ -1,3 +1,20 @@
+/*
+ * Copyright (c) 2017 The Microbule Authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package org.microbule.config.core;
 
 import java.util.Comparator;
@@ -34,13 +51,12 @@ public class DefaultConfigBuilderFactoryTest extends MockObjectTestCase  {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testWithNoConfigProviders() {
         final MapConfig config1 = new MapConfig();
         config1.addValue("a.one", "config1.a1");
         config1.addValue("b.one", "config1.b1");
         config1.addValue("b.two", "config1.b2");
-        config1.addValue("a.custom", "config1.aCustom");
-        config1.addValue("b.custom", "config1.bCustom");
 
         when(provider1.getConfig("a")).thenReturn(config1.group("a"));
         when(provider1.getConfig("b")).thenReturn(config1.group("b"));
@@ -52,11 +68,6 @@ public class DefaultConfigBuilderFactoryTest extends MockObjectTestCase  {
         config2.addValue("a.three", "config2.a3");
         config2.addValue("b.one", "config2.b1");
         config2.addValue("b.three", "config2.b3");
-        config2.addValue("a.custom", "config2.aCustom");
-        config2.addValue("b.custom", "config2.bCustom");
-
-        final MapConfig custom = new MapConfig();
-        custom.addValue("custom", "OVERRIDE");
 
         when(provider2.getConfig("a")).thenReturn(config2.group("a"));
         when(provider2.getConfig("b")).thenReturn(config2.group("b"));
@@ -73,17 +84,13 @@ public class DefaultConfigBuilderFactoryTest extends MockObjectTestCase  {
 
         final DefaultConfigBuilderFactory configService = new DefaultConfigBuilderFactory(container);
 
-
-
         final Config config = configService.createBuilder()
                 .withPath("a")
                 .withPath("b")
-                .withCustom(custom)
                 .build();
 
         assertEquals("config1.a1", config.value("one").get());
         assertEquals("config1.b2", config.value("two").get());
         assertEquals("config2.a3", config.value("three").get());
-        assertEquals("OVERRIDE", config.value("custom").get());
     }
 }

@@ -1,3 +1,20 @@
+/*
+ * Copyright (c) 2017 The Microbule Authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package org.microbule.core;
 
 import java.util.Map;
@@ -7,15 +24,11 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import com.google.common.collect.MapMaker;
-import org.microbule.api.JaxrsConfigService;
 import org.microbule.api.JaxrsServer;
 import org.microbule.api.JaxrsServerFactory;
-import org.microbule.config.api.Config;
 import org.microbule.container.api.MicrobuleContainer;
 import org.microbule.container.api.ServerDefinition;
 import org.microbule.container.api.ServerListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Named("jaxrsServerBootstrap")
 @Singleton
@@ -24,10 +37,7 @@ public class JaxrsServerBootstrap implements ServerListener {
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JaxrsServerBootstrap.class);
-
     private final JaxrsServerFactory factory;
-    private final JaxrsConfigService configService;
     private final Map<String, JaxrsServer> servers = new MapMaker().makeMap();
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -35,9 +45,8 @@ public class JaxrsServerBootstrap implements ServerListener {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Inject
-    public JaxrsServerBootstrap(MicrobuleContainer container, JaxrsServerFactory factory, JaxrsConfigService configService) {
+    public JaxrsServerBootstrap(MicrobuleContainer container, JaxrsServerFactory factory) {
         this.factory = factory;
-        this.configService = configService;
         container.addServerListener(this);
     }
 
@@ -47,8 +56,7 @@ public class JaxrsServerBootstrap implements ServerListener {
 
     @Override
     public void registerServer(ServerDefinition serverDefinition) {
-        final Config config = configService.createServerConfig(serverDefinition.serviceInterface(), serverDefinition.customConfig());
-        final JaxrsServer server = factory.createJaxrsServer(serverDefinition.serviceInterface(), serverDefinition.serviceImplementation(), config);
+        final JaxrsServer server = factory.createJaxrsServer(serverDefinition.serviceInterface(), serverDefinition.serviceImplementation());
         servers.put(serverDefinition.id(), server);
     }
 

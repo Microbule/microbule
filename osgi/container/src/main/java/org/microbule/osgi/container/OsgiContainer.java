@@ -1,21 +1,32 @@
+/*
+ * Copyright (c) 2017 The Microbule Authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package org.microbule.osgi.container;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.ws.rs.Path;
 
-import org.microbule.config.api.Config;
-import org.microbule.config.core.MapConfig;
 import org.microbule.container.api.PluginListener;
 import org.microbule.container.api.ServerListener;
 import org.microbule.container.core.AbstractContainer;
@@ -33,7 +44,6 @@ public class OsgiContainer extends AbstractContainer {
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    private static final String MICROBULE_GROUP = "microbule";
     private static final String MICROBULE_SERVER_FILTER = "(microbule.server=*)";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OsgiContainer.class);
@@ -44,14 +54,6 @@ public class OsgiContainer extends AbstractContainer {
     private final AtomicLong lastUpdated;
     private final ScheduledExecutorService scheduler;
     private final long quietPeriod;
-
-//----------------------------------------------------------------------------------------------------------------------
-// Static Methods
-//----------------------------------------------------------------------------------------------------------------------
-
-    private static Map<String, String> toMap(ServiceReference<?> ref) {
-        return Stream.of(ref.getPropertyKeys()).collect(Collectors.toMap(key -> key, key -> Optional.ofNullable(ref.getProperty(key)).map(String::valueOf).orElse(null)));
-    }
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
@@ -123,9 +125,8 @@ public class OsgiContainer extends AbstractContainer {
                 final Class<?> serviceInterface = ref.getBundle().loadClass(serviceInterfaceName);
                 if (serviceInterface.isAnnotationPresent(Path.class)) {
                     final Long serviceId = serviceId(ref);
-                    final Config custom = new MapConfig(toMap(ref)).group(MICROBULE_GROUP);
                     final Object serviceImplementation = bundleContext.getService(ref);
-                    final DefaultServerDefinition definition = new DefaultServerDefinition(serviceId.toString(), serviceInterface, serviceImplementation, custom);
+                    final DefaultServerDefinition definition = new DefaultServerDefinition(serviceId.toString(), serviceInterface, serviceImplementation);
                     serverListeners.forEach(listener -> listener.registerServer(definition));
                 }
             } catch (ClassNotFoundException e) {
