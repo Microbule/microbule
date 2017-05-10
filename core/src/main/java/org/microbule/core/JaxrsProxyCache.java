@@ -38,7 +38,7 @@ class JaxrsProxyCache<T> {
     public JaxrsProxyCache(Function<String, T> factory) {
         this.cache = CacheBuilder.newBuilder().expireAfterAccess(5, TimeUnit.MINUTES).build(new CacheLoader<String, T>() {
             @Override
-            public T load(String address) throws Exception {
+            public T load(String address) {
                 return factory.apply(address);
             }
         });

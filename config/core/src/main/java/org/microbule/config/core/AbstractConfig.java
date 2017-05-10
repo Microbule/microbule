@@ -59,7 +59,6 @@ public abstract class AbstractConfig implements Config {
 
     @Override
     public Optional<String> value(String key) {
-        "foo".hashCode();
         return qualifiedValue(qualify(key));
     }
 
@@ -67,7 +66,7 @@ public abstract class AbstractConfig implements Config {
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    protected String qualify(String key) {
+    private String qualify(String key) {
         return Optional.ofNullable(groupPrefix).map(prefix -> prefix + separator + key).orElse(key);
     }
 }
