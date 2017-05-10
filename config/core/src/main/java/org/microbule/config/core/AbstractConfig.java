@@ -66,7 +66,7 @@ public abstract class AbstractConfig implements Config {
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    private String qualify(String key) {
+    protected String qualify(String key) {
         return Optional.ofNullable(groupPrefix).map(prefix -> prefix + separator + key).orElse(key);
     }
 }
