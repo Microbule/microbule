@@ -22,8 +22,8 @@ import javax.ws.rs.core.Response;
 import org.junit.Test;
 import org.microbule.container.core.SimpleContainer;
 import org.microbule.errormap.api.ErrorMapperService;
-import org.microbule.test.server.hello.HelloService;
-import org.microbule.test.server.hello.HelloServiceImpl;
+import org.microbule.test.core.hello.HelloService;
+import org.microbule.test.core.hello.HelloServiceImpl;
 import org.microbule.test.server.hello.HelloTestCase;
 import org.mockito.Mock;
 

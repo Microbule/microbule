@@ -24,7 +24,7 @@ import org.junit.Test;
 import org.microbule.test.cdi.CdiTestCase;
 
 @Singleton
-public class CdiContainerTest extends CdiTestCase{
+public class CdiContainerTest extends CdiTestCase {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------

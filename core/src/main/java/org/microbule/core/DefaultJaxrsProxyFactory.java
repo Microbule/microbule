@@ -17,10 +17,6 @@
 
 package org.microbule.core;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 import java.util.concurrent.atomic.AtomicReference;
 
 import javax.inject.Inject;
@@ -34,6 +30,7 @@ import org.microbule.api.JaxrsConfigService;
 import org.microbule.api.JaxrsProxyFactory;
 import org.microbule.config.api.Config;
 import org.microbule.container.api.MicrobuleContainer;
+import org.microbule.spi.JaxrsDynamicProxyStrategy;
 import org.microbule.spi.JaxrsEndpointChooser;
 import org.microbule.spi.JaxrsProxyDecorator;
 import org.microbule.spi.JaxrsServiceDiscovery;
@@ -50,6 +47,7 @@ public class DefaultJaxrsProxyFactory extends JaxrsServiceDecoratorRegistry<Jaxr
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultJaxrsProxyFactory.class);
     private final JaxrsConfigService configService;
     private final AtomicReference<JaxrsServiceDiscovery> serviceDiscovery;
+    private final AtomicReference<JaxrsDynamicProxyStrategy> dynamicProxyStrategy;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
@@ -60,6 +58,7 @@ public class DefaultJaxrsProxyFactory extends JaxrsServiceDecoratorRegistry<Jaxr
         super(JaxrsProxyDecorator.class, container);
         this.configService = configService;
         this.serviceDiscovery = container.pluginReference(JaxrsServiceDiscovery.class, new DefaultJaxrsServiceDiscovery(configService));
+        this.dynamicProxyStrategy = container.pluginReference(JaxrsDynamicProxyStrategy.class, new JdkDynamicProxyStrategy());
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -76,8 +75,7 @@ public class DefaultJaxrsProxyFactory extends JaxrsServiceDecoratorRegistry<Jaxr
             return JAXRSClientFactory.create(baseAddress, serviceInterface, descriptor.getProviders(), descriptor.getFeatures(), null);
         });
         final Supplier<JaxrsEndpointChooser> endpointChooserSupplier = Suppliers.memoize(() -> createEndpointChooser(serviceInterface));
-        final JaxrsProxyInvocationHandler invocationHandler = new JaxrsProxyInvocationHandler<>(endpointChooserSupplier, cache);
-        return serviceInterface.cast(Proxy.newProxyInstance(serviceInterface.getClassLoader(), new Class[]{serviceInterface}, invocationHandler));
+        return dynamicProxyStrategy.get().createDynamicProxy(serviceInterface, () -> cache.getProxy(endpointChooserSupplier.get().chooseEndpoint()));
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -92,42 +90,5 @@ public class DefaultJaxrsProxyFactory extends JaxrsServiceDecoratorRegistry<Jaxr
     @Override
     protected Logger getLogger() {
         return LOGGER;
-    }
-
-//----------------------------------------------------------------------------------------------------------------------
-// Inner Classes
-//----------------------------------------------------------------------------------------------------------------------
-
-    private static final class JaxrsProxyInvocationHandler<T> implements InvocationHandler {
-//----------------------------------------------------------------------------------------------------------------------
-// Fields
-//----------------------------------------------------------------------------------------------------------------------
-
-        private final Supplier<JaxrsEndpointChooser> endpointChooserProvider;
-        private final JaxrsProxyCache<T> proxyCache;
-
-//----------------------------------------------------------------------------------------------------------------------
-// Constructors
-//----------------------------------------------------------------------------------------------------------------------
-
-        public JaxrsProxyInvocationHandler(Supplier<JaxrsEndpointChooser> endpointChooserProvider, JaxrsProxyCache<T> proxyCache) {
-            this.endpointChooserProvider = endpointChooserProvider;
-            this.proxyCache = proxyCache;
-        }
-
-//----------------------------------------------------------------------------------------------------------------------
-// InvocationHandler Implementation
-//----------------------------------------------------------------------------------------------------------------------
-
-        @Override
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            final String endpoint = endpointChooserProvider.get().chooseEndpoint();
-            final T delegate = proxyCache.getProxy(endpoint);
-            try {
-                return method.invoke(delegate, args);
-            } catch (InvocationTargetException e) {
-                throw e.getTargetException();
-            }
-        }
     }
 }

@@ -17,6 +17,9 @@
 
 package org.microbule.test.core;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
+
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
@@ -32,6 +35,15 @@ public class MicrobuleTestCase extends Assert {
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
+
+    protected void assertIsUtilsClass(Class<?> clazz) throws Exception {
+        assertTrue(Modifier.isFinal(clazz.getModifiers()));
+        assertEquals(1, clazz.getDeclaredConstructors().length);
+        final Constructor<?> ctor = clazz.getDeclaredConstructor();
+        assertTrue(Modifier.isPrivate(ctor.getModifiers()));
+        ctor.setAccessible(true);
+        ctor.newInstance();
+    }
 
     protected void expectException(Class<? extends Exception> type, String msg, Object... params) {
         exception.expect(type);

@@ -43,10 +43,13 @@
         <feature version="${cxf.version}" dependency="true">cxf-jaxrs</feature>
         <feature version="${cxf.version}" dependency="true">cxf-rs-description-swagger2</feature>
 
+        <bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.cglib/${cglib.version}</bundle>
         <bundle dependency="true">mvn:org.apache.geronimo.specs/geronimo-atinject_1.0_spec/1.0</bundle>
         <bundle dependency="true">mvn:com.google.guava/guava/${guava.version}</bundle>
         <bundle dependency="true">mvn:org.apache.commons/commons-lang3/${commons.lang3.version}</bundle>
         <bundle dependency="true">mvn:com.savoirtech.eos/eos-core/${eos.version}</bundle>
+
+        <bundle>mvn:org.microbule/microbule-util/${project.version}</bundle>
 
         <bundle>mvn:org.microbule/microbule-container-api/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-container-core/${project.version}</bundle>
@@ -59,6 +62,7 @@
 
         <bundle>mvn:org.microbule/microbule-api/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-spi/${project.version}</bundle>
+        <bundle>mvn:org.microbule/microbule-cglib/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-core/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-osgi-container/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-osgi-blueprint/${project.version}</bundle>

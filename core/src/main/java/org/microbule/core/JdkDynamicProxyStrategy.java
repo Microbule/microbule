@@ -15,16 +15,20 @@
  *
  */
 
-package org.microbule.core.service;
+package org.microbule.core;
 
-public class HelloServiceImpl implements HelloService {
+import java.util.function.Supplier;
+
+import org.microbule.spi.JaxrsDynamicProxyStrategy;
+import org.microbule.util.DynamicProxyUtils;
+
+public class JdkDynamicProxyStrategy implements JaxrsDynamicProxyStrategy {
 //----------------------------------------------------------------------------------------------------------------------
-// HelloService Implementation
+// JaxrsDynamicProxyStrategy Implementation
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public String sayHello(String name) {
-        return "Hello, " + name + "!";
+    public <T> T createDynamicProxy(Class<T> serviceInterface, Supplier<T> targetSupplier) {
+        return DynamicProxyUtils.createProxy(serviceInterface, targetSupplier);
     }
 }
-

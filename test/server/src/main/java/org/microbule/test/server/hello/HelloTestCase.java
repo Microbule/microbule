@@ -18,6 +18,8 @@
 package org.microbule.test.server.hello;
 
 import org.junit.Test;
+import org.microbule.test.core.hello.HelloService;
+import org.microbule.test.core.hello.HelloServiceImpl;
 import org.microbule.test.server.JaxrsServerTestCase;
 
 public abstract class HelloTestCase extends JaxrsServerTestCase<HelloService> {

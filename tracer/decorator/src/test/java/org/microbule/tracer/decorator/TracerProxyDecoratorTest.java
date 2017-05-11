@@ -20,7 +20,7 @@ package org.microbule.tracer.decorator;
 import org.junit.Assert;
 import org.junit.Test;
 import org.microbule.container.core.SimpleContainer;
-import org.microbule.test.server.hello.HelloService;
+import org.microbule.test.core.hello.HelloService;
 import org.microbule.test.server.hello.HelloTestCase;
 import org.slf4j.MDC;
 

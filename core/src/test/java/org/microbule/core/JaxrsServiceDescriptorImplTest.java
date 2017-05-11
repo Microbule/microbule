@@ -20,7 +20,7 @@ package org.microbule.core;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.microbule.core.service.HelloService;
+import org.microbule.test.core.hello.HelloService;
 
 public class JaxrsServiceDescriptorImplTest extends Assert {
 

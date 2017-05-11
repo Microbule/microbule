@@ -15,13 +15,26 @@
  *
  */
 
-package org.microbule.cdi.container;
+package org.microbule.test.core.hello;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-@Named("myService")
 @Singleton
-public class MyServiceImpl implements MyService {
+@Named("helloService")
+public class HelloServiceImpl implements HelloService {
+//----------------------------------------------------------------------------------------------------------------------
+// HelloService Implementation
+//----------------------------------------------------------------------------------------------------------------------
 
+    @Override
+    public String sayHello(String name) {
+        return "Hello, " + name + "!";
+    }
+
+    @Override
+    public String version() {
+        return "1.0";
+    }
 }
+
