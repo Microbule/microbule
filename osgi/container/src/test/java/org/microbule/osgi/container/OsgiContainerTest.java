@@ -19,6 +19,7 @@ package org.microbule.osgi.container;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -67,6 +68,25 @@ public class OsgiContainerTest extends MockObjectTestCase {
 
         assertEquals(1, plugins.size());
         assertEquals(1, serverDefinitions.size());
+    }
+
+
+    @Test
+    public void testPluginsWhenRejected() throws Exception {
+        final HelloServiceImpl service1 = new HelloServiceImpl();
+        final ServiceRegistration<HelloServiceImpl> registration1 = osgiRule.registerService(HelloService.class, service1, props().with("microbule.server", "true"));
+
+        final OsgiContainer container = new OsgiContainer(osgiRule.getBundleContext(), 100);
+        final HelloServiceImpl defaultVal = new HelloServiceImpl();
+        final AtomicReference<HelloService> ref = container.pluginReference(HelloService.class, defaultVal);
+        assertEquals(service1, ref.get());
+        final HelloServiceImpl service2 = new HelloServiceImpl();
+        final ServiceRegistration<HelloServiceImpl> registration2 = osgiRule.registerService(HelloService.class, service2, props().with("microbule.server", "true"));
+        assertEquals(service1, ref.get());
+        registration2.unregister();
+        assertEquals(service1, ref.get());
+        registration1.unregister();
+        assertEquals(defaultVal, ref.get());
     }
 
 }
