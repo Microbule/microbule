@@ -6,3 +6,7 @@ addons:
   apt:
     packages:
       - oracle-java8-installer
+  sonarqube:
+    organization: "microbule"
+    token:
+      secure: "D5oe//hLttzWg/jD/kVtPlNffe03iZS8oNgss6viose5cPGU8Q5OPgXUqdXP3sbn4q0j7CQya7p/lUrm1rGlF/n9+5izCz+mn8CmZo8kbWPECZEqF4YYYEKYmve4AhYKqigSQn6ped21YWz7jKtp5ubRSgRu1Vj2Dz6TpNOQr+w40zNq5yb2QyOetCQfA69jFavGEUvD7i1HazZvg2YNDwGwOkIRaXdGV1lkvmMU4cZol5LzbSraWFhfe9amKf9alrz0xQ0JHGIJBUMKxmUjm7Jfn9MVwYMyelinQuWgRqHxsK2tBwrAWtJQCH+UPtI7khNiMmr8xwKO6pnS5gsse/iCRMyhdRdjWAnapHWdHfDLbZZaR48wpXf/bPoAC+KLdPWwC66rCMgC+Se0FseVnoOYcFVur+Jbou5+/VMv1THLDT7X8lRd7ZaT6DVDkBaNxYG440r4u8C0zeMOIekD5CZuog6uOxzfFDwxvU0059nWoLotweCDZ7Y2Y5o891wEE8q+nLqg37t1CQKM8yTRwPydPHPw83jkcys8sQvbNuJ3JQsSOxEHHe0O86R50odWGGPLNnjwaq9G1v/VMPJF/SGnTKjKaPNkdt0Us44EeAxPgnr6FvIxujIstJYNxaL3dgoWCUwFAsWonJwxetgX3ZS3HTjaNRq5tdVGc8j6ZpI="

@@ -19,6 +19,8 @@ package org.microbule.validation.decorator;
 
 import java.util.Collections;
 
+import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.validation.Validation;
 import javax.validation.Validator;
 
@@ -27,6 +29,8 @@ import org.microbule.config.api.Config;
 import org.microbule.spi.JaxrsServerDecorator;
 import org.microbule.spi.JaxrsServiceDescriptor;
 
+@Named("validationDecorator")
+@Singleton
 public class ValidationDecorator implements JaxrsServerDecorator {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
