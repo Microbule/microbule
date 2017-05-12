@@ -22,7 +22,6 @@ import java.util.Dictionary;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Stream;
 
 import com.google.common.collect.Maps;
 import org.microbule.config.api.Config;
@@ -45,12 +44,17 @@ public class OsgiConfigProvider implements ConfigProvider, ManagedService {
 
     @Override
     public Config getConfig(String... path) {
-        return Stream.of(path).reduce(configRef.get(), Config::filtered, (left, right) -> right);
+        return configRef.get().filtered(path);
     }
 
     @Override
     public String name() {
         return "osgi";
+    }
+
+    @Override
+    public int priority() {
+        return DEFAULT_PRIORITY;
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -62,11 +66,8 @@ public class OsgiConfigProvider implements ConfigProvider, ManagedService {
         if (properties != null) {
             Map<String, String> values = Maps.toMap(Collections.list(properties.keys()), key -> Optional.ofNullable(properties.get(key)).map(String::valueOf).orElse(null));
             configRef.set(new MapConfig(values));
+        } else {
+            configRef.set(EmptyConfig.INSTANCE);
         }
-    }
-
-    @Override
-    public int priority() {
-        return DEFAULT_PRIORITY;
     }
 }
