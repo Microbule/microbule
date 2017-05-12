@@ -88,9 +88,8 @@ public class GsonServiceImpl implements GsonService {
     }
 
     private void removeCustomizer(GsonCustomizer customizer) {
-        if (customizers.remove(customizer)) {
-            rebuild();
-        }
+        customizers.remove(customizer);
+        rebuild();
     }
 
 //----------------------------------------------------------------------------------------------------------------------
