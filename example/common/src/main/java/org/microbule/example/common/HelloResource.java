@@ -24,9 +24,13 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.microbule.cache.annotation.Cacheable;
 
 @Path("/")
+@Api(value = "/bogus", produces = "application/json")
 public interface HelloResource {
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
@@ -36,5 +40,6 @@ public interface HelloResource {
     @Produces(MediaType.APPLICATION_JSON)
     @GET
     @Cacheable
-    HelloResponse sayHello(@PathParam("name") @Size(min = 5, message="Name must be at least 5 characters long.") String name);
+    @ApiOperation(value = "Say Hello", notes = "Returns a greeting", response = HelloResponse.class)
+    HelloResponse sayHello(@ApiParam(value="name", required = true) @PathParam("name") @Size(min = 5, message = "Name must be at least 5 characters long.") String name);
 }
