@@ -30,7 +30,7 @@ import io.swagger.annotations.ApiParam;
 import org.microbule.cache.annotation.Cacheable;
 
 @Path("/")
-@Api(value = "/bogus", produces = "application/json")
+@Api(value = "/", produces = "application/json")
 public interface HelloResource {
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
