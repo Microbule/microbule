@@ -22,6 +22,7 @@ import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.microbule.config.api.Config;
 
 public class MapConfigTest extends Assert {
     @Test
@@ -37,6 +38,14 @@ public class MapConfigTest extends Assert {
         Map<String,String> values = new HashMap<>();
         values.put("foo/bar", "baz");
         final MapConfig config = new MapConfig(values, "/");
+        assertEquals("baz", config.filtered("foo").value("bar").get());
+    }
+
+    @Test
+    public void testFilteredWithNoPaths() {
+        Map<String,String> values = new HashMap<>();
+        values.put("foo/bar", "baz");
+        final Config config = new MapConfig(values, "/").filtered();
         assertEquals("baz", config.filtered("foo").value("bar").get());
     }
 }
