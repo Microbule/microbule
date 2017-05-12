@@ -34,6 +34,28 @@ import org.microbule.test.core.hello.HelloService;
 import org.microbule.test.core.hello.HelloServiceImpl;
 
 public class SimpleContainerTest extends MockObjectTestCase {
+//----------------------------------------------------------------------------------------------------------------------
+// Other Methods
+//----------------------------------------------------------------------------------------------------------------------
+
+    @Test
+    public void testMap() {
+        final SimpleContainer container = new SimpleContainer();
+        final Map<Integer, String> map = container.pluginMap(String.class, String::length);
+
+        container.addBean("a");
+        container.addBean("aa");
+        container.addBean("aaa");
+        container.initialize();
+
+        assertEquals("a", map.get(1));
+        assertEquals("aa", map.get(2));
+        assertEquals("aaa", map.get(3));
+
+        container.removeBean("aaa");
+
+        assertNull(map.get(3));
+    }
 
     @Test
     public void testPluginList() {
@@ -54,38 +76,6 @@ public class SimpleContainerTest extends MockObjectTestCase {
         container.removeBean("World");
 
         assertEquals(Arrays.asList("Hello"), strings);
-    }
-
-    @Test
-    public void testSortedSet() {
-        final SimpleContainer container = new SimpleContainer();
-        final SortedSet<String> strings = container.pluginSortedSet(String.class);
-
-        container.addBean("a");
-        container.addBean("b");
-        container.addBean("c");
-        container.initialize();
-
-        assertEquals(Sets.newTreeSet(Lists.newArrayList("a", "b", "c")), strings);
-    }
-
-    @Test
-    public void testMap() {
-        final SimpleContainer container = new SimpleContainer();
-        final Map<Integer, String> map = container.pluginMap(String.class, String::length);
-
-        container.addBean("a");
-        container.addBean("aa");
-        container.addBean("aaa");
-        container.initialize();
-
-        assertEquals("a", map.get(1));
-        assertEquals("aa", map.get(2));
-        assertEquals("aaa", map.get(3));
-
-        container.removeBean("aaa");
-
-        assertNull(map.get(3));
     }
 
     @Test
@@ -125,12 +115,57 @@ public class SimpleContainerTest extends MockObjectTestCase {
         final CollectingServerListener collector2 = new CollectingServerListener();
         container.addServerListener(collector2);
         assertEquals(1, collector2.definitions.size());
-
-
     }
 
+    @Test
+    public void testShutdown() {
+        final SimpleContainer container = new SimpleContainer();
+        container.addBean("Hello");
+        container.addBean("World");
+
+        List<String> plugins = container.pluginList(String.class);
+
+        final HelloServiceImpl impl = new HelloServiceImpl();
+        container.addBean(impl);
+
+        final CollectingServerListener collector = new CollectingServerListener();
+        container.addServerListener(collector);
+        container.initialize();
+
+        container.shutdown();
+
+        assertEquals(0, plugins.size());
+        assertEquals(0, collector.definitions.size());
+    }
+
+    @Test
+    public void testSortedSet() {
+        final SimpleContainer container = new SimpleContainer();
+        final SortedSet<String> strings = container.pluginSortedSet(String.class);
+
+        container.addBean("a");
+        container.addBean("b");
+        container.addBean("c");
+        container.initialize();
+
+        assertEquals(Sets.newTreeSet(Lists.newArrayList("a", "b", "c")), strings);
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
+// Inner Classes
+//----------------------------------------------------------------------------------------------------------------------
+
     private static class CollectingServerListener implements ServerListener {
+//----------------------------------------------------------------------------------------------------------------------
+// Fields
+//----------------------------------------------------------------------------------------------------------------------
+
         private final List<ServerDefinition> definitions = new LinkedList<>();
+
+//----------------------------------------------------------------------------------------------------------------------
+// ServerListener Implementation
+//----------------------------------------------------------------------------------------------------------------------
+
 
         @Override
         public void registerServer(ServerDefinition serverDefinition) {
@@ -139,8 +174,7 @@ public class SimpleContainerTest extends MockObjectTestCase {
 
         @Override
         public void unregisterServer(String id) {
-
+            definitions.removeIf(def -> def.id().equals(id));
         }
     }
-
 }

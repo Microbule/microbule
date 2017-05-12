@@ -83,7 +83,7 @@ public class GsonServiceImpl implements GsonService {
         gson.set(builder.create());
     }
 
-    private Gson getGson() {
+    Gson getGson() {
         return gson.get();
     }
 
