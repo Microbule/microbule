@@ -52,9 +52,7 @@ public class RequestLogFilter implements ContainerRequestFilter, ContainerRespon
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
         requestContext.setProperty(BEGIN_TS_PROP, System.nanoTime());
-        if (LOGGER.isInfoEnabled()) {
-            LOGGER.info("BEGIN {} {}", requestContext.getMethod(), requestContext.getUriInfo().getAbsolutePath().getPath());
-        }
+        LOGGER.info("BEGIN {} {}", requestContext.getMethod(), requestContext.getUriInfo().getAbsolutePath().getPath());
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -63,11 +61,9 @@ public class RequestLogFilter implements ContainerRequestFilter, ContainerRespon
 
     @Override
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
-        final Long beginTs = (Long)requestContext.getProperty(BEGIN_TS_PROP);
-        if(beginTs != null && LOGGER.isInfoEnabled()) {
-            final long elapsedNanos = System.nanoTime() - beginTs;
-            final Response.StatusType statusInfo = responseContext.getStatusInfo();
-            LOGGER.info("END   {} {} - {} {} ({} sec)", requestContext.getMethod(), requestContext.getUriInfo().getAbsolutePath().getPath(), statusInfo.getStatusCode(), statusInfo.getReasonPhrase(), DurationFormatUtils.formatDuration(NANOSECONDS.toMillis(elapsedNanos), "s.SSS"));
-        }
+        final Long beginTs = (Long) requestContext.getProperty(BEGIN_TS_PROP);
+        final long elapsedNanos = System.nanoTime() - beginTs;
+        final Response.StatusType statusInfo = responseContext.getStatusInfo();
+        LOGGER.info("END   {} {} - {} {} ({} sec)", requestContext.getMethod(), requestContext.getUriInfo().getAbsolutePath().getPath(), statusInfo.getStatusCode(), statusInfo.getReasonPhrase(), DurationFormatUtils.formatDuration(NANOSECONDS.toMillis(elapsedNanos), "s.SSS"));
     }
 }
