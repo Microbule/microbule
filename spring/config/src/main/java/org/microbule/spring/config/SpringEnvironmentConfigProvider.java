@@ -17,8 +17,6 @@
 
 package org.microbule.spring.config;
 
-import java.util.stream.Stream;
-
 import org.microbule.config.api.Config;
 import org.microbule.config.spi.ConfigProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +29,7 @@ public class SpringEnvironmentConfigProvider implements ConfigProvider {
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    public static final String NAME = "spring";
+    private static final String NAME = "spring";
 
     @Autowired
     private Environment environment;
@@ -42,8 +40,7 @@ public class SpringEnvironmentConfigProvider implements ConfigProvider {
 
     @Override
     public Config getConfig(String... path) {
-        Config base = new SpringEnvironmentConfig(environment);
-        return Stream.of(path).reduce(base, Config::filtered, (left, right) -> right);
+        return new SpringEnvironmentConfig(environment).filtered(path);
     }
 
     @Override
