@@ -17,6 +17,8 @@
 
 package org.microbule.osgi.container;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 import com.savoirtech.eos.pattern.whiteboard.AbstractWhiteboard;
 import com.savoirtech.eos.util.ServiceProperties;
 import org.microbule.container.api.PluginListener;
@@ -28,14 +30,16 @@ public class PluginListenerWhiteboard<P> extends AbstractWhiteboard<P, P> {
 //----------------------------------------------------------------------------------------------------------------------
 
     private final PluginListener<P> pluginListener;
+    private final AtomicLong lastUpdated;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public PluginListenerWhiteboard(BundleContext bundleContext, Class<P> pluginType, PluginListener<P> pluginListener) {
+    public PluginListenerWhiteboard(BundleContext bundleContext, Class<P> pluginType, PluginListener<P> pluginListener, AtomicLong lastUpdated) {
         super(bundleContext, pluginType);
         this.pluginListener = pluginListener;
+        this.lastUpdated = lastUpdated;
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -45,6 +49,7 @@ public class PluginListenerWhiteboard<P> extends AbstractWhiteboard<P, P> {
     @Override
     protected P addService(P service, ServiceProperties props) {
         if (pluginListener.registerPlugin(service)) {
+            lastUpdated.set(System.nanoTime());
             return service;
         }
         return null;

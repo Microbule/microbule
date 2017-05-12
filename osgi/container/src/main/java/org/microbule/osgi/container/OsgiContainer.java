@@ -73,7 +73,7 @@ public class OsgiContainer extends AbstractContainer {
 
     @Override
     public <B> void addPluginListener(Class<B> beanType, PluginListener<B> listener) {
-        new PluginListenerWhiteboard<>(bundleContext, beanType, listener).start();
+        new PluginListenerWhiteboard<>(bundleContext, beanType, listener, lastUpdated).start();
     }
 
     @Override
@@ -88,13 +88,13 @@ public class OsgiContainer extends AbstractContainer {
     private void checkLastUpdate() {
         final long elapsed = System.nanoTime() - lastUpdated.get();
         if (elapsed >= quietPeriod) {
-            LOGGER.debug("Quiet period ({} ms) expired, searching for servers.", TimeUnit.NANOSECONDS.toMillis(quietPeriod));
+            LOGGER.info("Quiet period ({} ms) expired, searching for servers.", TimeUnit.NANOSECONDS.toMillis(quietPeriod));
             registerServiceListener();
             findExistingServices();
             scheduler.shutdownNow();
         } else {
             final long newDelay = quietPeriod - elapsed;
-            LOGGER.debug("Only {} ms have elapsed since last update time, checking again in {} ms...", TimeUnit.NANOSECONDS.toMillis(quietPeriod), TimeUnit.NANOSECONDS.toMillis(newDelay));
+            LOGGER.info("Only {} ms have elapsed since last update time, checking again in {} ms...", TimeUnit.NANOSECONDS.toMillis(elapsed), TimeUnit.NANOSECONDS.toMillis(newDelay));
             scheduler.schedule(this::checkLastUpdate, newDelay, TimeUnit.NANOSECONDS);
         }
     }
