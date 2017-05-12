@@ -21,6 +21,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.ws.rs.core.Response;
@@ -33,6 +35,8 @@ import org.slf4j.LoggerFactory;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 
 
+@Named("constraintViolationExceptionMapper")
+@Singleton
 public class ConstraintViolationExceptionMapper extends TypedErrorMapper<ConstraintViolationException> {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
