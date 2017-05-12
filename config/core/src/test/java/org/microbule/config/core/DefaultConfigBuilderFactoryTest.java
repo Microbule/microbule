@@ -72,7 +72,7 @@ public class DefaultConfigBuilderFactoryTest extends MockObjectTestCase  {
         when(provider2.getConfig("a")).thenReturn(config2.filtered("a"));
         when(provider2.getConfig("b")).thenReturn(config2.filtered("b"));
         when(provider2.name()).thenReturn("provider2");
-        when(provider2.priority()).thenReturn(ConfigProvider.EXTERNAL_PRIORITY);
+        when(provider2.priority()).thenReturn(ConfigProvider.PRIORITY_EXTERNAL);
 
 
         when(container.pluginSortedSet(same(ConfigProvider.class), any())).thenAnswer(invocation -> {

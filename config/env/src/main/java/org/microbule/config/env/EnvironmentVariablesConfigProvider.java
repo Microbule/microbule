@@ -19,7 +19,6 @@ package org.microbule.config.env;
 
 import java.util.Map;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -56,8 +55,7 @@ public class EnvironmentVariablesConfigProvider implements ConfigProvider {
 
     @Override
     public Config getConfig(String... path) {
-        final Config base = new MapConfig(envSupplier.get(), SEPARATOR);
-        return Stream.of(path).reduce(base, Config::filtered, (left, right) -> right);
+        return new MapConfig(envSupplier.get(), SEPARATOR).filtered(path);
     }
 
     @Override
@@ -68,13 +66,5 @@ public class EnvironmentVariablesConfigProvider implements ConfigProvider {
     @Override
     public int priority() {
         return PRIORITY_ENV;
-    }
-
-//----------------------------------------------------------------------------------------------------------------------
-// Other Methods
-//----------------------------------------------------------------------------------------------------------------------
-
-    private Config envConfig(Class<?> serviceInterface, String subtype) {
-        return new MapConfig(envSupplier.get(), "_").filtered("microbule", serviceInterface.getSimpleName(), subtype);
     }
 }

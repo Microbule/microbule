@@ -65,7 +65,7 @@ public class ConsulConfigProviderTest extends JaxrsServerTestCase<MockConsulServ
     public void testGetConfig() {
         final ConsulConfigProvider provider = new ConsulConfigProvider();
         assertEquals("consul", provider.name());
-        assertEquals(ConfigProvider.EXTERNAL_PRIORITY, provider.priority());
+        assertEquals(ConfigProvider.PRIORITY_EXTERNAL, provider.priority());
 
         response.set(parseResponse("/response.json", TYPE_TOKEN));
 

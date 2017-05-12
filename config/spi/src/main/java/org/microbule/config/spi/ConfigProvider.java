@@ -21,7 +21,7 @@ import org.microbule.config.api.Config;
 
 public interface ConfigProvider {
 //----------------------------------------------------------------------------------------------------------------------
-// Other Methods
+// Fields
 //----------------------------------------------------------------------------------------------------------------------
 
     int PRIORITY_SYSPROP = -2000;
@@ -30,11 +30,15 @@ public interface ConfigProvider {
 
     int DEFAULT_PRIORITY = 0;
 
-    int EXTERNAL_PRIORITY = 1000;
+    int PRIORITY_EXTERNAL = 1000;
+
+//----------------------------------------------------------------------------------------------------------------------
+// Other Methods
+//----------------------------------------------------------------------------------------------------------------------
 
     Config getConfig(String... path);
 
-    int priority();
-
     String name();
+
+    int priority();
 }

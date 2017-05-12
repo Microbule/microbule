@@ -17,8 +17,6 @@
 
 package org.microbule.config.sysprop;
 
-import java.util.stream.Stream;
-
 import javax.inject.Named;
 import javax.inject.Singleton;
 
@@ -33,7 +31,7 @@ public class SystemPropertiesConfigProvider implements ConfigProvider {
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    public static final String NAME = "sysprop";
+    private static final String NAME = "sysprop";
 
 //----------------------------------------------------------------------------------------------------------------------
 // ConfigProvider Implementation
@@ -41,8 +39,7 @@ public class SystemPropertiesConfigProvider implements ConfigProvider {
 
     @Override
     public Config getConfig(String... path) {
-        final Config base = ConfigUtils.fromProperties(System.getProperties());
-        return Stream.of(path).reduce(base, Config::filtered, (left, right) -> right);
+        return ConfigUtils.fromProperties(System.getProperties()).filtered(path);
     }
 
     @Override

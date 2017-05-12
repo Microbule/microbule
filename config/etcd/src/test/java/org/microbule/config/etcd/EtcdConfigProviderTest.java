@@ -60,7 +60,7 @@ public class EtcdConfigProviderTest extends JaxrsServerTestCase<MockEtcdService>
     public void testConfig() {
         final EtcdConfigProvider provider = new EtcdConfigProvider();
         assertEquals("etcd", provider.name());
-        assertEquals(ConfigProvider.EXTERNAL_PRIORITY, provider.priority());
+        assertEquals(ConfigProvider.PRIORITY_EXTERNAL, provider.priority());
 
         root.set(parseResponse("/response.json", EtcdResponse.class).getNode());
 

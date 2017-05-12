@@ -94,7 +94,7 @@ public class EtcdConfigProvider implements ConfigProvider {
 
     @Override
     public int priority() {
-        return EXTERNAL_PRIORITY;
+        return PRIORITY_EXTERNAL;
     }
 
     private void fillMap(Map<String, String> values, EtcdNode node, String keyPath) {

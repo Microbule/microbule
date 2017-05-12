@@ -19,12 +19,28 @@ package org.microbule.config.sysprop;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.microbule.config.spi.ConfigProvider;
 
 public class SystemPropertiesConfigProviderTest extends Assert {
+//----------------------------------------------------------------------------------------------------------------------
+// Other Methods
+//----------------------------------------------------------------------------------------------------------------------
+
     @Test
     public void testGetConfig() {
         System.setProperty("one.two.foo", "bar");
         final SystemPropertiesConfigProvider provider = new SystemPropertiesConfigProvider();
+
+        assertEquals("sysprop", provider.name());
+        assertEquals(ConfigProvider.PRIORITY_SYSPROP, provider.priority());
+
         assertEquals("bar", provider.getConfig("one", "two").value("foo").get());
+    }
+
+    @Test
+    public void testDefaultConstructor() {
+        final SystemPropertiesConfigProvider provider = new SystemPropertiesConfigProvider();
+
+        assertEquals(System.getProperty("user.dir"), provider.getConfig("user").value("dir").get());
     }
 }
