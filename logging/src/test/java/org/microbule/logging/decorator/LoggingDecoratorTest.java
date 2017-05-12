@@ -15,9 +15,9 @@
  *
  */
 
-package org.microbule.gzip.decorator;
+package org.microbule.logging.decorator;
 
-import org.apache.cxf.transport.common.gzip.GZIPFeature;
+import org.apache.cxf.feature.LoggingFeature;
 import org.junit.Test;
 import org.microbule.config.api.Config;
 import org.microbule.spi.JaxrsServiceDescriptor;
@@ -28,7 +28,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-public class GzipDecoratorTest extends MockObjectTestCase {
+public class LoggingDecoratorTest extends MockObjectTestCase {
 
     @Mock
     private JaxrsServiceDescriptor descriptor;
@@ -38,12 +38,10 @@ public class GzipDecoratorTest extends MockObjectTestCase {
 
     @Test
     public void testDecorate() {
-        final GzipDecorator decorator = new GzipDecorator();
-        assertEquals("gzip", decorator.name());
+        final LoggingDecorator decorator = new LoggingDecorator();
+        assertEquals("logging", decorator.name());
         decorator.decorate(descriptor, config);
-        verify(config).booleanValue("force");
-        verify(config).integerValue("threshold");
-        verify(descriptor).addFeature(any(GZIPFeature.class));
+        verify(descriptor).addFeature(any(LoggingFeature.class));
         verifyNoMoreInteractions(descriptor, config);
     }
 
