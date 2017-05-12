@@ -25,6 +25,8 @@ import org.microbule.config.api.Config;
 import org.microbule.errormap.api.ErrorMapperService;
 import org.microbule.spi.JaxrsServerDecorator;
 import org.microbule.spi.JaxrsServiceDescriptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Singleton
 @Named("errorMapperServerDecorator")
@@ -32,6 +34,9 @@ public class ErrorMapperServerDecorator implements JaxrsServerDecorator {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ErrorMapperServerDecorator.class);
+    private static final String STRATEGY = "strategy";
 
     private final ErrorMapperService errorMapperService;
 
@@ -50,8 +55,10 @@ public class ErrorMapperServerDecorator implements JaxrsServerDecorator {
 
     @Override
     public void decorate(JaxrsServiceDescriptor descriptor, Config config) {
-        descriptor.addProvider(new WebApplicationExceptionMapper(errorMapperService));
-        descriptor.addProvider(new RootExceptionMapper(errorMapperService));
+        final String strategy = config.value(STRATEGY).orElse(ErrorMapperService.DEFAULT_STRATEGY);
+        LOGGER.info("Using \"{}\" error response strategy for {} JAX-RS server.", strategy, descriptor.serviceInterface().getSimpleName());
+        descriptor.addProvider(new WebApplicationExceptionMapper(errorMapperService, strategy));
+        descriptor.addProvider(new RootExceptionMapper(errorMapperService, strategy));
     }
 
     @Override

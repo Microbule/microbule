@@ -15,25 +15,29 @@
  *
  */
 
-package org.microbule.errormap.impl;
+package org.microbule.errormap.impl.text;
 
-import java.lang.reflect.Constructor;
 import java.util.List;
 
-import javax.ws.rs.WebApplicationException;
+import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang3.StringUtils;
+import org.microbule.errormap.api.ErrorMapperService;
+import org.microbule.errormap.impl.AbstractErrorResponseStrategy;
+import org.microbule.errormap.impl.Responses;
 import org.microbule.errormap.spi.ErrorResponseStrategy;
 
-public class PlainTextErrorResponseStrategy implements ErrorResponseStrategy {
+@Named("plainTextErrorResponseStrategy")
+@Singleton
+public class PlainTextErrorResponseStrategy extends AbstractErrorResponseStrategy {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
     public static final ErrorResponseStrategy INSTANCE = new PlainTextErrorResponseStrategy();
-    public static final String NEWLINE = "\n";
 
 //----------------------------------------------------------------------------------------------------------------------
 // ErrorResponseStrategy Implementation
@@ -41,14 +45,7 @@ public class PlainTextErrorResponseStrategy implements ErrorResponseStrategy {
 
     @Override
     public RuntimeException createException(Response response) {
-        final String errorMessage = Responses.getErrorMessage(response);
-        Class<? extends WebApplicationException> exceptionClass = WebApplicationExceptions.getWebApplicationExceptionClass(response);
-        try {
-            final Constructor<? extends WebApplicationException> ctor = exceptionClass.getConstructor(String.class, Response.class);
-            return ctor.newInstance(errorMessage, response);
-        } catch (ReflectiveOperationException e) {
-            return new WebApplicationException(errorMessage, response);
-        }
+        return createException(response, Responses.getErrorMessage(response));
     }
 
     @Override
@@ -57,5 +54,10 @@ public class PlainTextErrorResponseStrategy implements ErrorResponseStrategy {
                 .type(MediaType.TEXT_PLAIN_TYPE)
                 .entity(StringUtils.join(errorMessages, NEWLINE))
                 .build();
+    }
+
+    @Override
+    public String name() {
+        return ErrorMapperService.DEFAULT_STRATEGY;
     }
 }

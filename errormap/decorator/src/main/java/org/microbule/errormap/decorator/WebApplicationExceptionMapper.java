@@ -28,7 +28,7 @@ public class WebApplicationExceptionMapper extends ErrorMapperExceptionMapper<We
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public WebApplicationExceptionMapper(ErrorMapperService errorMapperService) {
-        super(errorMapperService);
+    public WebApplicationExceptionMapper(ErrorMapperService errorMapperService, String strategy) {
+        super(errorMapperService, strategy);
     }
 }

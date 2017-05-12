@@ -15,38 +15,37 @@
  *
  */
 
-package org.microbule.core;
+package org.microbule.errormap.impl.json;
 
-import org.microbule.config.api.ConfigBuilder;
-import org.microbule.spi.JaxrsConfigBuilderStrategy;
+import java.util.List;
 
-public class DefaultJaxrsConfigBuilderStrategy implements JaxrsConfigBuilderStrategy {
+public class JsonErrorResponse {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    private static final String DEFAULTS_PATH_SEGMENT = "default";
-    private static final String SERVER_PATH_SEGMENT = "server";
-    private static final String PROXY_PATH_SEGMENT = "proxy";
+    private final int status;
+
+    private final List<String> errorMessages;
 
 //----------------------------------------------------------------------------------------------------------------------
-// JaxrsConfigBuilderStrategy Implementation
+// Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-
-    @Override
-    public <T> ConfigBuilder buildServerConfig(Class<T> serviceInterface, String serviceName, ConfigBuilder builder) {
-        return builder
-                .withPath(serviceName, SERVER_PATH_SEGMENT)
-                .withPath(serviceName)
-                .withPath(DEFAULTS_PATH_SEGMENT, SERVER_PATH_SEGMENT);
+    public JsonErrorResponse(int status, List<String> errorMessages) {
+        this.status = status;
+        this.errorMessages = errorMessages;
     }
 
-    @Override
-    public <T> ConfigBuilder buildProxyConfig(Class<T> serviceInterface, String serviceName, ConfigBuilder builder) {
-        return builder
-                .withPath(serviceName, PROXY_PATH_SEGMENT)
-                .withPath(serviceName)
-                .withPath(DEFAULTS_PATH_SEGMENT, PROXY_PATH_SEGMENT);
+//----------------------------------------------------------------------------------------------------------------------
+// Getter/Setter Methods
+//----------------------------------------------------------------------------------------------------------------------
+
+    public List<String> getErrorMessages() {
+        return errorMessages;
+    }
+
+    public int getStatus() {
+        return status;
     }
 }

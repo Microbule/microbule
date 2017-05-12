@@ -29,13 +29,15 @@ public abstract class ErrorMapperExceptionMapper<E extends Exception> implements
 //----------------------------------------------------------------------------------------------------------------------
 
     private final ErrorMapperService errorMapperService;
+    private final String strategy;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public ErrorMapperExceptionMapper(ErrorMapperService errorMapperService) {
+    public ErrorMapperExceptionMapper(ErrorMapperService errorMapperService, String strategy) {
         this.errorMapperService = errorMapperService;
+        this.strategy = strategy;
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -44,6 +46,6 @@ public abstract class ErrorMapperExceptionMapper<E extends Exception> implements
 
     @Override
     public Response toResponse(E exception) {
-        return errorMapperService.createResponse(exception);
+        return errorMapperService.createResponse(strategy, exception);
     }
 }

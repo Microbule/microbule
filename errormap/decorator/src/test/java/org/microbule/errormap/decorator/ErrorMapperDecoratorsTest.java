@@ -28,6 +28,7 @@ import org.microbule.test.server.hello.HelloTestCase;
 import org.mockito.Mock;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 public class ErrorMapperDecoratorsTest extends HelloTestCase {
@@ -44,8 +45,8 @@ public class ErrorMapperDecoratorsTest extends HelloTestCase {
 
     @Override
     protected void addBeans(SimpleContainer container) {
-        when(errorMapperService.createResponse(any(Exception.class))).thenReturn(Response.serverError().build());
-        when(errorMapperService.createException(any(Response.class))).thenReturn(new IllegalArgumentException("I'm not saying hello to you!"));
+        when(errorMapperService.createResponse(eq(ErrorMapperService.DEFAULT_STRATEGY), any(Exception.class))).thenReturn(Response.serverError().build());
+        when(errorMapperService.createException(eq(ErrorMapperService.DEFAULT_STRATEGY), any(Response.class))).thenReturn(new IllegalArgumentException("I'm not saying hello to you!"));
         container.addBean(new ErrorMapperServerDecorator(errorMapperService));
         container.addBean(new ErrorMapperProxyDecorator(errorMapperService));
     }
@@ -72,7 +73,7 @@ public class ErrorMapperDecoratorsTest extends HelloTestCase {
 
         @Override
         public String sayHello(String name) {
-            if("Dr. Evil".equals(name)) {
+            if ("Dr. Evil".equals(name)) {
                 throw new IllegalArgumentException("I'm not saying hello to you!");
             }
             return super.sayHello(name);

@@ -50,6 +50,7 @@ public class DefaultJaxrsConfigBuilderStrategyTest extends MockObjectTestCase {
         final InOrder order = inOrder(configBuilder);
 
         order.verify(configBuilder).withPath("HelloService", "proxy");
+        order.verify(configBuilder).withPath("HelloService");
         order.verify(configBuilder).withPath("default", "proxy");
 
         verifyNoMoreInteractions(configBuilder);
@@ -63,6 +64,7 @@ public class DefaultJaxrsConfigBuilderStrategyTest extends MockObjectTestCase {
         final InOrder order = inOrder(configBuilder);
 
         order.verify(configBuilder).withPath("HelloService", "server");
+        order.verify(configBuilder).withPath("HelloService");
         order.verify(configBuilder).withPath("default", "server");
 
         verifyNoMoreInteractions(configBuilder);

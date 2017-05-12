@@ -22,10 +22,16 @@ import javax.ws.rs.core.Response;
 
 public interface ErrorMapperService {
 //----------------------------------------------------------------------------------------------------------------------
+// Fields
+//----------------------------------------------------------------------------------------------------------------------
+
+    String DEFAULT_STRATEGY = "text";
+
+//----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    Exception createException(Response response);
+    Exception createException(String strategy, Response response);
 
-    Response createResponse(Exception e);
+    Response createResponse(String strategy, Exception e);
 }

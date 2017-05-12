@@ -27,7 +27,7 @@ public class RootExceptionMapper extends ErrorMapperExceptionMapper<Exception> {
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public RootExceptionMapper(ErrorMapperService errorMapperService) {
-        super(errorMapperService);
+    public RootExceptionMapper(ErrorMapperService errorMapperService, String strategy) {
+        super(errorMapperService, strategy);
     }
 }

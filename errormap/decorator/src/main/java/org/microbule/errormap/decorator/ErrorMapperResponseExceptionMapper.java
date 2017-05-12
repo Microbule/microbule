@@ -30,13 +30,15 @@ public class ErrorMapperResponseExceptionMapper implements ResponseExceptionMapp
 //----------------------------------------------------------------------------------------------------------------------
 
     private final ErrorMapperService errorMapperService;
+    private final String strategy;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public ErrorMapperResponseExceptionMapper(ErrorMapperService errorMapperService) {
+    public ErrorMapperResponseExceptionMapper(ErrorMapperService errorMapperService, String strategy) {
         this.errorMapperService = errorMapperService;
+        this.strategy = strategy;
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -45,6 +47,6 @@ public class ErrorMapperResponseExceptionMapper implements ResponseExceptionMapp
 
     @Override
     public Exception fromResponse(Response response) {
-        return errorMapperService.createException(response);
+        return errorMapperService.createException(strategy, response);
     }
 }

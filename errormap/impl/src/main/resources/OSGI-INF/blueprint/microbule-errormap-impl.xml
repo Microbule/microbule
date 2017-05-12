@@ -58,4 +58,13 @@
 
     <service ref="webApplicationExceptionErrorMapper" interface="org.microbule.errormap.spi.ErrorMapper" />
 
+
+    <bean id="plainTextStrategy" class="org.microbule.errormap.impl.text.PlainTextErrorResponseStrategy"/>
+
+    <service ref="plainTextStrategy" interface="org.microbule.errormap.spi.ErrorResponseStrategy" />
+
+    <bean id="jsonStrategy" class="org.microbule.errormap.impl.json.JsonErrorResponseStrategy" />
+
+    <service ref="jsonStrategy" interface="org.microbule.errormap.spi.ErrorResponseStrategy" />
+
 </blueprint>

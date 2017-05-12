@@ -19,7 +19,6 @@ package org.microbule.errormap.impl;
 
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -28,10 +27,11 @@ import javax.ws.rs.core.Response;
 
 import org.microbule.container.api.MicrobuleContainer;
 import org.microbule.errormap.api.ErrorMapperService;
+import org.microbule.errormap.impl.text.PlainTextErrorResponseStrategy;
 import org.microbule.errormap.spi.ErrorMapper;
 import org.microbule.errormap.spi.ErrorResponseStrategy;
-
-import static org.microbule.errormap.impl.PlainTextErrorResponseStrategy.INSTANCE;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Singleton
 @Named("errorMapperService")
@@ -40,8 +40,10 @@ public class ErrorMapperServiceImpl implements ErrorMapperService {
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ErrorMapperServiceImpl.class);
+
     private final Map<Class<?>, ErrorMapper> errorMappers;
-    private final AtomicReference<ErrorResponseStrategy> responseStrategyRef;
+    private final Map<String, ErrorResponseStrategy> responseStrategies;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
@@ -50,7 +52,7 @@ public class ErrorMapperServiceImpl implements ErrorMapperService {
     @Inject
     public ErrorMapperServiceImpl(MicrobuleContainer container) {
         this.errorMappers = container.pluginMap(ErrorMapper.class, ErrorMapper::getExceptionType);
-        this.responseStrategyRef = container.pluginReference(ErrorResponseStrategy.class, PlainTextErrorResponseStrategy.INSTANCE);
+        this.responseStrategies = container.pluginMap(ErrorResponseStrategy.class, ErrorResponseStrategy::name);
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -58,23 +60,19 @@ public class ErrorMapperServiceImpl implements ErrorMapperService {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public Exception createException(Response response) {
-        return getErrorResponseStrategy().createException(response);
+    public Exception createException(String strategyName, Response response) {
+        return getStrategy(strategyName).createException(response);
     }
 
     @Override
-    public Response createResponse(Exception e) {
+    public Response createResponse(String strategyName, Exception e) {
         ErrorMapper handler = getExceptionHandler(e);
-        return getErrorResponseStrategy().createResponse(handler.getStatus(e), handler.getErrorMessages(e));
+        return getStrategy(strategyName).createResponse(handler.getStatus(e), handler.getErrorMessages(e));
     }
 
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
-
-    private ErrorResponseStrategy getErrorResponseStrategy() {
-        return Optional.ofNullable(responseStrategyRef.get()).orElse(INSTANCE);
-    }
 
     private ErrorMapper getExceptionHandler(Exception exception) {
         return findExceptionHandler(exception.getClass());
@@ -89,5 +87,13 @@ public class ErrorMapperServiceImpl implements ErrorMapperService {
             return findExceptionHandler(targetType.getSuperclass());
         }
         return mapper;
+    }
+
+    private ErrorResponseStrategy getStrategy(String strategyName) {
+        return Optional.ofNullable(responseStrategies.get(strategyName))
+                .orElseGet(() -> {
+                    LOGGER.warn("Error response strategy \"{}\" not available, using default instead.", strategyName);
+                    return PlainTextErrorResponseStrategy.INSTANCE;
+                });
     }
 }

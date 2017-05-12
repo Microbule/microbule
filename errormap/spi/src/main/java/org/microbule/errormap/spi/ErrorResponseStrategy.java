@@ -27,6 +27,8 @@ public interface ErrorResponseStrategy {
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
+    String name();
+
     Response createResponse(Response.StatusType status, List<String> errorMessages);
 
     RuntimeException createException(Response response);
