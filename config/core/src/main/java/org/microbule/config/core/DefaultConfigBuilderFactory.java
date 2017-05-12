@@ -21,7 +21,6 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -75,7 +74,6 @@ public class DefaultConfigBuilderFactory implements ConfigBuilderFactory {
 //----------------------------------------------------------------------------------------------------------------------
 
         private List<String[]> paths = new LinkedList<>();
-        private Config custom = EmptyConfig.INSTANCE;
 
 //----------------------------------------------------------------------------------------------------------------------
 // ConfigBuilder Implementation
@@ -84,13 +82,9 @@ public class DefaultConfigBuilderFactory implements ConfigBuilderFactory {
         @Override
         public Config build() {
             LOGGER.info("Collecting configurations from {}...", providers.stream().map(ConfigProvider::name).collect(Collectors.joining(", ")));
-            List<Config> members = new LinkedList<>();
-            collectConfigs(members, provider -> provider.priority() < 0);
-            members.add(custom);
-            collectConfigs(members, provider -> provider.priority() >= 0);
-            return new CompositeConfig(members);
+            return new CompositeConfig(providers.stream().flatMap(provider -> providerConfigs(provider, paths).stream()).collect(Collectors.toList()));
         }
-        
+
         @Override
         public ConfigBuilder withPath(String... path) {
             paths.add(path);
@@ -100,10 +94,6 @@ public class DefaultConfigBuilderFactory implements ConfigBuilderFactory {
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
-
-        private void collectConfigs(List<Config> members, Predicate<ConfigProvider> predicate) {
-            providers.stream().filter(predicate).flatMap(provider -> providerConfigs(provider, paths).stream()).forEach(members::add);
-        }
 
         private List<Config> providerConfigs(ConfigProvider provider, List<String[]> paths) {
             return paths.stream().map(provider::getConfig).collect(Collectors.toList());

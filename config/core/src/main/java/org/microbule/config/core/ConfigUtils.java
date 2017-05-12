@@ -23,7 +23,7 @@ import java.util.Properties;
 
 import org.microbule.config.api.Config;
 
-public class ConfigUtils {
+public final class ConfigUtils {
 //----------------------------------------------------------------------------------------------------------------------
 // Static Methods
 //----------------------------------------------------------------------------------------------------------------------
@@ -39,5 +39,12 @@ public class ConfigUtils {
             map.put(propertyName, props.getProperty(propertyName));
         }
         return new MapConfig(map);
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
+// Constructors
+//----------------------------------------------------------------------------------------------------------------------
+
+    private ConfigUtils() {
     }
 }
