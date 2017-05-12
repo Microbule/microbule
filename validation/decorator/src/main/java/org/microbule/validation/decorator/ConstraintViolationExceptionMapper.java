@@ -17,6 +17,7 @@
 
 package org.microbule.validation.decorator;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,9 +26,20 @@ import javax.validation.ConstraintViolationException;
 import javax.ws.rs.core.Response;
 
 import org.microbule.errormap.spi.TypedErrorMapper;
+import org.microbule.validation.annotation.payload.StatusProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 
 
 public class ConstraintViolationExceptionMapper extends TypedErrorMapper<ConstraintViolationException> {
+//----------------------------------------------------------------------------------------------------------------------
+// Fields
+//----------------------------------------------------------------------------------------------------------------------
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConstraintViolationExceptionMapper.class);
+
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
@@ -47,6 +59,18 @@ public class ConstraintViolationExceptionMapper extends TypedErrorMapper<Constra
 
     @Override
     protected Response.Status doGetStatus(ConstraintViolationException exception) {
-        return Response.Status.BAD_REQUEST;
+        return exception.getConstraintViolations().stream()
+                .flatMap(cve -> cve.getConstraintDescriptor().getPayload().stream())
+                .filter(StatusProvider.class::isAssignableFrom)
+                .map(payloadClass -> {
+                    try {
+                        return (StatusProvider) payloadClass.newInstance();
+                    } catch (ReflectiveOperationException e) {
+                        LOGGER.error("Unable to instantiate custom ResponseCodePayload object of type {}.", payloadClass.getCanonicalName(), e);
+                        return new StatusProvider.BadRequest();
+                    }
+                })
+                .map(StatusProvider::status)
+                .min(Comparator.comparingInt(Response.Status::getStatusCode)).orElse(BAD_REQUEST);
     }
 }
