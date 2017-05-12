@@ -17,10 +17,8 @@
 
 package org.microbule.test.core;
 
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
-import java.net.ServerSocket;
 
 import org.junit.Assert;
 import org.junit.Rule;
@@ -50,11 +48,5 @@ public class MicrobuleTestCase extends Assert {
     protected void expectException(Class<? extends Exception> type, String msg, Object... params) {
         exception.expect(type);
         exception.expectMessage(String.format(msg, params));
-    }
-
-    protected int findFreePort() throws IOException {
-        try (ServerSocket socket = new ServerSocket(0)) {
-            return socket.getLocalPort();
-        }
     }
 }
