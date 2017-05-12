@@ -48,8 +48,8 @@ public class CompositeConfig implements Config {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public Config group(String keyPrefix) {
-        return new CompositeConfig(members.stream().map(config -> config.group(keyPrefix)).collect(Collectors.toList()));
+    public Config filtered(String... paths) {
+        return new CompositeConfig(members.stream().map(config -> config.filtered(paths)).collect(Collectors.toList()));
     }
 
     @Override

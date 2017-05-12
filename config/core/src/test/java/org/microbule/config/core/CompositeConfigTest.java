@@ -43,7 +43,7 @@ public class CompositeConfigTest extends Assert {
         config2.addValue("a.foo", "baz");
         config2.addValue("a.hello", "world");
 
-        final Config config = new CompositeConfig(config1, config2).group("a");
+        final Config config = new CompositeConfig(config1, config2).filtered("a");
         assertEquals("bar", config.value("foo").get());
         assertEquals("world", config.value("hello").get());
     }

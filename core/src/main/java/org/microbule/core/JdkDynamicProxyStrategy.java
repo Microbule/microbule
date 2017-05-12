@@ -20,7 +20,7 @@ package org.microbule.core;
 import java.util.function.Supplier;
 
 import org.microbule.spi.JaxrsDynamicProxyStrategy;
-import org.microbule.util.DynamicProxyUtils;
+import org.microbule.util.proxy.DynamicProxyUtils;
 
 public class JdkDynamicProxyStrategy implements JaxrsDynamicProxyStrategy {
 //----------------------------------------------------------------------------------------------------------------------

@@ -33,7 +33,7 @@ public class EmptyConfig implements Config {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public Config group(String keyPrefix) {
+    public Config filtered(String... paths) {
         return this;
     }
 

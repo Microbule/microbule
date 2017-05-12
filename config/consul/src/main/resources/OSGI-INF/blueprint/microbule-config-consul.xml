@@ -22,7 +22,7 @@
 
     <cm:property-placeholder persistent-id="org.microbule.config.consul" update-strategy="reload">
         <cm:default-properties>
-            <cm:property name="baseAddress" value="http://localhost:8500"/>
+            <cm:property name="baseAddress" value="http://localhost:8500/v1/kv/microbule"/>
         </cm:default-properties>
     </cm:property-placeholder>
 

@@ -28,7 +28,7 @@ import net.sf.cglib.proxy.Dispatcher;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import org.microbule.spi.JaxrsDynamicProxyStrategy;
-import org.microbule.util.DynamicProxyUtils;
+import org.microbule.util.proxy.DynamicProxyUtils;
 
 @Named("cglibDynamicProxyStrategy")
 @Singleton

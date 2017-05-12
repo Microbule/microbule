@@ -1,0 +1,23 @@
+{
+  "action": "get",
+  "node": {
+    "key": "/microbule/one/two",
+    "dir": true,
+    "nodes": [
+      {
+        "key": "/microbule/one/two/three",
+        "value": "Microbule",
+        "modifiedIndex": 5,
+        "createdIndex": 5
+      },
+      {
+        "key": "/microbule/one/two/five",
+        "value": "three, sir",
+        "modifiedIndex": 6,
+        "createdIndex": 6
+      }
+    ],
+    "modifiedIndex": 5,
+    "createdIndex": 5
+  }
+}

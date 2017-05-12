@@ -22,7 +22,7 @@
 
     <cm:property-placeholder persistent-id="org.microbule.config.etcd" update-strategy="reload">
         <cm:default-properties>
-            <cm:property name="baseAddress" value="http://localhost:2379"/>
+            <cm:property name="baseAddress" value="http://localhost:2379/v2/keys/microbule"/>
         </cm:default-properties>
     </cm:property-placeholder>
 

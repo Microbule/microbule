@@ -32,6 +32,6 @@ public class EmptyConfigTest extends Assert {
 
     @Test
     public void testGroup() {
-        assertSame(EmptyConfig.INSTANCE, EmptyConfig.INSTANCE.group("whatever"));
+        assertSame(EmptyConfig.INSTANCE, EmptyConfig.INSTANCE.filtered("whatever"));
     }
 }

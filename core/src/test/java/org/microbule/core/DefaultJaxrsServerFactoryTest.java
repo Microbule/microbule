@@ -88,7 +88,7 @@ public class DefaultJaxrsServerFactoryTest extends Assert {
 //        proxyFactory.addDecorator("requestcount", (desc, customConfig) -> desc.addProvider(clientRequestCount));
 //
 //        MapConfig customConfig = new MapConfig();
-//        customConfig.group("mock").addValue("enabled", "false");
+//        customConfig.filtered("mock").addValue("enabled", "false");
 //        customConfig.addValue(JaxrsProxyFactory.ADDRESS_PROP, BASE_ADDRESS);
 //        proxyFactory.createProxy(HelloService.class, customConfig);
 //        verifyNoMoreInteractions(mock);

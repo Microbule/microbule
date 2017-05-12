@@ -18,6 +18,8 @@
 package org.microbule.config.core;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.microbule.config.api.Config;
 
@@ -52,9 +54,10 @@ public abstract class AbstractConfig implements Config {
 // Config Implementation
 //----------------------------------------------------------------------------------------------------------------------
 
+
     @Override
-    public Config group(String keyPrefix) {
-        return qualifiedConfig(qualify(keyPrefix), separator);
+    public Config filtered(String... keys) {
+        return qualifiedConfig(qualify(keys), separator);
     }
 
     @Override
@@ -66,7 +69,8 @@ public abstract class AbstractConfig implements Config {
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    protected String qualify(String key) {
-        return Optional.ofNullable(groupPrefix).map(prefix -> prefix + separator + key).orElse(key);
+    protected String qualify(String... keys) {
+        final String keyPath = Stream.of(keys).collect(Collectors.joining(separator));
+        return Optional.ofNullable(groupPrefix).map(prefix -> prefix + separator + keyPath).orElse(keyPath);
     }
 }

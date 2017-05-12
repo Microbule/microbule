@@ -58,8 +58,8 @@ public class DefaultConfigBuilderFactoryTest extends MockObjectTestCase  {
         config1.addValue("b.one", "config1.b1");
         config1.addValue("b.two", "config1.b2");
 
-        when(provider1.getConfig("a")).thenReturn(config1.group("a"));
-        when(provider1.getConfig("b")).thenReturn(config1.group("b"));
+        when(provider1.getConfig("a")).thenReturn(config1.filtered("a"));
+        when(provider1.getConfig("b")).thenReturn(config1.filtered("b"));
         when(provider1.name()).thenReturn("provider1");
         when(provider1.priority()).thenReturn(ConfigProvider.DEFAULT_PRIORITY);
 
@@ -69,8 +69,8 @@ public class DefaultConfigBuilderFactoryTest extends MockObjectTestCase  {
         config2.addValue("b.one", "config2.b1");
         config2.addValue("b.three", "config2.b3");
 
-        when(provider2.getConfig("a")).thenReturn(config2.group("a"));
-        when(provider2.getConfig("b")).thenReturn(config2.group("b"));
+        when(provider2.getConfig("a")).thenReturn(config2.filtered("a"));
+        when(provider2.getConfig("b")).thenReturn(config2.filtered("b"));
         when(provider2.name()).thenReturn("provider2");
         when(provider2.priority()).thenReturn(ConfigProvider.EXTERNAL_PRIORITY);
 

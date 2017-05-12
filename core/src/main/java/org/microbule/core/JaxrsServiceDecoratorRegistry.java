@@ -53,7 +53,7 @@ public abstract class JaxrsServiceDecoratorRegistry<T extends JaxrsServiceDecora
 
     public void decorate(JaxrsServiceDescriptor descriptor, Config config) {
         decoratorsMap.forEach((name, decorator) -> {
-            final Config decoratorConfig = config.group(name);
+            final Config decoratorConfig = config.filtered(name);
             if (decoratorConfig.booleanValue(ENABLED_PROPERTY).orElse(Boolean.TRUE)) {
                 getLogger().info("Decorating {} service using decorator \"{}\".", descriptor.serviceInterface().getSimpleName(), name);
                 decorator.decorate(descriptor, decoratorConfig);

@@ -32,6 +32,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.microbule</groupId>
             <artifactId>microbule-test-core</artifactId>
             <version>0.3.0-SNAPSHOT</version>

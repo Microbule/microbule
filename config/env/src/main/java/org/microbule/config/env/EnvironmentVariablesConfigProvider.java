@@ -36,7 +36,7 @@ public class EnvironmentVariablesConfigProvider implements ConfigProvider {
 //----------------------------------------------------------------------------------------------------------------------
 
     private static final String SEPARATOR = "_";
-    private final Supplier<Map<String,String>> envSupplier;
+    private final Supplier<Map<String, String>> envSupplier;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
@@ -57,7 +57,7 @@ public class EnvironmentVariablesConfigProvider implements ConfigProvider {
     @Override
     public Config getConfig(String... path) {
         final Config base = new MapConfig(envSupplier.get(), SEPARATOR);
-        return Stream.of(path).reduce(base, Config::group, (left, right) -> right);
+        return Stream.of(path).reduce(base, Config::filtered, (left, right) -> right);
     }
 
     @Override
@@ -75,9 +75,6 @@ public class EnvironmentVariablesConfigProvider implements ConfigProvider {
 //----------------------------------------------------------------------------------------------------------------------
 
     private Config envConfig(Class<?> serviceInterface, String subtype) {
-        return new MapConfig(envSupplier.get(), "_")
-                .group("microbule")
-                .group(serviceInterface.getSimpleName())
-                .group(subtype);
+        return new MapConfig(envSupplier.get(), "_").filtered("microbule", serviceInterface.getSimpleName(), subtype);
     }
 }

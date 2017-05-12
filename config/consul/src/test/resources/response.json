@@ -1,0 +1,18 @@
+[
+  {
+    "LockIndex": 0,
+    "Key": "one/two/five",
+    "Flags": 0,
+    "Value": "dGhyZWUsIHNpcg==",
+    "CreateIndex": 14,
+    "ModifyIndex": 14
+  },
+  {
+    "LockIndex": 0,
+    "Key": "one/two/three",
+    "Flags": 0,
+    "Value": "TWljcm9idWxl",
+    "CreateIndex": 11,
+    "ModifyIndex": 11
+  }
+]

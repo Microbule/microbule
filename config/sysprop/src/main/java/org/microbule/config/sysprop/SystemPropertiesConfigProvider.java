@@ -42,7 +42,7 @@ public class SystemPropertiesConfigProvider implements ConfigProvider {
     @Override
     public Config getConfig(String... path) {
         final Config base = ConfigUtils.fromProperties(System.getProperties());
-        return Stream.of(path).reduce(base, Config::group, (left, right) -> right);
+        return Stream.of(path).reduce(base, Config::filtered, (left, right) -> right);
     }
 
     @Override

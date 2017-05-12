@@ -81,7 +81,9 @@
         <guava.version>21.0</guava.version>
         <guava.retrying.version>2.0.0</guava.retrying.version>
         <hibernate.validator.version>5.2.4.Final</hibernate.validator.version>
+        <http.client.version>4.5.3</http.client.version>
         <javax.el.api.version>2.2.5</javax.el.api.version>
+        <jetty.version>9.4.5.v20170502</jetty.version>
         <jboss.logging.version>3.3.0.Final</jboss.logging.version>
         <junit.version>4.12</junit.version>
         <karaf.version>4.1.1</karaf.version>

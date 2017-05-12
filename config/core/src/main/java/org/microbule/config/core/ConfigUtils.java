@@ -30,8 +30,7 @@ public class ConfigUtils {
 
     public static Config bootstrapConfig(String providerName) {
         return new CompositeConfig(fromProperties(System.getProperties()), new MapConfig(System.getenv()))
-                .group("microbule")
-                .group(providerName);
+                .filtered("microbule", providerName);
     }
 
     public static Config fromProperties(Properties props) {

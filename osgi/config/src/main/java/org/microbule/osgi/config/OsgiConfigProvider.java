@@ -45,7 +45,7 @@ public class OsgiConfigProvider implements ConfigProvider, ManagedService {
 
     @Override
     public Config getConfig(String... path) {
-        return Stream.of(path).reduce(configRef.get(), Config::group, (left, right) -> right);
+        return Stream.of(path).reduce(configRef.get(), Config::filtered, (left, right) -> right);
     }
 
     @Override

@@ -89,7 +89,7 @@ public abstract class HttpConfigProvider<R> implements ConfigProvider {
 //----------------------------------------------------------------------------------------------------------------------
 
     protected Config dereferenceGroups(Config base, String... groups) {
-        return Stream.of(groups).reduce(base, Config::group, (c1, c2) -> c2);
+        return Stream.of(groups).reduce(base, Config::filtered, (c1, c2) -> c2);
     }
 
     protected WebTarget extend(WebTarget baseTarget, String... paths) {

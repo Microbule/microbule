@@ -34,16 +34,6 @@ public class ConfigTest extends MicrobuleTestCase {
     }
 
     @Test
-    public void testIntegerValue() {
-        assertEquals(new Integer(123), new ConstantConfig("123").integerValue("whatever").get());
-    }
-
-    @Test
-    public void testLongValue() {
-        assertEquals(new Long(123), new ConstantConfig("123").longValue("whatever").get());
-    }
-
-    @Test
     public void testDoubleValue() {
         assertEquals(new Double(123.456), new ConstantConfig("123.456").doubleValue("whatever").get());
     }
@@ -51,6 +41,16 @@ public class ConfigTest extends MicrobuleTestCase {
     @Test
     public void testEnumValue() {
         assertEquals(ElementType.METHOD, new ConstantConfig("METHOD").enumValue("whatever", ElementType.class).get());
+    }
+
+    @Test
+    public void testIntegerValue() {
+        assertEquals(new Integer(123), new ConstantConfig("123").integerValue("whatever").get());
+    }
+
+    @Test
+    public void testLongValue() {
+        assertEquals(new Long(123), new ConstantConfig("123").longValue("whatever").get());
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -76,9 +76,8 @@ public class ConfigTest extends MicrobuleTestCase {
 // Config Implementation
 //----------------------------------------------------------------------------------------------------------------------
 
-
         @Override
-        public Config group(String keyPrefix) {
+        public Config filtered(String... paths) {
             return this;
         }
 

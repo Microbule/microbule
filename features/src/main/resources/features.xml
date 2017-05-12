@@ -80,6 +80,7 @@
         <bundle dependency="true">mvn:com.google.code.gson/gson/${gson.version}</bundle>
         <bundle>mvn:org.microbule/microbule-gson-api/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-gson-spi/${project.version}</bundle>
+        <bundle>mvn:org.microbule/microbule-gson-provider/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-gson-core/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-gson-decorator/${project.version}</bundle>
     </feature>

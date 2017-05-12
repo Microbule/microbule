@@ -37,6 +37,6 @@ public class MapConfigTest extends Assert {
         Map<String,String> values = new HashMap<>();
         values.put("foo/bar", "baz");
         final MapConfig config = new MapConfig(values, "/");
-        assertEquals("baz", config.group("foo").value("bar").get());
+        assertEquals("baz", config.filtered("foo").value("bar").get());
     }
 }

@@ -32,9 +32,33 @@
     <dependencies>
         <dependency>
             <groupId>org.microbule</groupId>
-            <artifactId>microbule-config-http</artifactId>
+            <artifactId>microbule-util</artifactId>
             <version>0.3.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.microbule</groupId>
+            <artifactId>microbule-config-core</artifactId>
+            <version>0.3.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.microbule</groupId>
+            <artifactId>microbule-test-server</artifactId>
+            <version>0.3.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.microbule</groupId>
+            <artifactId>microbule-gson-decorator</artifactId>
+            <version>0.3.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.microbule</groupId>
+            <artifactId>microbule-gson-core</artifactId>
+            <version>0.3.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
 </project>

@@ -33,14 +33,6 @@ public class EtcdNode {
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public EtcdNode(String key, List<EtcdNode> nodes) {
-        this(key, true, nodes, null);
-    }
-
-    public EtcdNode(String key, String value) {
-        this(key, false, null, value);
-    }
-
     public EtcdNode(String key, boolean dir, List<EtcdNode> nodes, String value) {
         this.key = key;
         this.dir = dir;

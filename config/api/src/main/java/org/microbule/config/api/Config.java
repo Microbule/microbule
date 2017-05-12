@@ -30,7 +30,8 @@ public interface Config {
         return value(key, Boolean::valueOf);
     }
 
-    Config group(String keyPrefix);
+    Config filtered(String... paths);
+
 
     default Optional<Double> doubleValue(String key) {
         return value(key, Double::valueOf);

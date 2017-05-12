@@ -43,7 +43,7 @@ public class SpringEnvironmentConfigProvider implements ConfigProvider {
     @Override
     public Config getConfig(String... path) {
         Config base = new SpringEnvironmentConfig(environment);
-        return Stream.of(path).reduce(base, Config::group, (left, right) -> right);
+        return Stream.of(path).reduce(base, Config::filtered, (left, right) -> right);
     }
 
     @Override

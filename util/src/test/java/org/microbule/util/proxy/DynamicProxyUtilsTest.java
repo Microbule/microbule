@@ -15,12 +15,13 @@
  *
  */
 
-package org.microbule.util;
+package org.microbule.util.proxy;
 
 import org.junit.Test;
 import org.microbule.test.core.MockObjectTestCase;
 import org.microbule.test.core.hello.HelloService;
 import org.microbule.test.core.hello.HelloServiceImpl;
+import org.microbule.util.proxy.DynamicProxyUtils;
 
 public class DynamicProxyUtilsTest extends MockObjectTestCase {
 //----------------------------------------------------------------------------------------------------------------------

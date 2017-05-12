@@ -15,7 +15,7 @@
  *
  */
 
-package org.microbule.gson.decorator;
+package org.microbule.gson.provider;
 
 import java.io.IOException;
 import java.io.InputStream;
