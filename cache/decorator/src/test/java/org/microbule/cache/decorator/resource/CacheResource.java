@@ -38,25 +38,25 @@ public interface CacheResource {
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    @Path("/value/etag")
+    @Path("/name/etag")
     @Cacheable(maxAge = 600)
     String getValueWithEtag();
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    @Path("/value/lastModified")
+    @Path("/name/lastModified")
     @Cacheable(maxAge = 600)
     String getValueWithLastModified();
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    @Path("/value/lastModifiedAndEtag")
+    @Path("/name/lastModifiedAndEtag")
     @Cacheable(maxAge = 600)
     String getValueWithLastModifiedAndEtag();
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    @Path("/value/noState")
+    @Path("/name/noState")
     @Cacheable(maxAge = 600)
     String getValueWithNoState();
 

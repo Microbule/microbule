@@ -45,7 +45,7 @@ public class DefaultJaxrsConfigBuilderStrategyTest extends MockObjectTestCase {
     @Test
     public void testBuildProxyConfig() {
         final DefaultJaxrsConfigBuilderStrategy strategy = new DefaultJaxrsConfigBuilderStrategy();
-        strategy.buildProxyConfig(HelloService.class, configBuilder);
+        strategy.buildProxyConfig(HelloService.class, "HelloService", configBuilder);
 
         final InOrder order = inOrder(configBuilder);
 
@@ -58,7 +58,7 @@ public class DefaultJaxrsConfigBuilderStrategyTest extends MockObjectTestCase {
     @Test
     public void testBuildServerConfig() {
         final DefaultJaxrsConfigBuilderStrategy strategy = new DefaultJaxrsConfigBuilderStrategy();
-        strategy.buildServerConfig(HelloService.class, configBuilder);
+        strategy.buildServerConfig(HelloService.class, "HelloService", configBuilder);
 
         final InOrder order = inOrder(configBuilder);
 

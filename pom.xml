@@ -61,6 +61,7 @@
         <module>container</module>
         <module>util</module>
         <module>cglib</module>
+        <module>annotation</module>
     </modules>
 
     <properties>

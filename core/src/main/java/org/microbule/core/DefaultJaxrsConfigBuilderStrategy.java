@@ -35,16 +35,16 @@ public class DefaultJaxrsConfigBuilderStrategy implements JaxrsConfigBuilderStra
 
 
     @Override
-    public <T> ConfigBuilder buildServerConfig(Class<T> serviceInterface, ConfigBuilder builder) {
+    public <T> ConfigBuilder buildServerConfig(Class<T> serviceInterface, String serviceName, ConfigBuilder builder) {
         return builder
-                .withPath(serviceInterface.getSimpleName(), SERVER_PATH_SEGMENT)
+                .withPath(serviceName, SERVER_PATH_SEGMENT)
                 .withPath(DEFAULTS_PATH_SEGMENT, SERVER_PATH_SEGMENT);
     }
 
     @Override
-    public <T> ConfigBuilder buildProxyConfig(Class<T> serviceInterface, ConfigBuilder builder) {
+    public <T> ConfigBuilder buildProxyConfig(Class<T> serviceInterface, String serviceName, ConfigBuilder builder) {
         return builder
-                .withPath(serviceInterface.getSimpleName(), PROXY_PATH_SEGMENT)
+                .withPath(serviceName, PROXY_PATH_SEGMENT)
                 .withPath(DEFAULTS_PATH_SEGMENT, PROXY_PATH_SEGMENT);
     }
 }

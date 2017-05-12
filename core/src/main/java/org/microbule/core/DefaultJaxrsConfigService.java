@@ -54,12 +54,12 @@ public class DefaultJaxrsConfigService implements JaxrsConfigService {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public <T> Config createProxyConfig(Class<T> serviceInterface) {
-        return serviceConfigBuilder.get().buildProxyConfig(serviceInterface, configBuilderFactory.createBuilder()).build();
+    public <T> Config createProxyConfig(Class<T> serviceInterface, String serviceName) {
+        return serviceConfigBuilder.get().buildProxyConfig(serviceInterface, serviceName, configBuilderFactory.createBuilder()).build();
     }
 
     @Override
-    public <T> Config createServerConfig(Class<T> serviceInterface) {
-        return serviceConfigBuilder.get().buildServerConfig(serviceInterface, configBuilderFactory.createBuilder()).build();
+    public <T> Config createServerConfig(Class<T> serviceInterface, String serviceName) {
+        return serviceConfigBuilder.get().buildServerConfig(serviceInterface, serviceName, configBuilderFactory.createBuilder()).build();
     }
 }

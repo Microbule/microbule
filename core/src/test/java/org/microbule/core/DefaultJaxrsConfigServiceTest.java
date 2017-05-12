@@ -32,6 +32,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 public class DefaultJaxrsConfigServiceTest extends MockObjectTestCase {
+//----------------------------------------------------------------------------------------------------------------------
+// Fields
+//----------------------------------------------------------------------------------------------------------------------
 
     @Mock
     private ConfigBuilder configBuilder;
@@ -39,11 +42,17 @@ public class DefaultJaxrsConfigServiceTest extends MockObjectTestCase {
     @Mock
     private ConfigBuilderFactory configBuilderFactory;
 
-    @Before
-    public void trainMock() {
-        when(configBuilder.withPath(any())).thenReturn(configBuilder);
-        when(configBuilderFactory.createBuilder()).thenReturn(configBuilder);
-        when(configBuilder.build()).thenReturn(EmptyConfig.INSTANCE);
+//----------------------------------------------------------------------------------------------------------------------
+// Other Methods
+//----------------------------------------------------------------------------------------------------------------------
+
+    @Test
+    public void testCreateProxyConfig() {
+        SimpleContainer container = new SimpleContainer();
+        final DefaultJaxrsConfigService service = new DefaultJaxrsConfigService(container, configBuilderFactory);
+
+        final Config config = service.createProxyConfig(HelloService.class, "HelloService");
+        assertSame(EmptyConfig.INSTANCE, config);
     }
 
     @Test
@@ -51,16 +60,14 @@ public class DefaultJaxrsConfigServiceTest extends MockObjectTestCase {
         SimpleContainer container = new SimpleContainer();
         final DefaultJaxrsConfigService service = new DefaultJaxrsConfigService(container, configBuilderFactory);
 
-        final Config config = service.createServerConfig(HelloService.class);
+        final Config config = service.createServerConfig(HelloService.class, "HelloService");
         assertSame(EmptyConfig.INSTANCE, config);
     }
 
-    @Test
-    public void testCreateProxyConfig() {
-        SimpleContainer container = new SimpleContainer();
-        final DefaultJaxrsConfigService service = new DefaultJaxrsConfigService(container, configBuilderFactory);
-
-        final Config config = service.createProxyConfig(HelloService.class);
-        assertSame(EmptyConfig.INSTANCE, config);
+    @Before
+    public void trainMock() {
+        when(configBuilder.withPath(any())).thenReturn(configBuilder);
+        when(configBuilderFactory.createBuilder()).thenReturn(configBuilder);
+        when(configBuilder.build()).thenReturn(EmptyConfig.INSTANCE);
     }
 }

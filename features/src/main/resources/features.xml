@@ -60,6 +60,7 @@
         <bundle>mvn:org.microbule/microbule-config-env/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-config-sysprop/${project.version}</bundle>
 
+        <bundle>mvn:org.microbule/microbule-annotation/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-api/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-spi/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-cglib/${project.version}</bundle>

@@ -17,6 +17,8 @@
 
 package org.microbule.core;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -31,6 +33,7 @@ import org.microbule.config.api.Config;
 import org.microbule.config.api.ConfigurationException;
 import org.microbule.container.api.MicrobuleContainer;
 import org.microbule.spi.JaxrsServerDecorator;
+import org.microbule.spi.JaxrsServiceNamingStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,6 +47,7 @@ public class DefaultJaxrsServerFactory extends JaxrsServiceDecoratorRegistry<Jax
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultJaxrsServerFactory.class);
 
     private final JaxrsConfigService configService;
+    private final AtomicReference<JaxrsServiceNamingStrategy> namingStrategy;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
@@ -53,6 +57,7 @@ public class DefaultJaxrsServerFactory extends JaxrsServiceDecoratorRegistry<Jax
     public DefaultJaxrsServerFactory(MicrobuleContainer container, JaxrsConfigService configService) {
         super(JaxrsServerDecorator.class, container);
         this.configService = configService;
+        this.namingStrategy = container.pluginReference(JaxrsServiceNamingStrategy.class, new DefaultJaxrsServiceNamingStrategy());
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -61,7 +66,7 @@ public class DefaultJaxrsServerFactory extends JaxrsServiceDecoratorRegistry<Jax
 
     @Override
     public JaxrsServer createJaxrsServer(Class<?> serviceInterface, Object serviceImplementation) {
-        final Config config = configService.createServerConfig(serviceInterface);
+        final Config config = configService.createServerConfig(serviceInterface, namingStrategy.get().serviceName(serviceInterface));
         final String address = config.value(ADDRESS_PROP).orElseThrow(() -> new ConfigurationException("Missing '%s' property.", ADDRESS_PROP));
         LOGGER.info("Starting {} JAX-RS server ({})...", serviceInterface.getSimpleName(), address);
         final JaxrsServiceDescriptorImpl descriptor = new JaxrsServiceDescriptorImpl(serviceInterface);

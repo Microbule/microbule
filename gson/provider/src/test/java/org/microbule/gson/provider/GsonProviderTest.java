@@ -17,6 +17,9 @@
 
 package org.microbule.gson.provider;
 
+import java.util.List;
+
+import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.microbule.config.api.Config;
 import org.microbule.container.core.SimpleContainer;
@@ -69,10 +72,17 @@ public class GsonProviderTest extends JaxrsServerTestCase<PersonService> {
     }
 
     @Test
-    public void testSerialization() {
+    public void testBeanSerialization() {
         when(serviceImpl.findPerson("Slappy", "White")).thenReturn(new Person("Slappy", "White"));
         final Person person = createProxy().findPerson("Slappy", "White");
         assertEquals("Slappy", person.getFirstName());
         assertEquals("White", person.getLastName());
+    }
+
+    @Test
+    public void testGenericTypeSerialization() {
+        when(serviceImpl.all()).thenReturn(Lists.newArrayList(new Person("Slappy", "White")));
+        final List<Person> persons = createProxy().all();
+        assertEquals(1, persons.size());
     }
 }

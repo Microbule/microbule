@@ -52,10 +52,10 @@ public class DefaultJaxrsServerFactoryTest extends MockObjectTestCase {
 
     @Mock
     private JaxrsServerDecorator ignoredServerDecorator;
-    
+
     @Mock
     private JaxrsProxyDecorator ignoredProxyDecorator;
-    
+
     @Mock
     private JaxrsConfigService configService;
 
@@ -73,12 +73,12 @@ public class DefaultJaxrsServerFactoryTest extends MockObjectTestCase {
         MapConfig serverConfig = new MapConfig();
         serverConfig.addValue("serverAddress", ADDRESS);
         serverConfig.addValue("ignored.enabled", "false");
-        when(configService.createServerConfig(HelloService.class)).thenReturn(serverConfig);
+        when(configService.createServerConfig(HelloService.class, "HelloService")).thenReturn(serverConfig);
 
         MapConfig proxyConfig = new MapConfig();
         proxyConfig.addValue("proxyAddress", ADDRESS);
         proxyConfig.addValue("ignored.enabled", "false");
-        when(configService.createProxyConfig(HelloService.class)).thenReturn(proxyConfig);
+        when(configService.createProxyConfig(HelloService.class, "HelloService")).thenReturn(proxyConfig);
 
         when(serverDecorator.name()).thenReturn("mock");
         container.addBean(serverDecorator);
@@ -107,8 +107,6 @@ public class DefaultJaxrsServerFactoryTest extends MockObjectTestCase {
     @Test
     public void testCallingService() {
         final HelloService hello = proxyFactory.createProxy(HelloService.class);
-
-
 
 
         assertEquals("Hello, Microbule!", hello.sayHello("Microbule"));

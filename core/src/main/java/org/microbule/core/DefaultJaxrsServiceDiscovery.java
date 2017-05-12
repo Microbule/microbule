@@ -45,8 +45,8 @@ public class DefaultJaxrsServiceDiscovery implements JaxrsServiceDiscovery {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public JaxrsEndpointChooser createEndpointChooser(Class<?> serviceInterface) {
-        final Config config = configService.createProxyConfig(serviceInterface);
+    public JaxrsEndpointChooser createEndpointChooser(Class<?> serviceInterface, String serviceName) {
+        final Config config = configService.createProxyConfig(serviceInterface, serviceName);
         final String baseAddress = config.value(ADDRESS_PROP).orElseThrow(() -> new ConfigurationException("Missing '%s' property.", ADDRESS_PROP));
         return () -> baseAddress;
     }

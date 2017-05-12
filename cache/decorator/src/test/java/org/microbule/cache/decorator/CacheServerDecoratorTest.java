@@ -50,7 +50,7 @@ public class CacheServerDecoratorTest extends JaxrsServerTestCase<CacheResource>
 
     @Test
     public void testEmptyResponseWithMatchingEtag() {
-        final Response response = createWebTarget().path("value").path("etag")
+        final Response response = createWebTarget().path("name").path("etag")
                 .request(MediaType.TEXT_PLAIN)
                 .header(HttpHeaders.IF_NONE_MATCH, CacheResource.ENTITY_TAG)
                 .get();
@@ -59,7 +59,7 @@ public class CacheServerDecoratorTest extends JaxrsServerTestCase<CacheResource>
 
     @Test
     public void testEmptyResponseWithUnmodified() {
-        final Response response = createWebTarget().path("value").path("lastModified")
+        final Response response = createWebTarget().path("name").path("lastModified")
                 .request(MediaType.TEXT_PLAIN)
                 .header(HttpHeaders.IF_MODIFIED_SINCE, HttpUtils.getHttpDateFormat().format(Date.from(CacheResource.LAST_MODIFIED.toInstant().plus(5, ChronoUnit.MINUTES))))
                 .get();
@@ -68,7 +68,7 @@ public class CacheServerDecoratorTest extends JaxrsServerTestCase<CacheResource>
 
     @Test
     public void testEntityTagSupport() {
-        final Response response = createWebTarget().path("value").path("etag").request(MediaType.TEXT_PLAIN).get();
+        final Response response = createWebTarget().path("name").path("etag").request(MediaType.TEXT_PLAIN).get();
         CacheControl cacheControl = CacheControl.valueOf(response.getHeaderString(HttpHeaders.CACHE_CONTROL));
         assertEquals(600, cacheControl.getMaxAge());
         assertTrue(cacheControl.isNoTransform());
@@ -80,7 +80,7 @@ public class CacheServerDecoratorTest extends JaxrsServerTestCase<CacheResource>
 
     @Test
     public void testLastUpdatedAndEtagSupport() {
-        final Response response = createWebTarget().path("value").path("lastModifiedAndEtag").request(MediaType.TEXT_PLAIN).get();
+        final Response response = createWebTarget().path("name").path("lastModifiedAndEtag").request(MediaType.TEXT_PLAIN).get();
         CacheControl cacheControl = CacheControl.valueOf(response.getHeaderString(HttpHeaders.CACHE_CONTROL));
         assertEquals(600, cacheControl.getMaxAge());
         assertTrue(cacheControl.isNoTransform());
@@ -96,7 +96,7 @@ public class CacheServerDecoratorTest extends JaxrsServerTestCase<CacheResource>
 
     @Test
     public void testLastUpdatedSupport() {
-        final Response response = createWebTarget().path("value").path("lastModified").request(MediaType.TEXT_PLAIN).get();
+        final Response response = createWebTarget().path("name").path("lastModified").request(MediaType.TEXT_PLAIN).get();
         CacheControl cacheControl = CacheControl.valueOf(response.getHeaderString(HttpHeaders.CACHE_CONTROL));
         assertEquals(600, cacheControl.getMaxAge());
         assertTrue(cacheControl.isNoTransform());
@@ -107,7 +107,7 @@ public class CacheServerDecoratorTest extends JaxrsServerTestCase<CacheResource>
 
     @Test
     public void testWithNoState() {
-        final Response response = createWebTarget().path("value").path("noState").request(MediaType.TEXT_PLAIN).get();
+        final Response response = createWebTarget().path("name").path("noState").request(MediaType.TEXT_PLAIN).get();
         CacheControl cacheControl = CacheControl.valueOf(response.getHeaderString(HttpHeaders.CACHE_CONTROL));
         assertEquals(600, cacheControl.getMaxAge());
         assertTrue(cacheControl.isNoTransform());

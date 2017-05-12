@@ -17,6 +17,8 @@
 
 package org.microbule.gson.provider;
 
+import java.util.List;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -33,4 +35,9 @@ public interface PersonService {
     @Path("/people/{firstName}/{lastName}")
     @Produces(MediaType.APPLICATION_JSON)
     Person findPerson(@PathParam("firstName") String firstName, @PathParam("lastName") String lastName);
+
+    @GET
+    @Path("/people")
+    @Produces(MediaType.APPLICATION_JSON)
+    List<Person> all();
 }

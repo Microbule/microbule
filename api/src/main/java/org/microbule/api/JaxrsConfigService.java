@@ -20,7 +20,7 @@ package org.microbule.api;
 import org.microbule.config.api.Config;
 
 public interface JaxrsConfigService {
-    <T> Config createServerConfig(Class<T> serviceInterface);
+    <T> Config createServerConfig(Class<T> serviceInterface, String serviceName);
 
-    <T> Config createProxyConfig(Class<T> serviceInterface);
+    <T> Config createProxyConfig(Class<T> serviceInterface, String serviceName);
 }

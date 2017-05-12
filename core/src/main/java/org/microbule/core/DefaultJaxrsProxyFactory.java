@@ -34,6 +34,7 @@ import org.microbule.spi.JaxrsDynamicProxyStrategy;
 import org.microbule.spi.JaxrsEndpointChooser;
 import org.microbule.spi.JaxrsProxyDecorator;
 import org.microbule.spi.JaxrsServiceDiscovery;
+import org.microbule.spi.JaxrsServiceNamingStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,6 +49,7 @@ public class DefaultJaxrsProxyFactory extends JaxrsServiceDecoratorRegistry<Jaxr
     private final JaxrsConfigService configService;
     private final AtomicReference<JaxrsServiceDiscovery> serviceDiscovery;
     private final AtomicReference<JaxrsDynamicProxyStrategy> dynamicProxyStrategy;
+    private final AtomicReference<JaxrsServiceNamingStrategy> namingStrategy;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
@@ -59,6 +61,7 @@ public class DefaultJaxrsProxyFactory extends JaxrsServiceDecoratorRegistry<Jaxr
         this.configService = configService;
         this.serviceDiscovery = container.pluginReference(JaxrsServiceDiscovery.class, new DefaultJaxrsServiceDiscovery(configService));
         this.dynamicProxyStrategy = container.pluginReference(JaxrsDynamicProxyStrategy.class, new JdkDynamicProxyStrategy());
+        this.namingStrategy = container.pluginReference(JaxrsServiceNamingStrategy.class, new DefaultJaxrsServiceNamingStrategy());
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -68,13 +71,14 @@ public class DefaultJaxrsProxyFactory extends JaxrsServiceDecoratorRegistry<Jaxr
     @Override
     public <T> T createProxy(Class<T> serviceInterface) {
         LOGGER.info("Creating {} JAX-RS service proxy.", serviceInterface.getSimpleName());
+        final String serviceName = namingStrategy.get().serviceName(serviceInterface);
         final JaxrsProxyCache<T> cache = new JaxrsProxyCache<>((baseAddress) -> {
-            final Config config = configService.createProxyConfig(serviceInterface);
+            final Config config = configService.createProxyConfig(serviceInterface, serviceName);
             final JaxrsServiceDescriptorImpl descriptor = new JaxrsServiceDescriptorImpl(serviceInterface);
             decorate(descriptor, config);
             return JAXRSClientFactory.create(baseAddress, serviceInterface, descriptor.getProviders(), descriptor.getFeatures(), null);
         });
-        final Supplier<JaxrsEndpointChooser> endpointChooserSupplier = Suppliers.memoize(() -> createEndpointChooser(serviceInterface));
+        final Supplier<JaxrsEndpointChooser> endpointChooserSupplier = Suppliers.memoize(() -> createEndpointChooser(serviceInterface, serviceName));
         return dynamicProxyStrategy.get().createDynamicProxy(serviceInterface, () -> cache.getProxy(endpointChooserSupplier.get().chooseEndpoint()));
     }
 
@@ -82,9 +86,9 @@ public class DefaultJaxrsProxyFactory extends JaxrsServiceDecoratorRegistry<Jaxr
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    private <T> JaxrsEndpointChooser createEndpointChooser(Class<T> serviceInterface) {
+    private <T> JaxrsEndpointChooser createEndpointChooser(Class<T> serviceInterface, String serviceName) {
         LOGGER.info("Creating {} JaxrsEndpointChooser...", serviceInterface.getSimpleName());
-        return serviceDiscovery.get().createEndpointChooser(serviceInterface);
+        return serviceDiscovery.get().createEndpointChooser(serviceInterface, serviceName);
     }
 
     @Override

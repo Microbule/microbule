@@ -15,16 +15,19 @@
  *
  */
 
-package org.microbule.spi;
+package org.microbule.annotation;
 
-import org.microbule.config.api.ConfigBuilder;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public interface JaxrsConfigBuilderStrategy {
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface JaxrsService {
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    <T> ConfigBuilder buildProxyConfig(Class<T> serviceInterface, String serviceName, ConfigBuilder builder);
-
-    <T> ConfigBuilder buildServerConfig(Class<T> serviceInterface, String serviceName, ConfigBuilder builder);
+    String name() default "";
 }

@@ -15,16 +15,22 @@
  *
  */
 
-package org.microbule.spi;
+package org.microbule.core;
 
-import org.microbule.config.api.ConfigBuilder;
+import java.util.Optional;
 
-public interface JaxrsConfigBuilderStrategy {
+import org.apache.commons.lang3.StringUtils;
+import org.microbule.annotation.JaxrsService;
+import org.microbule.spi.JaxrsServiceNamingStrategy;
+
+public class DefaultJaxrsServiceNamingStrategy implements JaxrsServiceNamingStrategy {
 //----------------------------------------------------------------------------------------------------------------------
-// Other Methods
+// JaxrsServiceNamingStrategy Implementation
 //----------------------------------------------------------------------------------------------------------------------
 
-    <T> ConfigBuilder buildProxyConfig(Class<T> serviceInterface, String serviceName, ConfigBuilder builder);
-
-    <T> ConfigBuilder buildServerConfig(Class<T> serviceInterface, String serviceName, ConfigBuilder builder);
+    @Override
+    public String serviceName(Class<?> serviceInterface) {
+        final String fallback = serviceInterface.getSimpleName();
+        return Optional.ofNullable(serviceInterface.getAnnotation(JaxrsService.class)).map(annotation -> StringUtils.defaultIfBlank(annotation.name(), fallback)).orElse(fallback);
+    }
 }
