@@ -50,6 +50,10 @@ public class SimpleContainerTest extends MockObjectTestCase {
         container.addBean("Microbule");
 
         assertEquals(Arrays.asList("Hello", "World", "Microbule"), container.pluginList(String.class));
+
+        container.removeBean("World");
+
+        assertEquals(Arrays.asList("Hello"), strings);
     }
 
     @Test
@@ -78,6 +82,10 @@ public class SimpleContainerTest extends MockObjectTestCase {
         assertEquals("a", map.get(1));
         assertEquals("aa", map.get(2));
         assertEquals("aaa", map.get(3));
+
+        container.removeBean("aaa");
+
+        assertNull(map.get(3));
     }
 
     @Test
@@ -91,6 +99,10 @@ public class SimpleContainerTest extends MockObjectTestCase {
 
         container.initialize();
         assertEquals("hello", ref.get());
+
+        container.removeBean("hello");
+
+        assertEquals("thedefault", ref.get());
     }
 
     @Test

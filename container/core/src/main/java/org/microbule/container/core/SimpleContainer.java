@@ -49,6 +49,11 @@ public class SimpleContainer extends StaticContainer {
                 .collect(Collectors.toList());
     }
 
+    public void removeBean(Object bean) {
+        beans.remove(bean);
+        beanRemoved(bean);
+    }
+
     @Override
     protected Iterable<ServerDefinition> servers() {
         return beans.stream()

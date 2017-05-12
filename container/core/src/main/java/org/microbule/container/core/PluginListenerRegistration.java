@@ -25,15 +25,15 @@ public class PluginListenerRegistration<B> {
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    private final Class<B> beanType;
+    private final Class<B> pluginType;
     private final PluginListener<B> listener;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public PluginListenerRegistration(Class<B> beanType, PluginListener<B> listener) {
-        this.beanType = beanType;
+    public PluginListenerRegistration(Class<B> pluginType, PluginListener<B> listener) {
+        this.pluginType = pluginType;
         this.listener = listener;
     }
 
@@ -41,8 +41,8 @@ public class PluginListenerRegistration<B> {
 // Getter/Setter Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    public Class<B> getBeanType() {
-        return beanType;
+    public Class<B> getPluginType() {
+        return pluginType;
     }
 
     public PluginListener<B> getListener() {

@@ -52,7 +52,7 @@ public abstract class StaticContainer extends AbstractContainer {
         final PluginListenerRegistration<B> registration = new PluginListenerRegistration<>(beanType, listener);
         pluginListeners.add(registration);
         if (initialized.get()) {
-            pluginFound(registration);
+            registerPlugin(registration);
         }
     }
 
@@ -70,11 +70,23 @@ public abstract class StaticContainer extends AbstractContainer {
 
     public void initialize() {
         initialized.set(true);
-        pluginListeners.forEach(this::pluginFound);
+        pluginListeners.forEach(this::registerPlugin);
         servers().forEach(def -> serverListeners.forEach(listener -> listener.registerServer(def)));
     }
 
-    private <B> void pluginFound(PluginListenerRegistration<B> registration) {
-        plugins(registration.getBeanType()).forEach(bean -> registration.getListener().registerPlugin(bean));
+    protected void beanRemoved(Object bean) {
+        for (PluginListenerRegistration<?> pluginListener : pluginListeners) {
+            if (pluginListener.getPluginType().isInstance(bean)) {
+                unregisterPlugin(pluginListener, bean);
+            }
+        }
+    }
+
+    private <B> void registerPlugin(PluginListenerRegistration<B> registration) {
+        plugins(registration.getPluginType()).forEach(bean -> registration.getListener().registerPlugin(bean));
+    }
+
+    private <B> void unregisterPlugin(PluginListenerRegistration<B> registration, Object bean) {
+        registration.getListener().unregisterPlugin(registration.getPluginType().cast(bean));
     }
 }
