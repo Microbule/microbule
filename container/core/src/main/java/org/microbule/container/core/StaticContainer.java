@@ -89,4 +89,8 @@ public abstract class StaticContainer extends AbstractContainer {
     private <B> void unregisterPlugin(PluginListenerRegistration<B> registration, Object bean) {
         registration.getListener().unregisterPlugin(registration.getPluginType().cast(bean));
     }
+
+    protected void serverRemoved(String id) {
+        serverListeners.forEach(serverListener -> serverListener.unregisterServer(id));
+    }
 }

@@ -81,5 +81,23 @@
             <version>0.3.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.microbule</groupId>
+            <artifactId>microbule-container-core</artifactId>
+            <version>0.3.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http-jetty</artifactId>
+            <version>${cxf.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http-hc</artifactId>
+            <version>${cxf.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>

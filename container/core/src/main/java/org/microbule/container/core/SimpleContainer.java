@@ -59,7 +59,19 @@ public class SimpleContainer extends StaticContainer {
         return beans.stream()
                 .flatMap(bean -> ClassUtils.getAllInterfaces(bean.getClass()).stream()
                         .filter(serviceInterface -> serviceInterface.isAnnotationPresent(Path.class))
-                        .map(serviceInterface -> new DefaultServerDefinition(String.valueOf(System.identityHashCode(bean)), serviceInterface, bean)))
+                        .map(serviceInterface -> new DefaultServerDefinition(idOf(bean), serviceInterface, bean)))
                 .collect(Collectors.toList());
+    }
+
+    public void shutdown() {
+        servers().forEach(server -> serverRemoved(server.id()));
+        beans.forEach(bean -> {
+            serverRemoved(idOf(bean));
+            removeBean(bean);
+        });
+    }
+
+    private String idOf(Object bean) {
+        return String.valueOf(System.identityHashCode(bean));
     }
 }

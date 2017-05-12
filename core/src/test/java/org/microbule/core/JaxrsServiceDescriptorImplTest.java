@@ -17,23 +17,42 @@
 
 package org.microbule.core;
 
+import org.apache.cxf.feature.LoggingFeature;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.microbule.test.core.hello.HelloService;
 
 public class JaxrsServiceDescriptorImplTest extends Assert {
+//----------------------------------------------------------------------------------------------------------------------
+// Fields
+//----------------------------------------------------------------------------------------------------------------------
 
-    private JaxrsServiceDescriptorImpl config;
+    private JaxrsServiceDescriptorImpl descriptor;
+
+//----------------------------------------------------------------------------------------------------------------------
+// Other Methods
+//----------------------------------------------------------------------------------------------------------------------
 
     @Before
     public void initConfig() {
-        config = new JaxrsServiceDescriptorImpl(HelloService.class);
+        descriptor = new JaxrsServiceDescriptorImpl(HelloService.class);
+    }
+
+    @Test
+    public void testAddFeature() {
+        descriptor.addFeature(new LoggingFeature());
+        assertEquals(1, descriptor.getFeatures().size());
+    }
+
+    @Test
+    public void testAddProvider() {
+        descriptor.addProvider(new Object());
+        assertEquals(1, descriptor.getProviders().size());
     }
 
     @Test
     public void testServiceInterface() {
-        assertEquals(HelloService.class, config.serviceInterface());
+        assertEquals(HelloService.class, descriptor.serviceInterface());
     }
-
 }

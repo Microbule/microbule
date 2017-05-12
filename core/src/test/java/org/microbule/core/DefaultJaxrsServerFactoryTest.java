@@ -17,121 +17,103 @@
 
 package org.microbule.core;
 
-import org.junit.Assert;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.microbule.api.JaxrsConfigService;
+import org.microbule.config.api.Config;
+import org.microbule.config.core.MapConfig;
+import org.microbule.container.core.SimpleContainer;
+import org.microbule.spi.JaxrsProxyDecorator;
+import org.microbule.spi.JaxrsServerDecorator;
+import org.microbule.spi.JaxrsServiceDescriptor;
+import org.microbule.test.core.MockObjectTestCase;
+import org.microbule.test.core.hello.HelloService;
+import org.microbule.test.core.hello.HelloServiceImpl;
+import org.mockito.Mock;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
-public class DefaultJaxrsServerFactoryTest extends Assert {
+public class DefaultJaxrsServerFactoryTest extends MockObjectTestCase {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-//    public static final String BASE_ADDRESS = "http://localhost:8383/";
-//
-//    @Mock
-//    private JaxrsProxyDecorator proxyDecorator;
-//
-//    @Captor
-//    private ArgumentCaptor<JaxrsServiceDescriptor> descriptorCaptor;
-//
-//    @Mock
-//    private JaxrsServerDecorator serverDecorator;
-//
-//    @Mock
-//    private BeanDiscoveryService beanDiscoveryService;
-//
-//    @Captor
-//    private ArgumentCaptor<BeanDiscoveryListener<JaxrsServerDecorator>> decoratorListenerCaptor;
-//
-//
-//    private final RequestCountContainerFilter containerRequestCount = new RequestCountContainerFilter();
-//    private final RequestCountClientFilter clientRequestCount = new RequestCountClientFilter();
-//    private JaxrsServer server;
-//    private DefaultJaxrsServerFactory serverFactory;
-//
-////----------------------------------------------------------------------------------------------------------------------
-//// Other Methods
-////----------------------------------------------------------------------------------------------------------------------
-//
-//    @Test
-//    public void testCreateProxy() {
-//        final DefaultJaxrsProxyFactory proxyFactory = new DefaultJaxrsProxyFactory(beanDiscoveryService);
-//        verify(beanDiscoveryService).discoverBeans(eq(JaxrsProxyDecorator.class), decoratorListenerCaptor.capture());
-//
-//        final BeanDiscoveryListener<JaxrsServerDecorator> listener = decoratorListenerCaptor.getValue();
-//        listener.onBeanFound(mock);
-//        listener.onBeanFound(new )
-//        proxyFactory.addDecorator("mock", mock);
-//        proxyFactory.addDecorator("requestcount", (desc, customConfig) -> desc.addProvider(clientRequestCount));
-//        assertEquals(2, proxyFactory.getDecoratorCount());
-//        assertSame(mock, proxyFactory.getDecorator("mock"));
-//
-//        MapConfig customConfig = new MapConfig();
-//
-//        customConfig.addValue(JaxrsProxyFactory.ADDRESS_PROP, BASE_ADDRESS);
-//
-//        final HelloService proxy = proxyFactory.createProxy(HelloService.class, customConfig);
-//
-//        verify(mock).decorate(descriptorCaptor.capture(), any(Config.class));
-//        final JaxrsServiceDescriptor descriptor = descriptorCaptor.getValue();
-//
-//        assertEquals(HelloService.class, descriptor.serviceInterface());
-//
-//        assertEquals("Hello, Microbule!", proxy.sayHello("Microbule"));
-//        assertEquals(1, clientRequestCount.getRequestCount().get());
-//        assertEquals(1, containerRequestCount.getRequestCount().get());
-//    }
-//
-//    @Test
-//    public void testCreateProxyWhenDecoratorDisabled() {
-//        final DefaultJaxrsProxyFactory proxyFactory = new DefaultJaxrsProxyFactory();
-//        proxyFactory.addDecorator("mock", mock);
-//        proxyFactory.addDecorator("requestcount", (desc, customConfig) -> desc.addProvider(clientRequestCount));
-//
-//        MapConfig customConfig = new MapConfig();
-//        customConfig.filtered("mock").addValue("enabled", "false");
-//        customConfig.addValue(JaxrsProxyFactory.ADDRESS_PROP, BASE_ADDRESS);
-//        proxyFactory.createProxy(HelloService.class, customConfig);
-//        verifyNoMoreInteractions(mock);
-//    }
-//
-//    @Test
-//    public void testCreatingServer() {
-//        verify(serverDecorator).decorate(descriptorCaptor.capture(), any(Config.class));
-//        final JaxrsServiceDescriptor descriptor = descriptorCaptor.getValue();
-//        assertEquals(HelloService.class, descriptor.serviceInterface());
-//    }
-//
-//    @Before
-//    public void startServer() {
-//        MockitoAnnotations.initMocks(this);
-//        serverFactory = new DefaultJaxrsServerFactory();
-//        serverFactory.addDecorator(serverDecorator);
-//        serverFactory.addDecorator(new JaxrsServerDecorator() {
-//            @Override
-//            public String name() {
-//                return "requestcount";
-//            }
-//
-//            @Override
-//            public void decorate(JaxrsServiceDescriptor descriptor, Config customConfig) {
-//                descriptor.addProvider(containerRequestCount);
-//            }
-//        });
-//        MapConfig customConfig = new MapConfig();
-//        customConfig.addValue(JaxrsServerFactory.ADDRESS_PROP, BASE_ADDRESS);
-//        server = serverFactory.createJaxrsServer(HelloService.class, new HelloServiceImpl(), customConfig);
-//    }
-//
-//    @Test
-//    public void testRegisterDuplicateDecorator() {
-//        assertFalse(serverFactory.addDecorator(serverDecorator));
-//    }
-//
-//    @After
-//    public void shutdownServer() {
-//        serverFactory.removeDecorator("mock");
-//        if (server != null) {
-//            server.shutdown();
-//        }
-//    }
+    public static final String ADDRESS = "http://localhost:8383/hello";
+
+    @Mock
+    private JaxrsProxyDecorator proxyDecorator;
+
+    @Mock
+    private JaxrsServerDecorator serverDecorator;
+
+    @Mock
+    private JaxrsServerDecorator ignoredServerDecorator;
+    
+    @Mock
+    private JaxrsProxyDecorator ignoredProxyDecorator;
+    
+    @Mock
+    private JaxrsConfigService configService;
+
+    private DefaultJaxrsProxyFactory proxyFactory;
+    private SimpleContainer container;
+
+//----------------------------------------------------------------------------------------------------------------------
+// Other Methods
+//----------------------------------------------------------------------------------------------------------------------
+
+    @Before
+    public void startServer() {
+        container = new SimpleContainer();
+
+        MapConfig serverConfig = new MapConfig();
+        serverConfig.addValue("serverAddress", ADDRESS);
+        serverConfig.addValue("ignored.enabled", "false");
+        when(configService.createServerConfig(HelloService.class)).thenReturn(serverConfig);
+
+        MapConfig proxyConfig = new MapConfig();
+        proxyConfig.addValue("proxyAddress", ADDRESS);
+        proxyConfig.addValue("ignored.enabled", "false");
+        when(configService.createProxyConfig(HelloService.class)).thenReturn(proxyConfig);
+
+        when(serverDecorator.name()).thenReturn("mock");
+        container.addBean(serverDecorator);
+        when(ignoredServerDecorator.name()).thenReturn("ignored");
+        container.addBean(ignoredServerDecorator);
+
+        when(proxyDecorator.name()).thenReturn("mock");
+        container.addBean(proxyDecorator);
+        when(ignoredProxyDecorator.name()).thenReturn("ignored");
+        container.addBean(ignoredProxyDecorator);
+
+        proxyFactory = new DefaultJaxrsProxyFactory(container, configService);
+
+        container.addBean(new HelloServiceImpl());
+
+        new JaxrsServerBootstrap(container, new DefaultJaxrsServerFactory(container, configService));
+        container.initialize();
+        verify(serverDecorator).decorate(any(JaxrsServiceDescriptor.class), any(Config.class));
+    }
+
+    @After
+    public void stopServer() {
+        container.shutdown();
+    }
+
+    @Test
+    public void testCallingService() {
+        final HelloService hello = proxyFactory.createProxy(HelloService.class);
+
+
+
+
+        assertEquals("Hello, Microbule!", hello.sayHello("Microbule"));
+
+        verify(proxyDecorator).decorate(any(JaxrsServiceDescriptor.class), any(Config.class));
+
+    }
 }
