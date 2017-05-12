@@ -1,5 +1,6 @@
 # Microbule
 
+[![Build Status](https://travis-ci.org/Microbule/microbule.svg?branch=master)](https://travis-ci.org/Microbule/microbule)
 
 Microbule provides a framework for developing [Microservices](http://www.martinfowler.com/articles/microservices.html)
 quickly and easily!  Services are written using the standard
