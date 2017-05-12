@@ -20,11 +20,15 @@ package org.microbule.container.core.listener;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.microbule.container.api.PluginListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RefPluginListener<B> implements PluginListener<B> {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RefPluginListener.class);
 
     private final AtomicReference<B> pluginRef;
     private final B defaultValue;
@@ -44,11 +48,17 @@ public class RefPluginListener<B> implements PluginListener<B> {
 
     @Override
     public boolean registerPlugin(B plugin) {
-        return pluginRef.compareAndSet(defaultValue, plugin);
+        if (pluginRef.compareAndSet(defaultValue, plugin)) {
+            LOGGER.info("Overriding default value {} with {}...", defaultValue, plugin);
+            return true;
+        }
+        return false;
     }
 
     @Override
     public void unregisterPlugin(B bean) {
-        pluginRef.compareAndSet(bean, defaultValue);
+        if (pluginRef.compareAndSet(bean, defaultValue)) {
+            LOGGER.info("Restoring default value {}...", defaultValue);
+        }
     }
 }

@@ -58,6 +58,18 @@ public class SimpleContainerTest extends MockObjectTestCase {
     }
 
     @Test
+    public void testMapWitDuplicate() {
+        final SimpleContainer container = new SimpleContainer();
+        final Map<Integer, String> map = container.pluginMap(String.class, String::length);
+        container.addBean("a");
+        container.addBean("b");
+        container.initialize();
+
+        assertEquals("a", map.get(1));
+        assertEquals(1, map.size());
+    }
+
+    @Test
     public void testPluginList() {
         final SimpleContainer container = new SimpleContainer();
         container.addBean("Hello");
@@ -92,6 +104,21 @@ public class SimpleContainerTest extends MockObjectTestCase {
 
         container.removeBean("hello");
 
+        assertEquals("thedefault", ref.get());
+    }
+
+    @Test
+    public void testRefWithMultiplePlugins() {
+        final SimpleContainer container = new SimpleContainer();
+
+        final AtomicReference<String> ref = container.pluginReference(String.class, "thedefault");
+        assertEquals("thedefault", ref.get());
+
+        container.addBean("hello");
+        container.addBean("world");
+        container.initialize();
+        assertEquals("hello", ref.get());
+        container.removeBean("hello");
         assertEquals("thedefault", ref.get());
     }
 
