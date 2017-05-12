@@ -26,7 +26,7 @@ import javax.ws.rs.core.Response;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-public class WebTargetUtils {
+public final class WebTargetUtils {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
@@ -50,5 +50,9 @@ public class WebTargetUtils {
             return Optional.of(GSON.fromJson(response.readEntity(String.class), token.getType()));
         }
         return Optional.empty();
+    }
+
+    private WebTargetUtils() {
+
     }
 }
