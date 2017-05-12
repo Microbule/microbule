@@ -33,7 +33,6 @@
         <module>api</module>
         <module>spi</module>
         <module>core</module>
-        <module>http</module>
         <module>consul</module>
         <module>etcd</module>
         <module>env</module>
