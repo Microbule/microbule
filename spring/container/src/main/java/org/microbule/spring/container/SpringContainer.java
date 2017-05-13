@@ -28,7 +28,6 @@ import org.microbule.container.core.DefaultServerDefinition;
 import org.microbule.container.core.StaticContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.ApplicationContext;
@@ -55,12 +54,12 @@ public class SpringContainer extends StaticContainer implements BeanPostProcesso
 
 
     @Override
-    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+    public Object postProcessAfterInitialization(Object bean, String beanName) {
         return bean;
     }
 
     @Override
-    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+    public Object postProcessBeforeInitialization(Object bean, String beanName) {
         Stream.of(bean.getClass().getInterfaces()).forEach(serviceInterface -> {
             if(serviceInterface.isAnnotationPresent(Path.class)) {
                 LOGGER.info("Discovered {} service implementation bean named \"{}\".", serviceInterface.getSimpleName(), beanName);

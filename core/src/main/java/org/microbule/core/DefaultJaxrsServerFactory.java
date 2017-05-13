@@ -44,6 +44,7 @@ public class DefaultJaxrsServerFactory extends JaxrsServiceDecoratorRegistry<Jax
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
+    public static final String SERVER_ADDRESS_PROP = "serverAddress";
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultJaxrsServerFactory.class);
 
     private final JaxrsConfigService configService;
@@ -67,7 +68,7 @@ public class DefaultJaxrsServerFactory extends JaxrsServiceDecoratorRegistry<Jax
     @Override
     public JaxrsServer createJaxrsServer(Class<?> serviceInterface, Object serviceImplementation) {
         final Config config = configService.createServerConfig(serviceInterface, namingStrategy.get().serviceName(serviceInterface));
-        final String address = config.value(ADDRESS_PROP).orElseThrow(() -> new ConfigurationException("Missing '%s' property.", ADDRESS_PROP));
+        final String address = config.value(SERVER_ADDRESS_PROP).orElseThrow(() -> new ConfigurationException("Missing '%s' property.", SERVER_ADDRESS_PROP));
         LOGGER.info("Starting {} JAX-RS server ({})...", serviceInterface.getSimpleName(), address);
         final JaxrsServiceDescriptorImpl descriptor = new JaxrsServiceDescriptorImpl(serviceInterface);
         decorate(descriptor, config);

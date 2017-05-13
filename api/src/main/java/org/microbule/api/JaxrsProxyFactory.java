@@ -22,7 +22,7 @@ public interface JaxrsProxyFactory {
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    String ADDRESS_PROP = "proxyAddress";
+
 
     /**
      * Creates a JAX-RS proxy which supports the JAX-RS annotated <code>serviceInterface</code>.

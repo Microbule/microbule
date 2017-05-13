@@ -102,15 +102,12 @@ public class OsgiContainer extends AbstractContainer {
     private void registerServiceListener() {
         try {
             bundleContext.addServiceListener(event -> {
-                switch (event.getType()) {
-                    case ServiceEvent.REGISTERED:
-                        registerService(event.getServiceReference());
-                        break;
-                    case ServiceEvent.UNREGISTERING:
-                        final Long serviceId = serviceId(event.getServiceReference());
-                        serverListeners.forEach(listener -> listener.unregisterServer(serviceId.toString()));
-                        bundleContext.ungetService(event.getServiceReference());
-                        break;
+                if (event.getType() == ServiceEvent.REGISTERED) {
+                    registerService(event.getServiceReference());
+                } else if (event.getType() == ServiceEvent.UNREGISTERING) {
+                    final Long serviceId = serviceId(event.getServiceReference());
+                    serverListeners.forEach(listener -> listener.unregisterServer(serviceId.toString()));
+                    bundleContext.ungetService(event.getServiceReference());
                 }
             }, MICROBULE_SERVER_FILTER);
         } catch (InvalidSyntaxException e) {

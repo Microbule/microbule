@@ -72,7 +72,7 @@ public class DefaultJaxrsProxyFactory extends JaxrsServiceDecoratorRegistry<Jaxr
     public <T> T createProxy(Class<T> serviceInterface) {
         LOGGER.info("Creating {} JAX-RS service proxy.", serviceInterface.getSimpleName());
         final String serviceName = namingStrategy.get().serviceName(serviceInterface);
-        final JaxrsProxyCache<T> cache = new JaxrsProxyCache<>((baseAddress) -> {
+        final JaxrsProxyCache<T> cache = new JaxrsProxyCache<>(baseAddress -> {
             final Config config = configService.createProxyConfig(serviceInterface, serviceName);
             final JaxrsServiceDescriptorImpl descriptor = new JaxrsServiceDescriptorImpl(serviceInterface);
             decorate(descriptor, config);

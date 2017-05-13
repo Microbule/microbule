@@ -29,14 +29,13 @@ import org.apache.cxf.transport.http.asyncclient.AsyncHTTPConduit;
 import org.junit.After;
 import org.junit.Before;
 import org.microbule.api.JaxrsConfigService;
-import org.microbule.api.JaxrsProxyFactory;
 import org.microbule.api.JaxrsServer;
-import org.microbule.api.JaxrsServerFactory;
 import org.microbule.config.api.Config;
 import org.microbule.config.core.MapConfig;
 import org.microbule.container.core.SimpleContainer;
 import org.microbule.core.DefaultJaxrsProxyFactory;
 import org.microbule.core.DefaultJaxrsServerFactory;
+import org.microbule.core.DefaultJaxrsServiceDiscovery;
 import org.microbule.test.core.MockObjectTestCase;
 
 public abstract class JaxrsServerTestCase<T> extends MockObjectTestCase implements JaxrsConfigService {
@@ -67,7 +66,7 @@ public abstract class JaxrsServerTestCase<T> extends MockObjectTestCase implemen
     public <I> Config createProxyConfig(Class<I> serviceInterface, String serviceName) {
         MapConfig config = new MapConfig();
         configureProxy(config);
-        config.addValue(JaxrsProxyFactory.ADDRESS_PROP, baseAddress);
+        config.addValue(DefaultJaxrsServiceDiscovery.PROXY_ADDRESS_PROP, baseAddress);
         return config;
     }
 
@@ -75,7 +74,7 @@ public abstract class JaxrsServerTestCase<T> extends MockObjectTestCase implemen
     public <I> Config createServerConfig(Class<I> serviceInterface, String serviceName) {
         MapConfig config = new MapConfig();
         configureServer(config);
-        config.addValue(JaxrsServerFactory.ADDRESS_PROP, baseAddress);
+        config.addValue(DefaultJaxrsServerFactory.SERVER_ADDRESS_PROP, baseAddress);
         return config;
     }
 
@@ -108,9 +107,6 @@ public abstract class JaxrsServerTestCase<T> extends MockObjectTestCase implemen
     }
 
     protected T createProxy() {
-        MapConfig config = new MapConfig();
-        configureProxy(config);
-        config.addValue(JaxrsProxyFactory.ADDRESS_PROP, baseAddress);
         return proxyFactory.createProxy(getServiceInterface());
     }
 

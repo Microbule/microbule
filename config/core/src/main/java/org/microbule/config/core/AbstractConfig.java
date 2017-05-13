@@ -71,8 +71,6 @@ public abstract class AbstractConfig implements Config {
 
     protected String qualify(String... keys) {
         final String keyPath = keys.length == 0 ? null : Stream.of(keys).collect(Collectors.joining(separator));
-        return Optional.ofNullable(groupPrefix).map(prefix -> {
-            return prefix + separator + keyPath;
-        }).orElse(keyPath);
+        return Optional.ofNullable(groupPrefix).map(prefix -> prefix + separator + keyPath).orElse(keyPath);
     }
 }
