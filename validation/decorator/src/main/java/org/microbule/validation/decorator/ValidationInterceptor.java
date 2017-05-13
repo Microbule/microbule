@@ -29,7 +29,6 @@ import javax.validation.Validator;
 import javax.validation.executable.ExecutableValidator;
 import javax.validation.groups.Default;
 
-import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.logging.FaultListener;
 import org.apache.cxf.logging.NoOpFaultListener;
 import org.apache.cxf.message.Message;
@@ -61,10 +60,10 @@ public class ValidationInterceptor extends AbstractPhaseInterceptor<Message> {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public void handleMessage(Message message) throws Fault {
+    public void handleMessage(Message message) {
         try {
             final List<Object> arguments = MessageContentsList.getContentsList(message);
-            if (arguments.size() > 0) {
+            if (!arguments.isEmpty()) {
                 final Object serviceObject = message.getExchange().get(Message.SERVICE_OBJECT);
                 final Method method = (Method) message.get(METHOD_KEY);
                 validateParameters(serviceObject, method, arguments.toArray());

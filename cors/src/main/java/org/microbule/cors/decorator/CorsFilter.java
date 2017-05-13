@@ -106,7 +106,7 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
 
     private static Set<String> parseWhitelist(String whitelist) {
         if (ALLOW_ALL.equals(whitelist)) {
-            return null;
+            return new HashSet<>();
         } else {
             return parseCommaSeparatedSet(whitelist);
         }
@@ -183,11 +183,11 @@ public class CorsFilter implements ContainerRequestFilter, ContainerResponseFilt
     }
 
     private boolean isAllowedOrigin(String origin) {
-        return allowedOrigins == null || allowedOrigins.contains(origin);
+        return isWhitelisted(allowedOrigins, origin);
     }
 
     private static boolean isWhitelisted(Set<String> acceptedValues, String value) {
-        return acceptedValues == null || acceptedValues.contains(value);
+        return acceptedValues.isEmpty() || acceptedValues.contains(value);
     }
 
     private Response failedPreflight() {
