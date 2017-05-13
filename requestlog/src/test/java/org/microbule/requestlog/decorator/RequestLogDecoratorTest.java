@@ -17,6 +17,9 @@
 
 package org.microbule.requestlog.decorator;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.junit.Test;
 import org.microbule.container.core.SimpleContainer;
 import org.microbule.test.server.hello.HelloTestCase;
 
@@ -28,5 +31,12 @@ public class RequestLogDecoratorTest extends HelloTestCase {
     @Override
     protected void addBeans(SimpleContainer container) {
         container.addBean(new RequestLogDecorator());
+    }
+
+    @Test
+    public void testSayHelloWithoutLogging() {
+        Logger.getLogger(RequestLogFilter.class).setLevel(Level.ERROR);
+        assertEquals("Hello, Microbule!", createProxy().sayHello("Microbule"));
+        Logger.getLogger(RequestLogFilter.class).setLevel(Level.INFO);
     }
 }
