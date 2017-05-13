@@ -25,7 +25,7 @@ import com.google.gson.Gson;
 import org.junit.Before;
 import org.junit.Test;
 import org.microbule.config.api.Config;
-import org.microbule.config.spi.ConfigProvider;
+import org.microbule.config.core.ConfigUtils;
 import org.microbule.container.core.SimpleContainer;
 import org.microbule.gson.core.GsonServiceImpl;
 import org.microbule.gson.decorator.GsonDecorator;
@@ -60,7 +60,7 @@ public class EtcdConfigProviderTest extends JaxrsServerTestCase<MockEtcdService>
     public void testConfig() {
         final EtcdConfigProvider provider = new EtcdConfigProvider();
         assertEquals("etcd", provider.name());
-        assertEquals(ConfigProvider.PRIORITY_EXTERNAL, provider.priority());
+        assertEquals(ConfigUtils.PRIORITY_EXTERNAL, provider.priority());
 
         root.set(parseResponse("/response.json", EtcdResponse.class).getNode());
 

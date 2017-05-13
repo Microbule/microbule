@@ -49,6 +49,6 @@ public class SystemPropertiesConfigProvider implements ConfigProvider {
 
     @Override
     public int priority() {
-        return PRIORITY_SYSPROP;
+        return ConfigUtils.PRIORITY_SYSPROP;
     }
 }

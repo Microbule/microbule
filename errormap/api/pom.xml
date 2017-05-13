@@ -29,4 +29,12 @@
     <name>Microbule :: Error Mapping :: API</name>
     <packaging>bundle</packaging>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.microbule</groupId>
+            <artifactId>microbule-test-core</artifactId>
+            <version>0.3.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>

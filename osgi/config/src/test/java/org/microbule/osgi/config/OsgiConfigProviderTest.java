@@ -21,7 +21,7 @@ import java.util.Hashtable;
 
 import org.junit.Test;
 import org.microbule.config.api.Config;
-import org.microbule.config.spi.ConfigProvider;
+import org.microbule.config.core.ConfigUtils;
 import org.microbule.test.core.MockObjectTestCase;
 
 public class OsgiConfigProviderTest extends MockObjectTestCase {
@@ -30,7 +30,7 @@ public class OsgiConfigProviderTest extends MockObjectTestCase {
     public void testGetConfig() throws Exception {
         final OsgiConfigProvider provider = new OsgiConfigProvider();
         assertEquals("osgi", provider.name());
-        assertEquals(ConfigProvider.DEFAULT_PRIORITY, provider.priority());
+        assertEquals(ConfigUtils.DEFAULT_PRIORITY, provider.priority());
 
         Config config = provider.getConfig("foo", "bar");
 

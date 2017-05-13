@@ -25,7 +25,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang3.StringUtils;
-import org.microbule.errormap.api.ErrorMapperService;
+import org.microbule.errormap.api.ErrorMapperUtils;
 import org.microbule.errormap.impl.AbstractErrorResponseStrategy;
 import org.microbule.errormap.impl.Responses;
 import org.microbule.errormap.spi.ErrorResponseStrategy;
@@ -58,6 +58,6 @@ public class PlainTextErrorResponseStrategy extends AbstractErrorResponseStrateg
 
     @Override
     public String name() {
-        return ErrorMapperService.DEFAULT_STRATEGY;
+        return ErrorMapperUtils.DEFAULT_STRATEGY;
     }
 }

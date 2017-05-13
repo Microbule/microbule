@@ -22,6 +22,7 @@ import javax.ws.rs.core.Response;
 import org.junit.Test;
 import org.microbule.container.core.SimpleContainer;
 import org.microbule.errormap.api.ErrorMapperService;
+import org.microbule.errormap.api.ErrorMapperUtils;
 import org.microbule.test.core.hello.HelloService;
 import org.microbule.test.core.hello.HelloServiceImpl;
 import org.microbule.test.server.hello.HelloTestCase;
@@ -45,8 +46,8 @@ public class ErrorMapperDecoratorsTest extends HelloTestCase {
 
     @Override
     protected void addBeans(SimpleContainer container) {
-        when(errorMapperService.createResponse(eq(ErrorMapperService.DEFAULT_STRATEGY), any(Exception.class))).thenReturn(Response.serverError().build());
-        when(errorMapperService.createException(eq(ErrorMapperService.DEFAULT_STRATEGY), any(Response.class))).thenReturn(new IllegalArgumentException("I'm not saying hello to you!"));
+        when(errorMapperService.createResponse(eq(ErrorMapperUtils.DEFAULT_STRATEGY), any(Exception.class))).thenReturn(Response.serverError().build());
+        when(errorMapperService.createException(eq(ErrorMapperUtils.DEFAULT_STRATEGY), any(Response.class))).thenReturn(new IllegalArgumentException("I'm not saying hello to you!"));
         container.addBean(new ErrorMapperServerDecorator(errorMapperService));
         container.addBean(new ErrorMapperProxyDecorator(errorMapperService));
     }

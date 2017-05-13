@@ -61,7 +61,7 @@ public class DefaultConfigBuilderFactoryTest extends MockObjectTestCase  {
         when(provider1.getConfig("a")).thenReturn(config1.filtered("a"));
         when(provider1.getConfig("b")).thenReturn(config1.filtered("b"));
         when(provider1.name()).thenReturn("provider1");
-        when(provider1.priority()).thenReturn(ConfigProvider.DEFAULT_PRIORITY);
+        when(provider1.priority()).thenReturn(ConfigUtils.DEFAULT_PRIORITY);
 
         final MapConfig config2 = new MapConfig();
         config2.addValue("a.one", "config2.a1");
@@ -72,7 +72,7 @@ public class DefaultConfigBuilderFactoryTest extends MockObjectTestCase  {
         when(provider2.getConfig("a")).thenReturn(config2.filtered("a"));
         when(provider2.getConfig("b")).thenReturn(config2.filtered("b"));
         when(provider2.name()).thenReturn("provider2");
-        when(provider2.priority()).thenReturn(ConfigProvider.PRIORITY_EXTERNAL);
+        when(provider2.priority()).thenReturn(ConfigUtils.PRIORITY_EXTERNAL);
 
 
         when(container.pluginSortedSet(same(ConfigProvider.class), any())).thenAnswer(invocation -> {

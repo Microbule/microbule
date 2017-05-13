@@ -81,7 +81,9 @@ public class DefaultConfigBuilderFactory implements ConfigBuilderFactory {
 
         @Override
         public Config build() {
-            LOGGER.info("Collecting configurations from {}...", providers.stream().map(ConfigProvider::name).collect(Collectors.joining(", ")));
+            if (LOGGER.isInfoEnabled()) {
+                LOGGER.info("Collecting configurations from {}...", providers.stream().map(ConfigProvider::name).collect(Collectors.joining(", ")));
+            }
             return new CompositeConfig(providers.stream().flatMap(provider -> providerConfigs(provider, paths).stream()).collect(Collectors.toList()));
         }
 

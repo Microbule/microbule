@@ -52,7 +52,7 @@ public final class DynamicProxyUtils {
         return createProxy(proxyInterface, handler);
     }
 
-    public static <T> Object invokeMethod(Supplier<T> targetSupplier, Method method, Object[] args) throws Throwable {
+    private static <T> Object invokeMethod(Supplier<T> targetSupplier, Method method, Object[] args) throws Throwable {
         try {
             return method.invoke(targetSupplier.get(), args);
         } catch (InvocationTargetException e) {

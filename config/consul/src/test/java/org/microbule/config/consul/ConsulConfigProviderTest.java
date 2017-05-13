@@ -27,7 +27,7 @@ import com.google.gson.reflect.TypeToken;
 import org.junit.Before;
 import org.junit.Test;
 import org.microbule.config.api.Config;
-import org.microbule.config.spi.ConfigProvider;
+import org.microbule.config.core.ConfigUtils;
 import org.microbule.container.core.SimpleContainer;
 import org.microbule.gson.core.GsonServiceImpl;
 import org.microbule.gson.decorator.GsonDecorator;
@@ -65,7 +65,7 @@ public class ConsulConfigProviderTest extends JaxrsServerTestCase<MockConsulServ
     public void testGetConfig() {
         final ConsulConfigProvider provider = new ConsulConfigProvider();
         assertEquals("consul", provider.name());
-        assertEquals(ConfigProvider.PRIORITY_EXTERNAL, provider.priority());
+        assertEquals(ConfigUtils.PRIORITY_EXTERNAL, provider.priority());
 
         response.set(parseResponse("/response.json", TYPE_TOKEN));
 

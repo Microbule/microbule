@@ -23,7 +23,7 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 import org.microbule.config.api.Config;
-import org.microbule.config.spi.ConfigProvider;
+import org.microbule.config.core.ConfigUtils;
 
 public class EnvironmentVariablesConfigProviderTest extends Assert {
 //----------------------------------------------------------------------------------------------------------------------
@@ -36,7 +36,7 @@ public class EnvironmentVariablesConfigProviderTest extends Assert {
         env.put("one_two_foo", "bar");
         EnvironmentVariablesConfigProvider provider = new EnvironmentVariablesConfigProvider(() -> env);
         assertEquals("env", provider.name());
-        assertEquals(ConfigProvider.PRIORITY_ENV, provider.priority());
+        assertEquals(ConfigUtils.PRIORITY_ENV, provider.priority());
         final Config config = provider.getConfig("one", "two");
         assertEquals("bar", config.value("foo").get());
     }

@@ -15,42 +15,20 @@
  *
  */
 
-package org.microbule.spring.config;
+package org.microbule.errormap.api;
 
-import org.microbule.config.api.Config;
-import org.microbule.config.core.ConfigUtils;
-import org.microbule.config.spi.ConfigProvider;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Component;
-
-@Component
-public class SpringEnvironmentConfigProvider implements ConfigProvider {
+public final class ErrorMapperUtils {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    private static final String NAME = "spring";
-
-    @Autowired
-    private Environment environment;
+    public static final String DEFAULT_STRATEGY = "text";
 
 //----------------------------------------------------------------------------------------------------------------------
-// ConfigProvider Implementation
+// Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    @Override
-    public Config getConfig(String... path) {
-        return new SpringEnvironmentConfig(environment).filtered(path);
-    }
+    private ErrorMapperUtils() {
 
-    @Override
-    public String name() {
-        return NAME;
-    }
-
-    @Override
-    public int priority() {
-        return ConfigUtils.DEFAULT_PRIORITY;
     }
 }

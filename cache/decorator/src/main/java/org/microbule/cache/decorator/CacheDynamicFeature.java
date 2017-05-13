@@ -26,13 +26,14 @@ import javax.ws.rs.container.DynamicFeature;
 import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.FeatureContext;
 import javax.ws.rs.ext.Provider;
+
 import org.microbule.cache.annotation.Cacheable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Provider
 public class CacheDynamicFeature implements DynamicFeature {
-//----------------------------------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
     private static final Logger LOGGER = LoggerFactory.getLogger(CacheDynamicFeature.class);
@@ -58,7 +59,9 @@ public class CacheDynamicFeature implements DynamicFeature {
         try {
             final Method resourceMethod = serviceInterface.getMethod(resourceInfo.getResourceMethod().getName(), resourceInfo.getResourceMethod().getParameterTypes());
             if (methods.contains(resourceMethod)) {
-                LOGGER.info("Adding cache filter to method {}({})...", resourceMethod.getName(), Arrays.stream(resourceMethod.getParameterTypes()).map(Class::getSimpleName).collect(Collectors.joining(", ")));
+                if (LOGGER.isInfoEnabled()) {
+                    LOGGER.info("Adding cache filter to method {}({})...", resourceMethod.getName(), Arrays.stream(resourceMethod.getParameterTypes()).map(Class::getSimpleName).collect(Collectors.joining(", ")));
+                }
                 context.register(new ContainerCacheFilter(resourceMethod.getAnnotation(Cacheable.class)));
             }
         } catch (NoSuchMethodException e) {

@@ -25,6 +25,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import com.google.common.collect.Maps;
 import org.microbule.config.api.Config;
+import org.microbule.config.core.ConfigUtils;
 import org.microbule.config.core.EmptyConfig;
 import org.microbule.config.core.MapConfig;
 import org.microbule.config.spi.ConfigProvider;
@@ -54,7 +55,7 @@ public class OsgiConfigProvider implements ConfigProvider, ManagedService {
 
     @Override
     public int priority() {
-        return DEFAULT_PRIORITY;
+        return ConfigUtils.DEFAULT_PRIORITY;
     }
 
 //----------------------------------------------------------------------------------------------------------------------

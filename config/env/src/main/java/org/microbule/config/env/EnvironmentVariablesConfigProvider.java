@@ -24,6 +24,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.microbule.config.api.Config;
+import org.microbule.config.core.ConfigUtils;
 import org.microbule.config.core.MapConfig;
 import org.microbule.config.spi.ConfigProvider;
 
@@ -65,6 +66,6 @@ public class EnvironmentVariablesConfigProvider implements ConfigProvider {
 
     @Override
     public int priority() {
-        return PRIORITY_ENV;
+        return ConfigUtils.PRIORITY_ENV;
     }
 }

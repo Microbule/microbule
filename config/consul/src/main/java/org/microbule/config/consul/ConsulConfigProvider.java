@@ -91,7 +91,7 @@ public class ConsulConfigProvider implements ConfigProvider {
 
     @Override
     public int priority() {
-        return PRIORITY_EXTERNAL;
+        return ConfigUtils.PRIORITY_EXTERNAL;
     }
 
 //----------------------------------------------------------------------------------------------------------------------

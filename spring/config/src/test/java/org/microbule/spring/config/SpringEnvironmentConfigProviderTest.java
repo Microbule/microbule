@@ -20,7 +20,7 @@ package org.microbule.spring.config;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.microbule.config.api.Config;
-import org.microbule.config.spi.ConfigProvider;
+import org.microbule.config.core.ConfigUtils;
 import org.microbule.test.core.MockObjectTestCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -38,7 +38,7 @@ public class SpringEnvironmentConfigProviderTest extends MockObjectTestCase {
     @Test
     public void testConfig() {
         assertEquals("spring", provider.name());
-        assertEquals(ConfigProvider.DEFAULT_PRIORITY, provider.priority());
+        assertEquals(ConfigUtils.DEFAULT_PRIORITY, provider.priority());
 
         final Config config = provider.getConfig("one", "two");
         assertEquals("hello", config.value("three").get());

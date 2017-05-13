@@ -23,6 +23,7 @@ import javax.inject.Singleton;
 
 import org.microbule.config.api.Config;
 import org.microbule.errormap.api.ErrorMapperService;
+import org.microbule.errormap.api.ErrorMapperUtils;
 import org.microbule.spi.JaxrsProxyDecorator;
 import org.microbule.spi.JaxrsServiceDescriptor;
 import org.slf4j.Logger;
@@ -53,7 +54,7 @@ public class ErrorMapperProxyDecorator implements JaxrsProxyDecorator {
 
     @Override
     public void decorate(JaxrsServiceDescriptor descriptor, Config config) {
-        final String strategy = config.value(STRATEGY).orElse(ErrorMapperService.DEFAULT_STRATEGY);
+        final String strategy = config.value(STRATEGY).orElse(ErrorMapperUtils.DEFAULT_STRATEGY);
         LOGGER.info("Using \"{}\" error response strategy for {} JAX-RS proxy.", strategy, descriptor.serviceInterface().getSimpleName());
         descriptor.addProvider(new ErrorMapperResponseExceptionMapper(errorMapperService, strategy));
     }

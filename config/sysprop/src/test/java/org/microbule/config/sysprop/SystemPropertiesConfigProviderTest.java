@@ -19,7 +19,7 @@ package org.microbule.config.sysprop;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.microbule.config.spi.ConfigProvider;
+import org.microbule.config.core.ConfigUtils;
 
 public class SystemPropertiesConfigProviderTest extends Assert {
 //----------------------------------------------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ public class SystemPropertiesConfigProviderTest extends Assert {
         final SystemPropertiesConfigProvider provider = new SystemPropertiesConfigProvider();
 
         assertEquals("sysprop", provider.name());
-        assertEquals(ConfigProvider.PRIORITY_SYSPROP, provider.priority());
+        assertEquals(ConfigUtils.PRIORITY_SYSPROP, provider.priority());
 
         assertEquals("bar", provider.getConfig("one", "two").value("foo").get());
     }

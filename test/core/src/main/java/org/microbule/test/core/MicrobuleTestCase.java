@@ -36,7 +36,7 @@ public class MicrobuleTestCase extends Assert {
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    protected void assertIsUtilsClass(Class<?> clazz) throws Exception {
+    protected void assertIsUtilsClass(Class<?> clazz) throws ReflectiveOperationException {
         assertTrue(Modifier.isFinal(clazz.getModifiers()));
         assertEquals(1, clazz.getDeclaredConstructors().length);
         final Constructor<?> ctor = clazz.getDeclaredConstructor();

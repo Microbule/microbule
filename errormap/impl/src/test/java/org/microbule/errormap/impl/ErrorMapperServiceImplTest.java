@@ -23,7 +23,7 @@ import javax.ws.rs.core.Response;
 import org.junit.Before;
 import org.junit.Test;
 import org.microbule.container.core.SimpleContainer;
-import org.microbule.errormap.api.ErrorMapperService;
+import org.microbule.errormap.api.ErrorMapperUtils;
 import org.microbule.errormap.impl.text.PlainTextErrorResponseStrategy;
 import org.microbule.test.core.MockObjectTestCase;
 
@@ -42,21 +42,21 @@ public class ErrorMapperServiceImplTest extends MockObjectTestCase {
 
     @Test
     public void testCreateResponse() {
-        final Response response = service.createResponse(ErrorMapperService.DEFAULT_STRATEGY, new NotFoundException("Didn't find it!"));
+        final Response response = service.createResponse(ErrorMapperUtils.DEFAULT_STRATEGY, new NotFoundException("Didn't find it!"));
         assertEquals(404, response.getStatus());
         assertEquals("Didn't find it!", response.readEntity(String.class));
     }
 
     @Test
     public void testCreateResponseWithNoMapper() {
-        final Response response = service.createResponse(ErrorMapperService.DEFAULT_STRATEGY, new RuntimeException("Didn't find it!"));
+        final Response response = service.createResponse(ErrorMapperUtils.DEFAULT_STRATEGY, new RuntimeException("Didn't find it!"));
         assertEquals(500, response.getStatus());
         assertEquals("Didn't find it!", response.readEntity(String.class));
     }
 
     @Test
     public void testCreateException() {
-        final Exception exception = service.createException(ErrorMapperService.DEFAULT_STRATEGY, Response.status(Response.Status.NOT_FOUND).build());
+        final Exception exception = service.createException(ErrorMapperUtils.DEFAULT_STRATEGY, Response.status(Response.Status.NOT_FOUND).build());
         assertEquals(NotFoundException.class, exception.getClass());
     }
 
