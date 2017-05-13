@@ -14,9 +14,9 @@ quickly and easily!  Services are written using the standard
 
 Microbule supports many of the popular deployment containers/frameworks available.  Simply choose from:
 
-- [Spring Framework](wiki/Getting-Started-With-Spring)
-- [Contexts and Dependency Injection (CDI)](wiki/Getting-Started-With-CDI)
-- [Apache Karaf](wiki/Getting-Started-With-Apache-Karaf)
+- [Spring Framework](https://github.com/Microbule/microbule/wiki/Getting-Started-With-Spring)
+- [Contexts and Dependency Injection (CDI)](https://github.com/Microbule/microbule/wiki/Getting-Started-With-CDI)
+- [Apache Karaf](https://github.com/Microbule/microbule/wiki/Getting-Started-With-Apache-Karaf)
 
 ## Writing Your Own Services
 
