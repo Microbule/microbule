@@ -30,8 +30,6 @@ import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 
 public class OsgiRule implements TestRule {
@@ -67,18 +65,6 @@ public class OsgiRule implements TestRule {
 
     public BundleContext getBundleContext() {
         return registry.getBundleContext();
-    }
-
-    public <S> S getService(ServiceReference<S> reference) {
-        return registry.getService(reference);
-    }
-
-    public ServiceReference<?> getServiceReference(String clazz) {
-        return registry.getServiceReference(clazz);
-    }
-
-    public ServiceReference<?>[] getServiceReferences(String clazz, String filter) throws InvalidSyntaxException {
-        return registry.getServiceReferences(clazz, filter);
     }
 
     @SuppressWarnings("unchecked")

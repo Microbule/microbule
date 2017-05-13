@@ -31,10 +31,11 @@ import org.microbule.tracer.spi.TracerIdStrategy;
 
 @Singleton
 @Named("tracerServerDecorator")
-public class TracerServerDecorator implements JaxrsServerDecorator, TracerConstants {
+public class TracerServerDecorator extends AbstractTracerDecorator implements JaxrsServerDecorator {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
+
 
     private final AtomicReference<TracerIdStrategy> idGeneratorRef;
 
@@ -53,13 +54,8 @@ public class TracerServerDecorator implements JaxrsServerDecorator, TracerConsta
 
     @Override
     public void decorate(JaxrsServiceDescriptor descriptor, Config config) {
-        final String traceIdHeader = config.value("traceIdHeader").orElse(DEFAULT_TRACE_ID_HEADER);
-        final String requestIdHeader = config.value("requestIdHeader").orElse(DEFAULT_REQUEST_ID_HEADER);
+        final String traceIdHeader = config.value(TRACE_ID_HEADER_PROP).orElse(DEFAULT_TRACE_ID_HEADER);
+        final String requestIdHeader = config.value(REQUEST_ID_HEADER_PROP).orElse(DEFAULT_REQUEST_ID_HEADER);
         descriptor.addProvider(new TracerContainerFilter(idGeneratorRef, traceIdHeader, requestIdHeader));
-    }
-
-    @Override
-    public String name() {
-        return "tracer";
     }
 }

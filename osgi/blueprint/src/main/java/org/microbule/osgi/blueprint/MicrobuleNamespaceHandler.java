@@ -41,9 +41,11 @@ public class MicrobuleNamespaceHandler implements NamespaceHandler {
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
+    public static final String CONTAINER_ELEMENT = "container";
     private static final String SCHEMA_LOCATION = "schemas/blueprint/microbule.xsd";
     private static final String ID_ATTR = "id";
     private static final String BUNDLE_CONTEXT_ID = "blueprintBundleContext";
+    public static final String QUIET_PERIOD_IN_MS_ATTR = "quietPeriodInMs";
 
     private final long defaultQuietPeriodInMs;
 
@@ -58,7 +60,6 @@ public class MicrobuleNamespaceHandler implements NamespaceHandler {
 //----------------------------------------------------------------------------------------------------------------------
 // NamespaceHandler Implementation
 //----------------------------------------------------------------------------------------------------------------------
-
 
     @Override
     public ComponentMetadata decorate(Node node, ComponentMetadata componentMetadata, ParserContext parserContext) {
@@ -77,9 +78,8 @@ public class MicrobuleNamespaceHandler implements NamespaceHandler {
 
     @Override
     public Metadata parse(Element element, ParserContext parserContext) {
-        switch (element.getLocalName()) {
-            case "container":
-                return parseBeanFinder(element, parserContext);
+        if (CONTAINER_ELEMENT.equals(element.getLocalName())) {
+            return parseBeanFinder(element, parserContext);
         }
         return null;
     }
@@ -90,7 +90,7 @@ public class MicrobuleNamespaceHandler implements NamespaceHandler {
 
     private Metadata parseBeanFinder(Element element, ParserContext parserContext) {
         final MutableBeanMetadata bean = parserContext.createMetadata(MutableBeanMetadata.class);
-        final String attrValue = element.getAttribute("quietPeriodInMs");
+        final String attrValue = element.getAttribute(QUIET_PERIOD_IN_MS_ATTR);
         final long quietPeriodInMs = StringUtils.isNotEmpty(attrValue) ? Long.parseLong(attrValue) : defaultQuietPeriodInMs;
         bean.setClassName(OsgiContainer.class.getName());
         bean.setRuntimeClass(OsgiContainer.class);

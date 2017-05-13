@@ -63,10 +63,10 @@ public class TracerContainerFilter implements ContainerRequestFilter, ContainerR
             traceId = idGeneratorRef.get().generateTraceId(request);
         }
         final String requestId = idGeneratorRef.get().generateRequestId(request);
-        request.setProperty(TracerConstants.TRACE_ID_KEY, traceId);
-        request.setProperty(TracerConstants.REQUEST_ID_KEY, requestId);
-        MDC.put(TracerConstants.TRACE_ID_KEY, traceId);
-        MDC.put(TracerConstants.REQUEST_ID_KEY, requestId);
+        request.setProperty(AbstractTracerDecorator.TRACE_ID_KEY, traceId);
+        request.setProperty(AbstractTracerDecorator.REQUEST_ID_KEY, requestId);
+        MDC.put(AbstractTracerDecorator.TRACE_ID_KEY, traceId);
+        MDC.put(AbstractTracerDecorator.REQUEST_ID_KEY, requestId);
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -75,9 +75,9 @@ public class TracerContainerFilter implements ContainerRequestFilter, ContainerR
 
     @Override
     public void filter(ContainerRequestContext request, ContainerResponseContext response) throws IOException {
-        MDC.remove(TracerConstants.TRACE_ID_KEY);
-        MDC.remove(TracerConstants.REQUEST_ID_KEY);
-        response.getHeaders().putSingle(traceIdHeader, request.getProperty(TracerConstants.TRACE_ID_KEY));
-        response.getHeaders().putSingle(requestIdHeader, request.getProperty(TracerConstants.REQUEST_ID_KEY));
+        MDC.remove(AbstractTracerDecorator.TRACE_ID_KEY);
+        MDC.remove(AbstractTracerDecorator.REQUEST_ID_KEY);
+        response.getHeaders().putSingle(traceIdHeader, request.getProperty(AbstractTracerDecorator.TRACE_ID_KEY));
+        response.getHeaders().putSingle(requestIdHeader, request.getProperty(AbstractTracerDecorator.REQUEST_ID_KEY));
     }
 }

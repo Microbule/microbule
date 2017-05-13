@@ -37,8 +37,8 @@ public class TracerProxyDecoratorTest extends HelloTestCase {
     @Test
     public void testWithCustomTraceId() {
         final HelloService proxy = createProxy();
-        MDC.put(TracerConstants.TRACE_ID_KEY, "foobarbaz");
+        MDC.put(AbstractTracerDecorator.TRACE_ID_KEY, "foobarbaz");
         Assert.assertEquals("Hello, Microbule!", proxy.sayHello("Microbule"));
-        MDC.remove(TracerConstants.TRACE_ID_KEY);
+        MDC.remove(AbstractTracerDecorator.TRACE_ID_KEY);
     }
 }

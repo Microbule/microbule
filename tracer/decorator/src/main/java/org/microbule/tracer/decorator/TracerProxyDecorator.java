@@ -26,19 +26,14 @@ import org.microbule.spi.JaxrsServiceDescriptor;
 
 @Singleton
 @Named("tracerProxyDecorator")
-public class TracerProxyDecorator implements JaxrsProxyDecorator, TracerConstants {
+public class TracerProxyDecorator extends AbstractTracerDecorator implements JaxrsProxyDecorator {
 //----------------------------------------------------------------------------------------------------------------------
 // JaxrsServiceDecorator Implementation
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
     public void decorate(JaxrsServiceDescriptor descriptor, Config config) {
-        final String traceIdHeader = config.value("traceIdHeader").orElse(DEFAULT_TRACE_ID_HEADER);
+        final String traceIdHeader = config.value(TRACE_ID_HEADER_PROP).orElse(DEFAULT_TRACE_ID_HEADER);
         descriptor.addProvider(new TracerClientFilter(traceIdHeader));
-    }
-
-    @Override
-    public String name() {
-        return "tracer";
     }
 }

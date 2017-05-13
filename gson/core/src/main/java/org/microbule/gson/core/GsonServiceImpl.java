@@ -71,9 +71,8 @@ public class GsonServiceImpl implements GsonService {
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    private void addCustomizer(GsonCustomizer customizer) {
-        customizers.add(customizer);
-        rebuild();
+    Gson getGson() {
+        return gson.get();
     }
 
     private void rebuild() {
@@ -81,15 +80,6 @@ public class GsonServiceImpl implements GsonService {
         builder.setPrettyPrinting();
         customizers.forEach(customizer -> customizer.customize(builder));
         gson.set(builder.create());
-    }
-
-    Gson getGson() {
-        return gson.get();
-    }
-
-    private void removeCustomizer(GsonCustomizer customizer) {
-        customizers.remove(customizer);
-        rebuild();
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -103,13 +93,15 @@ public class GsonServiceImpl implements GsonService {
 
         @Override
         public boolean registerPlugin(GsonCustomizer plugin) {
-            addCustomizer(plugin);
+            customizers.add(plugin);
+            rebuild();
             return true;
         }
 
         @Override
         public void unregisterPlugin(GsonCustomizer bean) {
-            removeCustomizer(bean);
+            customizers.remove(bean);
+            rebuild();
         }
     }
 }

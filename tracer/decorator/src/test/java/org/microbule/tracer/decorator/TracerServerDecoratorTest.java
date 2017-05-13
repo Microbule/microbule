@@ -50,10 +50,10 @@ public class TracerServerDecoratorTest extends HelloTestCase {
         final WebTarget target = createWebTarget();
         final Response response = target.path("hello").path("Microbule")
                 .request(MediaType.TEXT_PLAIN)
-                .header(TracerConstants.DEFAULT_TRACE_ID_HEADER, "foobarbaz")
+                .header(AbstractTracerDecorator.DEFAULT_TRACE_ID_HEADER, "foobarbaz")
                 .get();
         assertEquals(200, response.getStatus());
-        Assert.assertEquals("foobarbaz", response.getHeaderString(TracerConstants.DEFAULT_TRACE_ID_HEADER));
-        Assert.assertNotNull(response.getHeaderString(TracerConstants.DEFAULT_REQUEST_ID_HEADER));
+        Assert.assertEquals("foobarbaz", response.getHeaderString(AbstractTracerDecorator.DEFAULT_TRACE_ID_HEADER));
+        Assert.assertNotNull(response.getHeaderString(AbstractTracerDecorator.DEFAULT_REQUEST_ID_HEADER));
     }
 }

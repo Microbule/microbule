@@ -27,7 +27,6 @@ import java.lang.reflect.Type;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.MessageBodyReader;
@@ -66,7 +65,7 @@ public class GsonProvider implements MessageBodyReader<Object>, MessageBodyWrite
     }
 
     @Override
-    public Object readFrom(Class<Object> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, String> httpHeaders, InputStream entityStream) throws IOException, WebApplicationException {
+    public Object readFrom(Class<Object> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, String> httpHeaders, InputStream entityStream) throws IOException {
         try (InputStreamReader streamReader = new InputStreamReader(entityStream, Charsets.UTF_8)) {
             return gsonService.fromJson(streamReader, resolveType(type, genericType));
         }
@@ -87,7 +86,7 @@ public class GsonProvider implements MessageBodyReader<Object>, MessageBodyWrite
     }
 
     @Override
-    public void writeTo(Object o, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream) throws IOException, WebApplicationException {
+    public void writeTo(Object o, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream) throws IOException {
         try (OutputStreamWriter writer = new OutputStreamWriter(entityStream, Charsets.UTF_8)) {
             gsonService.toJson(o, resolveType(type, genericType), writer);
         }
