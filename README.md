@@ -18,37 +18,6 @@ Microbule supports many of the popular deployment containers/frameworks availabl
 - [Contexts and Dependency Injection (CDI)](https://github.com/Microbule/microbule/wiki/Getting-Started-With-CDI)
 - [Apache Karaf](https://github.com/Microbule/microbule/wiki/Getting-Started-With-Apache-Karaf)
 
-## Writing Your Own Services
-
-Microbule uses the OSGi [Whiteboard Pattern](http://enroute.osgi.org/doc/218-patterns.html) to discover JAX-RS services
-at runtime.  In order to register a service with Microbule, you have to expose them as an OSGi service with the
-"microbule.address" service property.  Microbule provides the following BundleActivator-based example:
-
-```
-public class HelloActivator implements BundleActivator {
-
-    private ServiceRegistration<HelloResource> registration;
-
-    @Override
-    public void start(BundleContext context) throws Exception {
-        Dictionary<String,Object> props = new Hashtable<>();
-        props.put("microbule.address", "/microbule-example-activator");
-        registration = context.registerService(HelloResource.class, new DefaultHelloResource(), props);
-    }
-
-    @Override
-    public void stop(BundleContext context) throws Exception {
-        registration.unregister();
-    }
-}
-
-```
-
-Microbule will automatically detect the service set its publish address as "/microbule-example-activator" using
-[Apache CXF](http://cxf.apache.org) as the JAX-RS implementation.  Since Microbule uses OSGi services, you can use your
-framework-of-choice (OSGi Blueprint, OSGi Declarative Services, CDI, etc.) to wire up your service implementation object.
-The service *interface* should be annotated with all of the appropriate JAX-RS annotations.
-
 ## Microbule Features
 
 Microbule provides many built-in features out-of-the-box.
