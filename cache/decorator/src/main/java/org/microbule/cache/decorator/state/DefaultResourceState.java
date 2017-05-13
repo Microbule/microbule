@@ -28,6 +28,8 @@ public class DefaultResourceState implements ResourceState {
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
+    private static final String ENTITY_TAG_KEY = "ResourceState.entityTag";
+    private static final String LAST_MODIFIED_KEY = "ResourceState.lastModified";
     private final Message message;
 
 //----------------------------------------------------------------------------------------------------------------------

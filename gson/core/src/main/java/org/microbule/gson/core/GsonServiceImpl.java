@@ -75,13 +75,6 @@ public class GsonServiceImpl implements GsonService {
         return gson.get();
     }
 
-    private void rebuild() {
-        GsonBuilder builder = new GsonBuilder();
-        builder.setPrettyPrinting();
-        customizers.forEach(customizer -> customizer.customize(builder));
-        gson.set(builder.create());
-    }
-
 //----------------------------------------------------------------------------------------------------------------------
 // Inner Classes
 //----------------------------------------------------------------------------------------------------------------------
@@ -102,6 +95,17 @@ public class GsonServiceImpl implements GsonService {
         public void unregisterPlugin(GsonCustomizer bean) {
             customizers.remove(bean);
             rebuild();
+        }
+
+//----------------------------------------------------------------------------------------------------------------------
+// Other Methods
+//----------------------------------------------------------------------------------------------------------------------
+
+        private void rebuild() {
+            GsonBuilder builder = new GsonBuilder();
+            builder.setPrettyPrinting();
+            customizers.forEach(customizer -> customizer.customize(builder));
+            gson.set(builder.create());
         }
     }
 }
