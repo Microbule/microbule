@@ -30,9 +30,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>annotation</module>
         <module>container</module>
-
         <module>config</module>
         <module>bootstrap</module>
     </modules>

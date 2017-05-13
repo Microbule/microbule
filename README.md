@@ -12,43 +12,11 @@ quickly and easily!  Services are written using the standard
 
 ## Getting Started
 
-Microbule is an extension of the [Apache Karaf](http://karaf.apache.org) container.  Getting started with Microbule is
- simple:
+Microbule supports many of the popular deployment containers/frameworks available.  Simply choose from:
 
-1. [Download](http://karaf.apache.org/download.html) Apache Karaf (version 4.0.x) and extract to [KARAF_HOME].
-2. Start Apache Karaf:
-
- ```
- cd [KARAF_HOME]
- bin/karaf
- ```
-
-3. Install the Microbule Karaf [Feature](https://karaf.apache.org/manual/latest/provisioning):
-
- ```
-         __ __                  ____
-        / //_/____ __________ _/ __/
-       / ,<  / __ `/ ___/ __ `/ /_
-      / /| |/ /_/ / /  / /_/ / __/
-     /_/ |_|\__,_/_/   \__,_/_/
-
-   Apache Karaf (4.0.7)
-
- Hit '<tab>' for a plugins of available commands
- and '[cmd] --help' for help on a specific command.
- Hit '<ctrl-d>' or type 'system:shutdown' or 'logout' to shutdown Karaf.
-
- karaf@root()> repo-add mvn:org.microbule/microbule-features/0.1.0/xml/features
- karaf@root()> feature:install microbule
- ```
-
-4. Install The Microbule Examples
-
- ```
- karaf@root()> feature:install microbule-examples
- ```
-
-5. Enjoy!
+- [Spring Framework](wiki/Getting-Started-With-Spring)
+- [Contexts and Dependency Injection (CDI)](wiki/Getting-Started-With-CDI)
+- [Apache Karaf](wiki/Getting-Started-With-Apache-Karaf)
 
 ## Writing Your Own Services
 

@@ -15,38 +15,28 @@
  *
  */
 
-package org.microbule.example.activator;
+package org.microbule.errormap.core;
 
-import java.util.Dictionary;
-import java.util.Hashtable;
+import javax.ws.rs.core.Response;
 
-import org.microbule.example.common.DefaultHelloResource;
-import org.microbule.example.common.HelloResource;
-import org.osgi.framework.BundleActivator;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceRegistration;
+import org.apache.commons.lang3.StringUtils;
 
-public class HelloActivator implements BundleActivator {
+public final class Responses {
 //----------------------------------------------------------------------------------------------------------------------
-// Fields
+// Static Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    private ServiceRegistration<HelloResource> registration;
-
-//----------------------------------------------------------------------------------------------------------------------
-// BundleActivator Implementation
-//----------------------------------------------------------------------------------------------------------------------
-
-
-    @Override
-    public void start(BundleContext context) throws Exception {
-        Dictionary<String,Object> props = new Hashtable<>();
-        props.put("microbule.server", "true");
-        registration = context.registerService(HelloResource.class, new DefaultHelloResource(), props);
+    public static String getErrorMessage(Response response) {
+        if (response.hasEntity()) {
+            return StringUtils.defaultString(response.readEntity(String.class), response.getStatusInfo().getReasonPhrase());
+        }
+        return response.getStatusInfo().getReasonPhrase();
     }
 
-    @Override
-    public void stop(BundleContext context) throws Exception {
-        registration.unregister();
+//----------------------------------------------------------------------------------------------------------------------
+// Constructors
+//----------------------------------------------------------------------------------------------------------------------
+
+    private Responses() {
     }
 }

@@ -32,7 +32,7 @@
     <modules>
         <module>api</module>
         <module>spi</module>
-        <module>impl</module>
+        <module>core</module>
         <module>decorator</module>
     </modules>
 </project>

@@ -20,6 +20,11 @@
 
     <repository>mvn:org.apache.cxf.karaf/apache-cxf/${cxf.version}/xml/features</repository>
 
+    <!--
+    ====================================================================================================================
+    Main Feature
+    ====================================================================================================================
+    -->
     <feature name="microbule" version="${project.version}">
         <feature version="${project.version}">microbule-core</feature>
         <feature version="${project.version}">microbule-errormap</feature>
@@ -37,7 +42,9 @@
     </feature>
 
     <!--
-    Microbule Core
+    ====================================================================================================================
+    Core Framework
+    ====================================================================================================================
     -->
     <feature name="microbule-core" version="${project.version}">
         <feature version="${cxf.version}" dependency="true">cxf-jaxrs</feature>
@@ -70,10 +77,15 @@
         <bundle>mvn:org.microbule/microbule-osgi-config/${project.version}</bundle>
     </feature>
 
+    <!--
+    ====================================================================================================================
+    Decorators
+    ====================================================================================================================
+    -->
     <feature name="microbule-errormap" version="${project.version}">
         <bundle>mvn:org.microbule/microbule-errormap-api/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-errormap-spi/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-errormap-impl/${project.version}</bundle>
+        <bundle>mvn:org.microbule/microbule-errormap-core/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-errormap-decorator/${project.version}</bundle>
     </feature>
 
@@ -137,28 +149,34 @@
     </feature>
 
     <!--
+    ====================================================================================================================
     Examples
+    ====================================================================================================================
     -->
-    <feature name="microbule-examples" version="${project.version}">
-        <feature version="${project.version}">microbule</feature>
-        <feature version="${project.version}">microbule-example-blueprint</feature>
-        <feature version="${project.version}">microbule-example-scr</feature>
-        <feature version="${project.version}">microbule-example-cdi</feature>
+
+    <feature name="microbule-example-config" version="${project.version}">
+        <config name="org.microbule.osgi.config.provider">
+            HelloResource.server.serverAddress=/hello
+            HelloResource.errormap.strategy=json
+        </config>
     </feature>
 
     <feature name="microbule-example-blueprint" version="${project.version}">
+        <feature version="${project.version}">microbule-example-config</feature>
         <feature version="${project.version}">microbule</feature>
         <bundle>mvn:org.microbule/microbule-example-common/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-example-blueprint/${project.version}</bundle>
     </feature>
 
     <feature name="microbule-example-activator" version="${project.version}">
+        <feature version="${project.version}">microbule-example-config</feature>
         <feature version="${project.version}">microbule</feature>
         <bundle>mvn:org.microbule/microbule-example-common/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-example-activator/${project.version}</bundle>
     </feature>
 
     <feature name="microbule-example-scr" version="${project.version}">
+        <feature version="${project.version}">microbule-example-config</feature>
         <feature version="${project.version}">microbule</feature>
         <feature>scr</feature>
         <bundle>mvn:org.microbule/microbule-example-common/${project.version}</bundle>
@@ -166,6 +184,7 @@
     </feature>
 
     <feature name="microbule-example-cdi" version="${project.version}">
+        <feature version="${project.version}">microbule-example-config</feature>
         <feature version="${project.version}">microbule</feature>
         <feature>pax-cdi-1.2-weld</feature>
         <bundle>mvn:org.microbule/microbule-example-common/${project.version}</bundle>

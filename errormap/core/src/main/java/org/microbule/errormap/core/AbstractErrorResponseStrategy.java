@@ -15,38 +15,33 @@
  *
  */
 
-package org.microbule.example.activator;
+package org.microbule.errormap.core;
 
-import java.util.Dictionary;
-import java.util.Hashtable;
+import java.lang.reflect.Constructor;
 
-import org.microbule.example.common.DefaultHelloResource;
-import org.microbule.example.common.HelloResource;
-import org.osgi.framework.BundleActivator;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceRegistration;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 
-public class HelloActivator implements BundleActivator {
+import org.microbule.errormap.spi.ErrorResponseStrategy;
+
+public abstract class AbstractErrorResponseStrategy implements ErrorResponseStrategy {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    private ServiceRegistration<HelloResource> registration;
+    protected static final String NEWLINE = "\n";
 
 //----------------------------------------------------------------------------------------------------------------------
-// BundleActivator Implementation
+// Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-
-    @Override
-    public void start(BundleContext context) throws Exception {
-        Dictionary<String,Object> props = new Hashtable<>();
-        props.put("microbule.server", "true");
-        registration = context.registerService(HelloResource.class, new DefaultHelloResource(), props);
-    }
-
-    @Override
-    public void stop(BundleContext context) throws Exception {
-        registration.unregister();
+    protected RuntimeException createException(Response response, String errorMessage) {
+        Class<? extends WebApplicationException> exceptionClass = WebApplicationExceptions.getWebApplicationExceptionClass(response);
+        try {
+            final Constructor<? extends WebApplicationException> ctor = exceptionClass.getConstructor(String.class, Response.class);
+            return ctor.newInstance(errorMessage, response);
+        } catch (ReflectiveOperationException e) {
+            return new WebApplicationException(errorMessage, response);
+        }
     }
 }

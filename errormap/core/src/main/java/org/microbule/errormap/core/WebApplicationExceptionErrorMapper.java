@@ -15,38 +15,42 @@
  *
  */
 
-package org.microbule.example.activator;
+package org.microbule.errormap.core;
 
-import java.util.Dictionary;
-import java.util.Hashtable;
+import java.util.Collections;
+import java.util.List;
 
-import org.microbule.example.common.DefaultHelloResource;
-import org.microbule.example.common.HelloResource;
-import org.osgi.framework.BundleActivator;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceRegistration;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 
-public class HelloActivator implements BundleActivator {
+import org.apache.commons.lang3.StringUtils;
+import org.microbule.errormap.spi.TypedErrorMapper;
+
+public class WebApplicationExceptionErrorMapper extends TypedErrorMapper<WebApplicationException> {
 //----------------------------------------------------------------------------------------------------------------------
-// Fields
-//----------------------------------------------------------------------------------------------------------------------
-
-    private ServiceRegistration<HelloResource> registration;
-
-//----------------------------------------------------------------------------------------------------------------------
-// BundleActivator Implementation
+// Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
+    public WebApplicationExceptionErrorMapper() {
+        super(WebApplicationException.class);
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
+// Other Methods
+//----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public void start(BundleContext context) throws Exception {
-        Dictionary<String,Object> props = new Hashtable<>();
-        props.put("microbule.server", "true");
-        registration = context.registerService(HelloResource.class, new DefaultHelloResource(), props);
+    protected List<String> doGetErrorMessages(WebApplicationException exception) {
+        Response response = exception.getResponse();
+        if (StringUtils.isBlank(exception.getMessage())) {
+            return Collections.singletonList(Responses.getErrorMessage(response));
+        } else {
+            return Collections.singletonList(exception.getMessage());
+        }
     }
 
     @Override
-    public void stop(BundleContext context) throws Exception {
-        registration.unregister();
+    protected Response.StatusType doGetStatus(WebApplicationException exception) {
+        return exception.getResponse().getStatusInfo();
     }
 }
