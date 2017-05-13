@@ -17,18 +17,25 @@
 
 package org.microbule.timeout.decorator;
 
+import java.util.concurrent.TimeUnit;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static org.awaitility.Awaitility.await;
+
 public class DelayResourceImpl implements DelayResource {
 //----------------------------------------------------------------------------------------------------------------------
 // DelayResource Implementation
 //----------------------------------------------------------------------------------------------------------------------
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(DelayResourceImpl.class);
+
     @Override
     public String delay(long value) {
-        try {
-            Thread.sleep(value);
-        } catch (InterruptedException e) {
-            // Do nothing!
-        }
+        LOGGER.info("Delaying {} ms...", value);
+        final long expiration = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(value);
+        await().until(() -> System.nanoTime() >= expiration);
         return String.valueOf(value);
     }
 }

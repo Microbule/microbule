@@ -19,6 +19,7 @@ package org.microbule.osgi.container;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.Rule;
@@ -31,6 +32,7 @@ import org.microbule.test.core.hello.HelloServiceImpl;
 import org.microbule.test.osgi.OsgiRule;
 import org.osgi.framework.ServiceRegistration;
 
+import static org.awaitility.Awaitility.await;
 import static org.microbule.test.osgi.ServicePropsBuilder.props;
 
 public class OsgiContainerTest extends MockObjectTestCase {
@@ -57,8 +59,8 @@ public class OsgiContainerTest extends MockObjectTestCase {
                 serverDefinitions.removeIf(def -> def.id().equals(id));
             }
         });
-
-        Thread.sleep(150);
+        final long expiration = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(150);
+        await().until(() -> System.nanoTime() >= expiration);
         final ServiceRegistration<HelloServiceImpl> registration = osgiRule.registerService(HelloService.class, new HelloServiceImpl(), props().with("microbule.server", "true"));
 
         assertEquals(2, plugins.size());

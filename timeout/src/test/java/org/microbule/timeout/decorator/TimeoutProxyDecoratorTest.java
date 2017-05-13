@@ -55,6 +55,6 @@ public class TimeoutProxyDecoratorTest extends JaxrsServerTestCase<DelayResource
     @Test
     public void testConnectionTimeout() {
         final DelayResource proxy = createProxy();
-        Assert.assertEquals("100", proxy.delay(100));
+        Assert.assertEquals("150", proxy.delay(150));
     }
 }
