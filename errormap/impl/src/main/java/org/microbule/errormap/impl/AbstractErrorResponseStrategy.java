@@ -24,11 +24,16 @@ import javax.ws.rs.core.Response;
 
 import org.microbule.errormap.spi.ErrorResponseStrategy;
 
-/**
- * Created by jcarman on 5/12/17.
- */
 public abstract class AbstractErrorResponseStrategy implements ErrorResponseStrategy {
+//----------------------------------------------------------------------------------------------------------------------
+// Fields
+//----------------------------------------------------------------------------------------------------------------------
+
     protected static final String NEWLINE = "\n";
+
+//----------------------------------------------------------------------------------------------------------------------
+// Other Methods
+//----------------------------------------------------------------------------------------------------------------------
 
     protected RuntimeException createException(Response response, String errorMessage) {
         Class<? extends WebApplicationException> exceptionClass = WebApplicationExceptions.getWebApplicationExceptionClass(response);

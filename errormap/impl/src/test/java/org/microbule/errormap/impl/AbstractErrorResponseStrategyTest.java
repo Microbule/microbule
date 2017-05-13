@@ -32,24 +32,19 @@ import javax.ws.rs.ServiceUnavailableException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
-import com.google.common.collect.Lists;
 import org.junit.Test;
-import org.microbule.errormap.impl.text.PlainTextErrorResponseStrategy;
-import org.microbule.errormap.spi.ErrorResponseStrategy;
 import org.microbule.test.core.MockObjectTestCase;
 
-public class PlainTextErrorResponseStrategyTest extends MockObjectTestCase {
+public abstract class AbstractErrorResponseStrategyTest extends MockObjectTestCase {
+//----------------------------------------------------------------------------------------------------------------------
+// Abstract Methods
+//----------------------------------------------------------------------------------------------------------------------
+
+    protected abstract RuntimeException createException(Response.Status status, String message);
+
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
-
-    @Test
-    public void testCreateResponse() {
-        final ErrorResponseStrategy strategy = PlainTextErrorResponseStrategy.INSTANCE;
-        final Response response = strategy.createResponse(Response.Status.FORBIDDEN, Lists.newArrayList("You are forbidden!", "Not gonna happen!"));
-        assertEquals("You are forbidden!\nNot gonna happen!", response.readEntity(String.class));
-        assertEquals(Response.Status.FORBIDDEN.getStatusCode(), response.getStatus());
-    }
 
     @Test
     public void testCreateException() {
@@ -69,8 +64,8 @@ public class PlainTextErrorResponseStrategyTest extends MockObjectTestCase {
     }
 
     private void assertExceptionType(Response.Status status, Class<? extends WebApplicationException> exceptionType) {
-        final RuntimeException exception = PlainTextErrorResponseStrategy.INSTANCE.createException(Response.status(status).entity("The error message").build());
+        final RuntimeException exception = createException(status, "The error message.");
         assertEquals(exceptionType, exception.getClass());
-        assertEquals("The error message", exception.getMessage());
+        assertEquals("The error message.", exception.getMessage());
     }
 }
