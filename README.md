@@ -1,6 +1,7 @@
 # Microbule
 
 [![Build Status](https://travis-ci.org/Microbule/microbule.svg?branch=master)](https://travis-ci.org/Microbule/microbule)
+[![Quality Gate](https://sonarqube.com/api/badges/gate?key=org.microbule:microbule-parent)](https://sonarqube.com/dashboard?id=org.microbule%3Amicrobule-parent)
 
 Microbule provides a framework for developing [Microservices](http://www.martinfowler.com/articles/microservices.html)
 quickly and easily!  Services are written using the standard
