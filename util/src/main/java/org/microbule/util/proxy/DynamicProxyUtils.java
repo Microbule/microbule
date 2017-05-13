@@ -47,17 +47,13 @@ public final class DynamicProxyUtils {
             if (isHashCode(method)) {
                 return System.identityHashCode(proxy);
             }
-            return invokeMethod(targetSupplier, method, args);
+            try {
+                return method.invoke(targetSupplier.get(), args);
+            } catch (InvocationTargetException e) {
+                throw e.getTargetException();
+            }
         };
         return createProxy(proxyInterface, handler);
-    }
-
-    private static <T> Object invokeMethod(Supplier<T> targetSupplier, Method method, Object[] args) throws Throwable {
-        try {
-            return method.invoke(targetSupplier.get(), args);
-        } catch (InvocationTargetException e) {
-            throw e.getTargetException();
-        }
     }
 
     public static boolean isEqualsMethod(Method method) {
