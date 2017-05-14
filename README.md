@@ -3,6 +3,7 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.microbule/microbule-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.microbule/microbule-parent)
 [![Build Status](https://travis-ci.org/Microbule/microbule.svg?branch=master)](https://travis-ci.org/Microbule/microbule)
 [![Quality Gate](https://sonarqube.com/api/badges/gate?key=org.microbule:microbule-parent)](https://sonarqube.com/dashboard?id=org.microbule%3Amicrobule-parent)
+[![Test Coverage](https://sonarqube.com/api/badges/measure?key=org.microbule:microbule-parent&metric=line_coverage)](https://sonarqube.com/dashboard?id=org.microbule%3Amicrobule-parent)
 [![Tech Debt](https://sonarqube.com/api/badges/measure?key=org.microbule:microbule-parent&metric=sqale_debt_ratio)](https://sonarqube.com/dashboard?id=org.microbule%3Amicrobule-parent)
 
 
