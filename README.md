@@ -22,12 +22,11 @@ Visit our [Documentation](https://microbule.github.io/microbule/)!
 git clone git@github.com:Microbule/microbule.git
 ```
 
-2. Run the maven build:
+2. Build Microbule Using [Apache Maven](http://maven.apache.org):
 
 ```text
 mvn clean install
 ```
-
 
 ## What's in a Name?
 
