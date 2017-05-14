@@ -7,74 +7,11 @@ quickly and easily!  Services are written using the standard
 
 ## Getting Started
 
-Microbule is an extension of the [Apache Karaf](http://karaf.apache.org) container.  Getting started with Microbule is
- simple:
+Microbule supports many of the popular deployment containers/frameworks available.  Simply choose from:
 
-1. [Download](http://karaf.apache.org/download.html) Apache Karaf (version 4.0.x) and extract to [KARAF_HOME].
-2. Start Apache Karaf:
-
- ```
- cd [KARAF_HOME]
- bin/karaf
- ```
-
-3. Install the Microbule Karaf [Feature](https://karaf.apache.org/manual/latest/provisioning):
-
- ```
-         __ __                  ____
-        / //_/____ __________ _/ __/
-       / ,<  / __ `/ ___/ __ `/ /_
-      / /| |/ /_/ / /  / /_/ / __/
-     /_/ |_|\__,_/_/   \__,_/_/
-
-   Apache Karaf (4.0.7)
-
- Hit '<tab>' for a list of available commands
- and '[cmd] --help' for help on a specific command.
- Hit '<ctrl-d>' or type 'system:shutdown' or 'logout' to shutdown Karaf.
-
- karaf@root()> repo-add mvn:org.microbule/microbule-features/0.1.0/xml/features
- karaf@root()> feature:install microbule
- ```
-
-4. Install The Microbule Examples
-
- ```
- karaf@root()> feature:install microbule-examples
- ```
-
-5. Enjoy!
-
-## Writing Your Own Services
-
-Microbule uses the OSGi [Whiteboard Pattern](http://enroute.osgi.org/doc/218-patterns.html) to discover JAX-RS services
-at runtime.  In order to register a service with Microbule, you have to expose them as an OSGi service with the
-"microbule.address" service property.  Microbule provides the following BundleActivator-based example:
-
-```
-public class HelloActivator implements BundleActivator {
-
-    private ServiceRegistration<HelloResource> registration;
-
-    @Override
-    public void start(BundleContext context) throws Exception {
-        Dictionary<String,Object> props = new Hashtable<>();
-        props.put("microbule.address", "/microbule-example-activator");
-        registration = context.registerService(HelloResource.class, new DefaultHelloResource(), props);
-    }
-
-    @Override
-    public void stop(BundleContext context) throws Exception {
-        registration.unregister();
-    }
-}
-
-```
-
-Microbule will automatically detect the service set its publish address as "/microbule-example-activator" using
-[Apache CXF](http://cxf.apache.org) as the JAX-RS implementation.  Since Microbule uses OSGi services, you can use your
-framework-of-choice (OSGi Blueprint, OSGi Declarative Services, CDI, etc.) to wire up your service implementation object.
-The service *interface* should be annotated with all of the appropriate JAX-RS annotations.
+- [Spring Framework](spring.md)
+- [Contexts and Dependency Injection (CDI)](cdi.md)
+- [Apache Karaf](karaf.md)
 
 ## Microbule Features
 
