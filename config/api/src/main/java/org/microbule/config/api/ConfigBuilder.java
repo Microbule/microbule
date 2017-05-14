@@ -22,7 +22,16 @@ public interface ConfigBuilder {
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
+    /**
+     * Builds the {@link Config} object
+     * @return the config object
+     */
     Config build();
 
+    /**
+     * Adds a new path to this config builder
+     * @param path the path
+     * @return this config builder
+     */
     ConfigBuilder withPath(String... path);
 }

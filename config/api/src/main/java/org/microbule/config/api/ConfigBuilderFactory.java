@@ -22,5 +22,10 @@ public interface ConfigBuilderFactory {
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
+    /**
+     * Creates a new {@link ConfigBuilder}.
+     *
+     * @return the config builder
+     */
     ConfigBuilder createBuilder();
 }

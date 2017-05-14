@@ -20,16 +20,21 @@ package org.microbule.test.core.hello;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Singleton
 @Named("helloService")
 public class HelloServiceImpl implements HelloService {
 //----------------------------------------------------------------------------------------------------------------------
 // HelloService Implementation
 //----------------------------------------------------------------------------------------------------------------------
+    private static final Logger LOGGER = LoggerFactory.getLogger(HelloServiceImpl.class);
 
     @Override
     public String sayHello(String name) {
-        return "Hello, " + name + "!";
+        LOGGER.info("Saying hello to \"{}\".", name);
+        return String.format("Hello, %s!", name);
     }
 
     @Override

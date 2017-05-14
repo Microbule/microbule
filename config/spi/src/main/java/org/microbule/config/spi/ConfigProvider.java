@@ -19,18 +19,33 @@ package org.microbule.config.spi;
 
 import org.microbule.config.api.Config;
 
+/**
+ * A <code>ConfigProvider</code> is responsible for gather configuration data from a configuration source.
+ */
 public interface ConfigProvider {
 //----------------------------------------------------------------------------------------------------------------------
-// Fields
-//----------------------------------------------------------------------------------------------------------------------
-
-    //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
+    /**
+     * Returns a {@link Config} object located at the specified path.
+     *
+     * @param path the path
+     * @return the config object
+     */
     Config getConfig(String... path);
 
+    /**
+     * The name of the provider
+     *
+     * @return the name
+     */
     String name();
 
+    /**
+     * The priority of the provider (will be sorted in ascending order)
+     *
+     * @return the priority
+     */
     int priority();
 }

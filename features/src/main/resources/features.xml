@@ -154,29 +154,19 @@
     ====================================================================================================================
     -->
 
-    <feature name="microbule-example-config" version="${project.version}">
-        <config name="org.microbule.osgi.config.provider">
-            HelloResource.server.serverAddress=/hello
-            HelloResource.errormap.strategy=json
-        </config>
-    </feature>
-
     <feature name="microbule-example-blueprint" version="${project.version}">
-        <feature version="${project.version}">microbule-example-config</feature>
         <feature version="${project.version}">microbule</feature>
         <bundle>mvn:org.microbule/microbule-example-common/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-example-blueprint/${project.version}</bundle>
     </feature>
 
     <feature name="microbule-example-activator" version="${project.version}">
-        <feature version="${project.version}">microbule-example-config</feature>
         <feature version="${project.version}">microbule</feature>
         <bundle>mvn:org.microbule/microbule-example-common/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-example-activator/${project.version}</bundle>
     </feature>
 
     <feature name="microbule-example-scr" version="${project.version}">
-        <feature version="${project.version}">microbule-example-config</feature>
         <feature version="${project.version}">microbule</feature>
         <feature>scr</feature>
         <bundle>mvn:org.microbule/microbule-example-common/${project.version}</bundle>
@@ -184,12 +174,10 @@
     </feature>
 
     <feature name="microbule-example-cdi" version="${project.version}">
-        <feature version="${project.version}">microbule-example-config</feature>
         <feature version="${project.version}">microbule</feature>
         <feature>pax-cdi-1.2-weld</feature>
         <bundle>mvn:org.microbule/microbule-example-common/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-example-cdi/${project.version}</bundle>
     </feature>
-
 
 </features>
