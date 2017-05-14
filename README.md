@@ -11,7 +11,7 @@ Microbule provides a framework for developing [Microservices](http://www.martinf
 quickly and easily!  Services are written using the standard
  [Java API for RESTful Services](https://jax-rs-spec.java.net/) (JAX-RS).
 
-## Getting Started
+# Getting Started
 
 Microbule supports many of the popular deployment containers/frameworks available.  Simply choose from:
 
@@ -19,7 +19,7 @@ Microbule supports many of the popular deployment containers/frameworks availabl
 - [Contexts and Dependency Injection (CDI)](https://github.com/Microbule/microbule/wiki/Getting-Started:-CDI)
 - [Apache Karaf](https://github.com/Microbule/microbule/wiki/Getting-Started:-Apache-Karaf)
 
-## Microbule Features
+# Features
 
 Microbule provides many built-in features out-of-the-box.
 
