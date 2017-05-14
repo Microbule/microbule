@@ -15,6 +15,7 @@ quickly and easily!  Services are written using the standard
 - [Documentation](#documentation)
 - [Building](#building-microbule)
 - [Support](#support)
+- [Community](#community)
 - [Contributing](#contributing)
 - [What's in a Name?](#whats-in-a-name)
 
@@ -39,6 +40,10 @@ mvn clean install
 ## Support
 
 Please [open an issue](https://github.com/Microbule/microbule/issues/new) for support.
+
+## Community
+
+Please join us on [Gitter](https://gitter.im/Microbule/Lobby)!
 
 ## Contributing
 
