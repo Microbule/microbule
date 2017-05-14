@@ -49,4 +49,4 @@ public class MyApplicationConfiguration {
 
 # JAX-RS Service Discovery
 
-Once Microbule starts, it will automatically create a CXF server for any @Path-annotated bean in the current ApplicationContext.
+Once Microbule starts, it will automatically create a CXF server for any `@Path`-annotated bean in the current ApplicationContext.
