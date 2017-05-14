@@ -72,10 +72,15 @@
         </dependency>
         <dependency>
             <groupId>org.microbule</groupId>
-            <artifactId>microbule-test-osgi</artifactId>
+            <artifactId>microbule-gson-decorator</artifactId>
             <version>0.3.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.microbule</groupId>
+            <artifactId>microbule-gson-core</artifactId>
+            <version>0.3.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>
