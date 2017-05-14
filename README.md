@@ -52,5 +52,5 @@ Please contribute using [Github Flow](https://guides.github.com/introduction/flo
 ## What's in a Name?
 
 A "microbule" is a unit of length used in Marvel's
-[Guardians of the Galaxy](http://marvel.com/characters/70/guardians_of_the_galaxy) movie.  Microbule strives to be the
+[Guardians of the Galaxy](http://marvel.com/characters/70/guardians_of_the_galaxy) movie (the lineup scene).  Microbule strives to be the
 microservices framework that the others will try to measure up to!
