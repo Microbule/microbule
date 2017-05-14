@@ -20,10 +20,6 @@ Microbule supports many of the popular deployment containers/frameworks availabl
 
 ## Microbule Features
 
-* [GSON](gson.md) - Microbule uses GSON for JSON serialization
-* [Request Logging](
-Microbule provides many built-in features out-of-the-box.
-
 ### GSON
 
 Microbule will transform payloads to/from JSON using the [Google GSON](https://github.com/google/gson) library.  For
