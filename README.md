@@ -13,9 +13,10 @@ quickly and easily!  Services are written using the standard
 ## Table of Contents
 
 - [Documentation](#documentation)
-- [Building](#building)
+- [Building](#building-microbule)
 - [Support](#support)
 - [Contributing](#contributing)
+- [What's in a Name?](#whats-in-a-name)
 
 ## Documentation
 
