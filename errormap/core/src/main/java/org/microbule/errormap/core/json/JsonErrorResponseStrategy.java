@@ -26,10 +26,19 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.microbule.errormap.core.AbstractErrorResponseStrategy;
+import org.microbule.errormap.spi.ErrorResponseStrategy;
 
 @Named("jsonErrorResponseStrategy")
 @Singleton
 public class JsonErrorResponseStrategy extends AbstractErrorResponseStrategy {
+//----------------------------------------------------------------------------------------------------------------------
+// Fields
+//----------------------------------------------------------------------------------------------------------------------
+
+    public static final ErrorResponseStrategy INSTANCE = new JsonErrorResponseStrategy();
+
+    private static final String NAME = "json";
+
 //----------------------------------------------------------------------------------------------------------------------
 // ErrorResponseStrategy Implementation
 //----------------------------------------------------------------------------------------------------------------------
@@ -37,7 +46,7 @@ public class JsonErrorResponseStrategy extends AbstractErrorResponseStrategy {
     @Override
     public RuntimeException createException(Response response) {
         final JsonErrorResponse errorResponse = response.readEntity(JsonErrorResponse.class);
-        final String errorMessage = errorResponse.getErrorMessages().stream().collect(Collectors.joining(NEWLINE));
+        final String errorMessage = errorResponse.getMessages().stream().collect(Collectors.joining(NEWLINE));
         return createException(response, errorMessage);
     }
 
@@ -52,6 +61,6 @@ public class JsonErrorResponseStrategy extends AbstractErrorResponseStrategy {
 
     @Override
     public String name() {
-        return "json";
+        return NAME;
     }
 }

@@ -63,7 +63,7 @@ public abstract class JaxrsServerTestCase<T> extends MockObjectTestCase implemen
 
 
     @Override
-    public <I> Config createProxyConfig(Class<I> serviceInterface, String serviceName) {
+    public final <I> Config createProxyConfig(Class<I> serviceInterface, String serviceName) {
         MapConfig config = new MapConfig();
         configureProxy(config);
         config.addValue(DefaultJaxrsServiceDiscovery.PROXY_ADDRESS_PROP, baseAddress);
@@ -71,7 +71,7 @@ public abstract class JaxrsServerTestCase<T> extends MockObjectTestCase implemen
     }
 
     @Override
-    public <I> Config createServerConfig(Class<I> serviceInterface, String serviceName) {
+    public final <I> Config createServerConfig(Class<I> serviceInterface, String serviceName) {
         MapConfig config = new MapConfig();
         configureServer(config);
         config.addValue(DefaultJaxrsServerFactory.SERVER_ADDRESS_PROP, baseAddress);

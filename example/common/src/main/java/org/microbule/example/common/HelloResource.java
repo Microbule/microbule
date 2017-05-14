@@ -27,16 +27,18 @@ import javax.ws.rs.core.MediaType;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.microbule.annotation.JaxrsService;
 import org.microbule.cache.annotation.Cacheable;
 
 @Path("/")
 @Api(value = "/", produces = "application/json")
+@JaxrsService(name = "hello")
 public interface HelloResource {
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    @Path("/hello/{name}")
+    @Path("/{name}")
     @Produces(MediaType.APPLICATION_JSON)
     @GET
     @Cacheable

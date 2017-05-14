@@ -39,7 +39,7 @@ public class JsonErrorResponseStrategyTest extends AbstractErrorResponseStrategy
         final Response response = strategy.createResponse(Response.Status.FORBIDDEN, Lists.newArrayList("You are forbidden!", "Not gonna happen!"));
         final JsonErrorResponse errorResponse = response.readEntity(JsonErrorResponse.class);
         assertEquals(Response.Status.FORBIDDEN.getStatusCode(), errorResponse.getStatus());
-        assertEquals(Lists.newArrayList("You are forbidden!", "Not gonna happen!"), errorResponse.getErrorMessages());
+        assertEquals(Lists.newArrayList("You are forbidden!", "Not gonna happen!"), errorResponse.getMessages());
     }
 
     @Test

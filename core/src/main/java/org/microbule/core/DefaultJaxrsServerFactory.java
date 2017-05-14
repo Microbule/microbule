@@ -23,6 +23,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.cxf.BusFactory;
 import org.apache.cxf.endpoint.Server;
 import org.apache.cxf.jaxrs.JAXRSServerFactoryBean;
@@ -30,7 +31,6 @@ import org.microbule.api.JaxrsConfigService;
 import org.microbule.api.JaxrsServer;
 import org.microbule.api.JaxrsServerFactory;
 import org.microbule.config.api.Config;
-import org.microbule.config.api.ConfigurationException;
 import org.microbule.container.api.MicrobuleContainer;
 import org.microbule.spi.JaxrsServerDecorator;
 import org.microbule.spi.JaxrsServiceNamingStrategy;
@@ -46,6 +46,7 @@ public class DefaultJaxrsServerFactory extends JaxrsServiceDecoratorRegistry<Jax
 
     public static final String SERVER_ADDRESS_PROP = "serverAddress";
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultJaxrsServerFactory.class);
+    public static final String BASE_ADDRESS_PROP = "baseAddress";
 
     private final JaxrsConfigService configService;
     private final AtomicReference<JaxrsServiceNamingStrategy> namingStrategy;
@@ -67,19 +68,21 @@ public class DefaultJaxrsServerFactory extends JaxrsServiceDecoratorRegistry<Jax
 
     @Override
     public JaxrsServer createJaxrsServer(Class<?> serviceInterface, Object serviceImplementation) {
-        final Config config = configService.createServerConfig(serviceInterface, namingStrategy.get().serviceName(serviceInterface));
-        final String address = config.value(SERVER_ADDRESS_PROP).orElseThrow(() -> new ConfigurationException("Missing '%s' property.", SERVER_ADDRESS_PROP));
-        LOGGER.info("Starting {} JAX-RS server ({})...", serviceInterface.getSimpleName(), address);
+        final String serviceName = namingStrategy.get().serviceName(serviceInterface);
+        final Config serverConfig = configService.createServerConfig(serviceInterface, serviceName);
+        final String baseAddress = serverConfig.value(BASE_ADDRESS_PROP).orElse(StringUtils.EMPTY);
+        final String serverAddress = serverConfig.value(SERVER_ADDRESS_PROP).orElse(namingStrategy.get().serverAddress(serviceInterface));
+        LOGGER.info("Starting {} JAX-RS server ({})...", serviceInterface.getSimpleName(), serverAddress);
         final JaxrsServiceDescriptorImpl descriptor = new JaxrsServiceDescriptorImpl(serviceInterface);
-        decorate(descriptor, config);
+        decorate(descriptor, serverConfig);
         final JAXRSServerFactoryBean sf = new JAXRSServerFactoryBean();
         sf.setBus(BusFactory.getDefaultBus(true));
         sf.setServiceBean(serviceImplementation);
-        sf.setAddress(address);
+        sf.setAddress(baseAddress + serverAddress);
         sf.setFeatures(descriptor.getFeatures());
         sf.setProviders(descriptor.getProviders());
         final Server server = sf.create();
-        LOGGER.info("Successfully started {} JAX-RS server ({}).", serviceInterface.getSimpleName(), address);
+        LOGGER.info("Successfully started {} JAX-RS server ({}).", serviceInterface.getSimpleName(), serverAddress);
         return server::destroy;
     }
 

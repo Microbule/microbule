@@ -33,15 +33,26 @@ public class DefaultJaxrsServiceNamingStrategyTest extends MockObjectTestCase {
         assertEquals("UnnamedService", namingStrategy.serviceName(UnnamedService.class));
     }
 
-
     @Test
     public void testWithSpecifiedName() {
         final DefaultJaxrsServiceNamingStrategy namingStrategy = new DefaultJaxrsServiceNamingStrategy();
         assertEquals("coolService", namingStrategy.serviceName(MyCoolService.class));
     }
 
+    @Test
+    public void testWithSpecifiedServerAddress() {
+        final DefaultJaxrsServiceNamingStrategy namingStrategy = new DefaultJaxrsServiceNamingStrategy();
+        assertEquals("/cool", namingStrategy.serverAddress(MyCoolService.class));
+    }
+
+    @Test
+    public void testWithFallbackServerAddress() {
+        final DefaultJaxrsServiceNamingStrategy namingStrategy = new DefaultJaxrsServiceNamingStrategy();
+        assertEquals("/UnnamedService", namingStrategy.serverAddress(UnnamedService.class));
+    }
+
     @Path("/")
-    @JaxrsService(name = "coolService")
+    @JaxrsService(name = "coolService", serverAddress = "/cool")
     public interface MyCoolService {
 
     }

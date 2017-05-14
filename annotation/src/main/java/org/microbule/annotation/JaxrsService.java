@@ -30,4 +30,6 @@ public @interface JaxrsService {
 //----------------------------------------------------------------------------------------------------------------------
 
     String name() default "";
+
+    String serverAddress() default "";
 }

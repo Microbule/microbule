@@ -18,6 +18,7 @@
 package org.microbule.core;
 
 import java.util.Optional;
+import java.util.function.Function;
 
 import org.apache.commons.lang3.StringUtils;
 import org.microbule.annotation.JaxrsService;
@@ -29,8 +30,24 @@ public class DefaultJaxrsServiceNamingStrategy implements JaxrsServiceNamingStra
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
+    public String serverAddress(Class<?> serviceInterface) {
+        final String fallback = "/" + serviceName(serviceInterface);
+        return annotationProperty(serviceInterface, fallback, annotation -> StringUtils.defaultIfBlank(annotation.serverAddress(), fallback));
+    }
+
+    @Override
     public String serviceName(Class<?> serviceInterface) {
         final String fallback = serviceInterface.getSimpleName();
-        return Optional.ofNullable(serviceInterface.getAnnotation(JaxrsService.class)).map(annotation -> StringUtils.defaultIfBlank(annotation.name(), fallback)).orElse(fallback);
+        return annotationProperty(serviceInterface, fallback, annotation -> StringUtils.defaultIfBlank(annotation.name(), fallback));
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
+// Other Methods
+//----------------------------------------------------------------------------------------------------------------------
+
+    private <T> T annotationProperty(Class<?> serviceInterface, T fallback, Function<JaxrsService, T> fn) {
+        return Optional.ofNullable(serviceInterface.getAnnotation(JaxrsService.class))
+                .map(fn)
+                .orElse(fallback);
     }
 }

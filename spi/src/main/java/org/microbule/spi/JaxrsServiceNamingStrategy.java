@@ -18,5 +18,11 @@
 package org.microbule.spi;
 
 public interface JaxrsServiceNamingStrategy {
+//----------------------------------------------------------------------------------------------------------------------
+// Other Methods
+//----------------------------------------------------------------------------------------------------------------------
+
+    String serverAddress(Class<?> serviceInterface);
+
     String serviceName(Class<?> serviceInterface);
 }

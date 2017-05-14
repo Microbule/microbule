@@ -22,7 +22,7 @@ public final class ErrorMapperUtils {
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    public static final String DEFAULT_STRATEGY = "text";
+    public static final String DEFAULT_STRATEGY = "json";
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors

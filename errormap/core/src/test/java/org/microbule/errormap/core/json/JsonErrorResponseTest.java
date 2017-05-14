@@ -30,6 +30,6 @@ public class JsonErrorResponseTest extends MicrobuleTestCase {
     public void testConstructor() {
         final JsonErrorResponse response = new JsonErrorResponse(404, Lists.newArrayList("one", "two", "three"));
         assertEquals(404, response.getStatus());
-        assertEquals(Lists.newArrayList("one", "two", "three"), response.getErrorMessages());
+        assertEquals(Lists.newArrayList("one", "two", "three"), response.getMessages());
     }
 }

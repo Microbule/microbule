@@ -26,23 +26,23 @@ public class JsonErrorResponse {
 
     private final int status;
 
-    private final List<String> errorMessages;
+    private final List<String> messages;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public JsonErrorResponse(int status, List<String> errorMessages) {
+    public JsonErrorResponse(int status, List<String> messages) {
         this.status = status;
-        this.errorMessages = errorMessages;
+        this.messages = messages;
     }
 
 //----------------------------------------------------------------------------------------------------------------------
 // Getter/Setter Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    public List<String> getErrorMessages() {
-        return errorMessages;
+    public List<String> getMessages() {
+        return messages;
     }
 
     public int getStatus() {

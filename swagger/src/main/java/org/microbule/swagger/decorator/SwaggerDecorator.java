@@ -37,6 +37,7 @@ public class SwaggerDecorator implements JaxrsServerDecorator {
     public void decorate(JaxrsServiceDescriptor descriptor, Config config) {
         final Swagger2Feature feature = new Swagger2Feature();
         feature.setPrettyPrint(true);
+        feature.setScan(false);
         descriptor.addFeature(feature);
     }
 
