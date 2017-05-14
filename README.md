@@ -10,6 +10,13 @@ Microbule provides a framework for developing [Microservices](http://www.martinf
 quickly and easily!  Services are written using the standard
  [Java API for RESTful Services](https://jax-rs-spec.java.net/) (JAX-RS).
 
+## Table of Contents
+
+- [Documentation](#documentation)
+- [Building](#building)
+- [Support](#support)
+- [Contributing](#contributing)
+
 ## Documentation
 
 Visit our [Documentation](https://microbule.github.io/microbule/)!
@@ -27,6 +34,14 @@ git clone git@github.com:Microbule/microbule.git
 ```text
 mvn clean install
 ```
+
+## Support
+
+Please [open an issue](https://github.com/Microbule/microbule/issues/new) for support.
+
+## Contributing
+
+Please contribute using [Github Flow](https://guides.github.com/introduction/flow/). Create a branch, add commits, and [open a pull request](https://github.com/Microbule/microbule/compare).
 
 ## What's in a Name?
 
