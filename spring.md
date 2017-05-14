@@ -1,6 +1,6 @@
 # Spring Framework
 
-Microbule is designed to be automatically loaded into your Spring ApplicationContext.  All of Microbule's components are assigned JSR-330 (_javax.inject_) annotations.  First, you'll need to put Microbule on the classpath.
+Microbule is designed to be automatically loaded into your Spring ApplicationContext.  All of Microbule's components are assigned JSR-330 (_javax.inject_) annotations.  First, you'll need to add Microbule to the classpath.
 
 # Dependencies
 
