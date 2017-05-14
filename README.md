@@ -15,13 +15,20 @@ quickly and easily!  Services are written using the standard
 
 Microbule supports many of the popular deployment containers/frameworks available.  Simply choose from:
 
-- [Spring Framework](https://github.com/Microbule/microbule/wiki/Getting-Started-With-Spring)
-- [Contexts and Dependency Injection (CDI)](https://github.com/Microbule/microbule/wiki/Getting-Started-With-CDI)
-- [Apache Karaf](https://github.com/Microbule/microbule/wiki/Getting-Started-With-Apache-Karaf)
+- [Spring Framework](https://github.com/Microbule/microbule/wiki/Getting-Started:-Spring)
+- [Contexts and Dependency Injection (CDI)](https://github.com/Microbule/microbule/wiki/Getting-Started:-CDI)
+- [Apache Karaf](https://github.com/Microbule/microbule/wiki/Getting-Started:-Apache-Karaf)
 
 ## Microbule Features
 
 Microbule provides many built-in features out-of-the-box.
+
+## Pluggable Configuration
+
+Microbule includes a pluggable configuration framework.  Out-of-the-box Microbule includes
+support for the following configuration providers:
+
+- sysprop - 
 
 ### GSON
 
