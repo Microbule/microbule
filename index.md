@@ -5,6 +5,11 @@ Microbule provides a framework for developing [Microservices](http://www.martinf
 quickly and easily!  Services are written using the standard
  [Java API for RESTful Services](https://jax-rs-spec.java.net/) (JAX-RS).
 
+## Table of Contents
+
+- [Getting Started](#getting-started)
+- [Features](#microbule-features)
+
 ## Getting Started
 
 Microbule supports many of the popular deployment containers/frameworks available.  Simply choose from:
@@ -15,6 +20,8 @@ Microbule supports many of the popular deployment containers/frameworks availabl
 
 ## Microbule Features
 
+* [GSON](gson.md) - Microbule uses GSON for JSON serialization
+* [Request Logging](
 Microbule provides many built-in features out-of-the-box.
 
 ### GSON
@@ -166,12 +173,12 @@ OSGi service.
 One of the beautiful features of Apache CXF is its ability to generate dynamic client proxies that implement the JAX-RS
 service interface.  Microbule uses this feature to provide type-safe client proxies:
 
- ```
- JaxrsProxyFactory proxyFactory = ...;
- Map<String,Object> props = new HashMap<>();
- props.put("microbule.circuitbreaker.enabled", "false");
- HelloService helloService = proxyFactory.createProxy(HelloService.class, "http://localhost:8383/HelloService", props);
- ```
+```
+JaxrsProxyFactory proxyFactory = ...;
+Map<String,Object> props = new HashMap<>();
+props.put("microbule.circuitbreaker.enabled", "false");
+HelloService helloService = proxyFactory.createProxy(HelloService.class, "http://localhost:8383/HelloService", props);
+```
 
 Microbule exposes a JaxrsProxyFactory OSGi service for you to use.  Simply inject it wherever you need to create client
 proxies.
