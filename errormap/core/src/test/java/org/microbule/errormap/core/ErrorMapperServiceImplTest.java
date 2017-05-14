@@ -20,21 +20,16 @@ package org.microbule.errormap.core;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Response;
 
-import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.microbule.container.core.SimpleContainer;
-import org.microbule.errormap.core.json.JsonErrorResponse;
 import org.microbule.errormap.core.json.JsonErrorResponseStrategy;
 import org.microbule.errormap.core.text.PlainTextErrorResponseStrategy;
-import org.microbule.gson.core.GsonServiceImpl;
-import org.microbule.gson.decorator.GsonDecorator;
 import org.microbule.test.core.MockObjectTestCase;
 
 public class ErrorMapperServiceImplTest extends MockObjectTestCase {
 
     private ErrorMapperServiceImpl service;
-    private GsonServiceImpl gsonService;
 
     @Before
     public void initService() {
@@ -42,8 +37,6 @@ public class ErrorMapperServiceImplTest extends MockObjectTestCase {
         container.addBean(new PlainTextErrorResponseStrategy());
         container.addBean(new WebApplicationExceptionErrorMapper());
         container.addBean(new JsonErrorResponseStrategy());
-        gsonService = new GsonServiceImpl(container);
-        container.addBean(new GsonDecorator(gsonService));
         service = new ErrorMapperServiceImpl(container);
         container.initialize();
     }
@@ -70,8 +63,7 @@ public class ErrorMapperServiceImplTest extends MockObjectTestCase {
 
     @Test
     public void testCreateExceptionWhenStrategyNotFound() {
-        JsonErrorResponse errorResponse = new JsonErrorResponse(404, Lists.newArrayList("It was not found!"));
-        final Exception exception = service.createException("bogus", Response.status(Response.Status.NOT_FOUND).entity(errorResponse).build());
+        final Exception exception = service.createException("bogus", Response.status(Response.Status.NOT_FOUND).entity("It was not found!").build());
         assertEquals(NotFoundException.class, exception.getClass());
     }
 

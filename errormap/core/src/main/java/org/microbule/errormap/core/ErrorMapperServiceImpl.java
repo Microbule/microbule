@@ -27,7 +27,7 @@ import javax.ws.rs.core.Response;
 
 import org.microbule.container.api.MicrobuleContainer;
 import org.microbule.errormap.api.ErrorMapperService;
-import org.microbule.errormap.core.json.JsonErrorResponseStrategy;
+import org.microbule.errormap.core.text.PlainTextErrorResponseStrategy;
 import org.microbule.errormap.spi.ErrorMapper;
 import org.microbule.errormap.spi.ErrorResponseStrategy;
 import org.slf4j.Logger;
@@ -92,8 +92,8 @@ public class ErrorMapperServiceImpl implements ErrorMapperService {
     private ErrorResponseStrategy getStrategy(String strategyName) {
         return Optional.ofNullable(responseStrategies.get(strategyName))
                 .orElseGet(() -> {
-                    LOGGER.warn("Error response strategy \"{}\" not available, using \"{}\" instead.", strategyName, JsonErrorResponseStrategy.INSTANCE.name());
-                    return JsonErrorResponseStrategy.INSTANCE;
+                    LOGGER.warn("Error response strategy \"{}\" not available, using \"{}\" instead.", strategyName, PlainTextErrorResponseStrategy.INSTANCE.name());
+                    return PlainTextErrorResponseStrategy.INSTANCE;
                 });
     }
 }
