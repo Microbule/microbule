@@ -10,11 +10,11 @@ Microbule provides a framework for developing [Microservices](http://www.martinf
 quickly and easily!  Services are written using the standard
  [Java API for RESTful Services](https://jax-rs-spec.java.net/) (JAX-RS).
 
-# Documentation
+### Documentation
 
 Visit our [Documentation](https://microbule.github.io/microbule/)!
 
-# Building Microbule
+### Building Microbule
 
 1. Clone the Git repository from GitHub:
 
@@ -29,7 +29,7 @@ mvn clean install
 ```
 
 
-#### What's in a Name?
+### What's in a Name?
 
 A "microbule" is a unit of length used in Marvel's
 [Guardians of the Galaxy](http://marvel.com/characters/70/guardians_of_the_galaxy) movie.  Microbule strives to be the
