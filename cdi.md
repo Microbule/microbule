@@ -31,4 +31,4 @@ Once you have these dependencies defined, Microbule will automatically start up 
 
 # JAX-RS Service Discovery
 
-Once Microbule starts, it will automatically create a CXF server for any @Path-annotated bean in the current CDI container.
+Once Microbule starts, it will automatically create a CXF server for any `@Path`-annotated bean in the current CDI container.
