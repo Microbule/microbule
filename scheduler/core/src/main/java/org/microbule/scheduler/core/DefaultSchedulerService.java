@@ -70,6 +70,7 @@ public class DefaultSchedulerService implements SchedulerService {
         LOGGER.debug("Scheduling {} every {} {}...", refresher, delay, unit);
         final ScheduledFuture<?> future = scheduler.scheduleWithFixedDelay(() -> {
             try {
+                LOGGER.debug("Refreshing using refresher {}...", refresher);
                 ref.set(refresher.refresh(ref.get()));
             } catch (RuntimeException e) {
                 LOGGER.error("Error occurred while refreshing using refresher {}.", refresher, e);

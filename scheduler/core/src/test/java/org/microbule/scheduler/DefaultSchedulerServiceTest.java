@@ -20,13 +20,12 @@ package org.microbule.scheduler;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.awaitility.Awaitility;
 import org.junit.Test;
 import org.microbule.scheduler.api.RefreshableReference;
 import org.microbule.scheduler.api.Refresher;
 import org.microbule.scheduler.core.DefaultSchedulerService;
 import org.microbule.test.core.MockObjectTestCase;
-
-import static org.awaitility.Awaitility.await;
 
 public class DefaultSchedulerServiceTest extends MockObjectTestCase {
 
@@ -43,22 +42,28 @@ public class DefaultSchedulerServiceTest extends MockObjectTestCase {
     @Test
     public void testRefreshedValue() {
         final DefaultSchedulerService service = new DefaultSchedulerService();
-
-        final RefreshableReference<Long> reference = service.createRefreshableReference(currentValue -> currentValue == null ? 0 : currentValue + 1, 75, TimeUnit.MILLISECONDS);
-        final long expiration = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(100);
-        await().until(() -> System.nanoTime() >= expiration);
+        final RefreshableReference<Long> reference = service.createRefreshableReference(currentValue -> currentValue == null ? 0 : currentValue + 1, 25, TimeUnit.MILLISECONDS);
+        await(40);
         reference.cancel();
         assertEquals(Long.valueOf(1), reference.get());
+    }
+
+    private void await(long duration) {
+        await(5, duration);
+    }
+
+    private void await(long pollInterval, long duration) {
+        final long expiration = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(duration);
+        Awaitility.await().pollInterval(pollInterval, TimeUnit.MILLISECONDS).pollDelay(pollInterval, TimeUnit.MILLISECONDS).until(() -> System.nanoTime() >= expiration);
     }
 
     @Test
     public void testCancelRefresh() {
         final DefaultSchedulerService service = new DefaultSchedulerService(1);
 
-        final RefreshableReference<Long> reference = service.createRefreshableReference(currentValue -> currentValue == null ? 0 : currentValue + 1, 75, TimeUnit.MILLISECONDS);
-        final long expiration = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(100);
+        final RefreshableReference<Long> reference = service.createRefreshableReference(currentValue -> currentValue == null ? 0 : currentValue + 1, 25, TimeUnit.MILLISECONDS);
         reference.cancel();
-        await().until(() -> System.nanoTime() >= expiration);
+        await(40);
         assertEquals(Long.valueOf(0), reference.get());
     }
 
@@ -77,8 +82,7 @@ public class DefaultSchedulerServiceTest extends MockObjectTestCase {
                 return currentValue == null ? 0 : currentValue + 1;
             }
         }, 20, TimeUnit.MILLISECONDS);
-        final long expiration = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(100);
-        await().until(() -> System.nanoTime() >= expiration);
+        await(100);
         reference.cancel();
         assertTrue(reference.get() > 1);
     }
