@@ -50,7 +50,9 @@
         <feature version="${cxf.version}" dependency="true">cxf-jaxrs</feature>
         <feature version="${cxf.version}" dependency="true">cxf-rs-description-swagger2</feature>
 
-        <bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.cglib/${cglib.version}</bundle>
+        <bundle dependency="true">
+            mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.cglib/${cglib.version}
+        </bundle>
         <bundle dependency="true">mvn:org.apache.geronimo.specs/geronimo-atinject_1.0_spec/1.0</bundle>
         <bundle dependency="true">mvn:com.google.guava/guava/${guava.version}</bundle>
         <bundle dependency="true">mvn:org.apache.commons/commons-lang3/${commons.lang3.version}</bundle>
@@ -66,6 +68,9 @@
         <bundle>mvn:org.microbule/microbule-config-core/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-config-env/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-config-sysprop/${project.version}</bundle>
+
+        <bundle>mvn:org.microbule/microbule-scheduler-api/${project.version}</bundle>
+        <bundle>mvn:org.microbule/microbule-scheduler-core/${project.version}</bundle>
 
         <bundle>mvn:org.microbule/microbule-annotation/${project.version}</bundle>
         <bundle>mvn:org.microbule/microbule-api/${project.version}</bundle>

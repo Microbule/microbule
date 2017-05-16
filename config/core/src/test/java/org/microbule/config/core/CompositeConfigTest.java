@@ -17,6 +17,7 @@
 
 package org.microbule.config.core;
 
+import com.google.common.collect.Lists;
 import org.junit.Assert;
 import org.junit.Test;
 import org.microbule.config.api.Config;
@@ -46,5 +47,18 @@ public class CompositeConfigTest extends Assert {
         final Config config = new CompositeConfig(config1, config2).filtered("a");
         assertEquals("bar", config.value("foo").get());
         assertEquals("world", config.value("hello").get());
+    }
+
+    @Test
+    public void testCreate() {
+
+        Config config1 = new MapConfig();
+        Config config2 = new MapConfig();
+
+        assertSame(EmptyConfig.INSTANCE, CompositeConfig.create(Lists.newArrayList()));
+
+        assertEquals(config1, CompositeConfig.create(Lists.newArrayList(config1)));
+
+
     }
 }

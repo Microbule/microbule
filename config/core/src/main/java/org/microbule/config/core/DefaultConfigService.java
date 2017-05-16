@@ -15,58 +15,61 @@
  *
  */
 
-package org.microbule.core;
+package org.microbule.config.core;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Comparator;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import org.apache.cxf.feature.Feature;
-import org.microbule.spi.JaxrsServiceDescriptor;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
-public class JaxrsServiceDescriptorImpl implements JaxrsServiceDescriptor {
+import org.microbule.config.api.Config;
+import org.microbule.config.api.ConfigService;
+import org.microbule.config.spi.ConfigProvider;
+import org.microbule.container.api.MicrobuleContainer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+@Singleton
+@Named("configService")
+public class DefaultConfigService implements ConfigService {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    private final Class<?> serviceInterface;
-    private final List<Object> providers = new LinkedList<>();
-    private final List<Feature> features = new LinkedList<>();
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultConfigService.class);
+
+    private final Set<ConfigProvider> providers;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    JaxrsServiceDescriptorImpl(Class<?> serviceInterface) {
-        this.serviceInterface = serviceInterface;
+    @Inject
+    public DefaultConfigService(MicrobuleContainer container) {
+        this.providers = container.pluginSortedSet(ConfigProvider.class, Comparator.comparingInt(ConfigProvider::priority));
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-// JaxrsServiceDescriptor Implementation
+// ConfigService Implementation
 //----------------------------------------------------------------------------------------------------------------------
 
-    public JaxrsServiceDescriptor addFeature(Feature feature) {
-        features.add(feature);
-        return this;
-    }
-
-    public JaxrsServiceDescriptor addProvider(Object provider) {
-        providers.add(provider);
-        return this;
-    }
-
-    public Class<?> serviceInterface() {
-        return serviceInterface;
+    @Override
+    public Config createConfig(String... path) {
+        return CompositeConfig.create(providers.stream().map(provider -> providerConfig(provider, path)).collect(Collectors.toList()));
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-// Getter/Setter Methods
+// Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    List<Feature> getFeatures() {
-        return features;
-    }
-
-    List<Object> getProviders() {
-        return providers;
+    private Config providerConfig(ConfigProvider provider, String[] path) {
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Creating configuration using provider \"{}\" at path \"/{}\".", provider.name(), Stream.of(path).collect(Collectors.joining("/")));
+        }
+        return provider.getConfig(path);
     }
 }

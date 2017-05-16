@@ -15,17 +15,19 @@
  *
  */
 
-package org.microbule.config.api;
+package org.microbule.scheduler.api;
 
-public interface ConfigBuilderFactory {
+@FunctionalInterface
+public interface Refresher<T> {
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
     /**
-     * Creates a new {@link ConfigBuilder}.
+     * Refreshes the value.
      *
-     * @return the config builder
+     * @param currentValue the current value (may be null)
+     * @return the new value
      */
-    ConfigBuilder createBuilder();
+    T refresh(T currentValue);
 }

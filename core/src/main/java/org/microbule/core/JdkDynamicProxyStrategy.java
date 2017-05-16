@@ -28,7 +28,7 @@ public class JdkDynamicProxyStrategy implements JaxrsDynamicProxyStrategy {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public <T> T createDynamicProxy(Class<T> serviceInterface, Supplier<T> targetSupplier) {
-        return DynamicProxyUtils.createProxy(serviceInterface, targetSupplier);
+    public <T> T createDynamicProxy(Class<T> type, Supplier<T> targetSupplier, String descriptionPattern, Object... descriptionParams) {
+        return DynamicProxyUtils.createProxy(type, targetSupplier, descriptionPattern, descriptionParams);
     }
 }

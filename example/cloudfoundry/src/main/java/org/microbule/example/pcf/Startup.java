@@ -17,17 +17,45 @@
 
 package org.microbule.example.pcf;
 
+import java.util.concurrent.TimeUnit;
+
+import org.microbule.api.JaxrsProxy;
+import org.microbule.example.common.HelloResource;
+import org.microbule.scheduler.api.SchedulerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.core.annotation.Order;
 
 @Configuration
 @ComponentScan(basePackages = "org.microbule")
 @PropertySource("classpath:application.properties")
 public class Startup {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Startup.class);
+
+    @Autowired
+    private JaxrsProxy<HelloResource> helloResource;
+
+    @Autowired
+    private SchedulerService schedulerService;
+
     public static void main(String[] args) {
         SpringApplication.run(Startup.class, args);
+    }
+
+
+    @EventListener
+    @Order()
+    public void applicationStarted(ContextRefreshedEvent event) {
+        LOGGER.info("The application has started!");
+
+        schedulerService.schedule(() -> LOGGER.info(helloResource.get().sayHello("Microbule").getGreeting()), 10, TimeUnit.SECONDS);
     }
 }

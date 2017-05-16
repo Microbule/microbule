@@ -21,5 +21,5 @@ import java.util.function.Supplier;
 
 @FunctionalInterface
 public interface JaxrsDynamicProxyStrategy {
-    <T> T createDynamicProxy(Class<T> serviceInterface, Supplier<T> targetSupplier);
+    <T> T createDynamicProxy(Class<T> type, Supplier<T> targetSupplier, String description, Object... descriptionParams);
 }

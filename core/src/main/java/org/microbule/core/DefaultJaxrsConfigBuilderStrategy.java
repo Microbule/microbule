@@ -17,7 +17,7 @@
 
 package org.microbule.core;
 
-import org.microbule.config.api.ConfigBuilder;
+import org.microbule.spi.JaxrsConfigBuilder;
 import org.microbule.spi.JaxrsConfigBuilderStrategy;
 
 public class DefaultJaxrsConfigBuilderStrategy implements JaxrsConfigBuilderStrategy {
@@ -33,20 +33,19 @@ public class DefaultJaxrsConfigBuilderStrategy implements JaxrsConfigBuilderStra
 // JaxrsConfigBuilderStrategy Implementation
 //----------------------------------------------------------------------------------------------------------------------
 
-
     @Override
-    public <T> ConfigBuilder buildServerConfig(Class<T> serviceInterface, String serviceName, ConfigBuilder builder) {
-        return builder
-                .withPath(serviceName, SERVER_PATH_SEGMENT)
+    public <T> JaxrsConfigBuilder<T> buildProxyConfig(JaxrsConfigBuilder<T> builder) {
+        final String serviceName = builder.serviceName();
+        return builder.withPath(serviceName, PROXY_PATH_SEGMENT)
                 .withPath(serviceName)
-                .withPath(DEFAULTS_PATH_SEGMENT, SERVER_PATH_SEGMENT);
+                .withPath(DEFAULTS_PATH_SEGMENT, PROXY_PATH_SEGMENT);
     }
 
     @Override
-    public <T> ConfigBuilder buildProxyConfig(Class<T> serviceInterface, String serviceName, ConfigBuilder builder) {
-        return builder
-                .withPath(serviceName, PROXY_PATH_SEGMENT)
+    public <T> JaxrsConfigBuilder<T> buildServerConfig(JaxrsConfigBuilder<T> builder) {
+        final String serviceName = builder.serviceName();
+        return builder.withPath(serviceName, SERVER_PATH_SEGMENT)
                 .withPath(serviceName)
-                .withPath(DEFAULTS_PATH_SEGMENT, PROXY_PATH_SEGMENT);
+                .withPath(DEFAULTS_PATH_SEGMENT, SERVER_PATH_SEGMENT);
     }
 }

@@ -49,7 +49,7 @@ public class RefPluginListener<B> implements PluginListener<B> {
     @Override
     public boolean registerPlugin(B plugin) {
         if (pluginRef.compareAndSet(defaultValue, plugin)) {
-            LOGGER.info("Overriding default value {} with {}...", defaultValue, plugin);
+            LOGGER.debug("Overriding default value {} with {}...", defaultValue, plugin);
             return true;
         }
         return false;
@@ -58,7 +58,7 @@ public class RefPluginListener<B> implements PluginListener<B> {
     @Override
     public void unregisterPlugin(B bean) {
         if (pluginRef.compareAndSet(bean, defaultValue)) {
-            LOGGER.info("Restoring default value {}...", defaultValue);
+            LOGGER.debug("Restoring default value {}...", defaultValue);
         }
     }
 }

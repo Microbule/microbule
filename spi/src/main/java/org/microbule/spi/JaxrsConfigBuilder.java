@@ -17,11 +17,39 @@
 
 package org.microbule.spi;
 
-@FunctionalInterface
-public interface JaxrsEndpointChooser {
+import org.microbule.config.api.Config;
+
+public interface JaxrsConfigBuilder<T> {
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    String chooseEndpoint();
+    /**
+     * Builds the {@link Config} object
+     *
+     * @return the config object
+     */
+    Config build();
+
+    /**
+     * Returns the service interface of the JAX-RS service.
+     *
+     * @return the service interface of the JAX-RS service
+     */
+    Class<T> serviceInterface();
+
+    /**
+     * Returns the service name of the JAX-RS service.
+     *
+     * @return the service name of the JAX-RS service
+     */
+    String serviceName();
+
+    /**
+     * Adds a new path to this config builder
+     *
+     * @param path the path
+     * @return this config builder
+     */
+    JaxrsConfigBuilder<T> withPath(String... path);
 }

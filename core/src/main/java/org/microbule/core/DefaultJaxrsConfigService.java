@@ -25,7 +25,7 @@ import javax.inject.Singleton;
 
 import org.microbule.api.JaxrsConfigService;
 import org.microbule.config.api.Config;
-import org.microbule.config.api.ConfigBuilderFactory;
+import org.microbule.config.api.ConfigService;
 import org.microbule.container.api.MicrobuleContainer;
 import org.microbule.spi.JaxrsConfigBuilderStrategy;
 
@@ -37,15 +37,15 @@ public class DefaultJaxrsConfigService implements JaxrsConfigService {
 //----------------------------------------------------------------------------------------------------------------------
 
     private final AtomicReference<JaxrsConfigBuilderStrategy> serviceConfigBuilder;
-    private final ConfigBuilderFactory configBuilderFactory;
+    private final ConfigService configService;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
     @Inject
-    public DefaultJaxrsConfigService(MicrobuleContainer container, ConfigBuilderFactory configBuilderFactory) {
-        this.configBuilderFactory = configBuilderFactory;
+    public DefaultJaxrsConfigService(MicrobuleContainer container, ConfigService configService) {
+        this.configService = configService;
         serviceConfigBuilder = container.pluginReference(JaxrsConfigBuilderStrategy.class, new DefaultJaxrsConfigBuilderStrategy());
     }
 
@@ -54,12 +54,19 @@ public class DefaultJaxrsConfigService implements JaxrsConfigService {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
+    public Config createConfig(String... path) {
+        return configService.createConfig(path);
+    }
+
+    @Override
     public <T> Config createProxyConfig(Class<T> serviceInterface, String serviceName) {
-        return serviceConfigBuilder.get().buildProxyConfig(serviceInterface, serviceName, configBuilderFactory.createBuilder()).build();
+        final DefaultJaxrsConfigBuilder<T> builder = new DefaultJaxrsConfigBuilder<>(configService, serviceInterface, serviceName);
+        return serviceConfigBuilder.get().buildProxyConfig(builder).build();
     }
 
     @Override
     public <T> Config createServerConfig(Class<T> serviceInterface, String serviceName) {
-        return serviceConfigBuilder.get().buildServerConfig(serviceInterface, serviceName, configBuilderFactory.createBuilder()).build();
+        final DefaultJaxrsConfigBuilder<T> builder = new DefaultJaxrsConfigBuilder<>(configService, serviceInterface, serviceName);
+        return serviceConfigBuilder.get().buildServerConfig(builder).build();
     }
 }

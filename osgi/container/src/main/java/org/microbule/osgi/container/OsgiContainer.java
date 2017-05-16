@@ -94,7 +94,7 @@ public class OsgiContainer extends AbstractContainer {
             scheduler.shutdownNow();
         } else {
             final long newDelay = quietPeriod - elapsed;
-            LOGGER.info("Only {} ms have elapsed since last update time, checking again in {} ms...", TimeUnit.NANOSECONDS.toMillis(elapsed), TimeUnit.NANOSECONDS.toMillis(newDelay));
+            LOGGER.debug("Only {} ms have elapsed since last update time, checking again in {} ms...", TimeUnit.NANOSECONDS.toMillis(elapsed), TimeUnit.NANOSECONDS.toMillis(newDelay));
             scheduler.schedule(this::checkLastUpdate, newDelay, TimeUnit.NANOSECONDS);
         }
     }

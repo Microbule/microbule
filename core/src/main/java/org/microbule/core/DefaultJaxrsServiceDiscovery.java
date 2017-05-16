@@ -20,7 +20,7 @@ package org.microbule.core;
 import org.microbule.api.JaxrsConfigService;
 import org.microbule.config.api.Config;
 import org.microbule.config.api.ConfigurationException;
-import org.microbule.spi.JaxrsEndpointChooser;
+import org.microbule.spi.JaxrsAddressChooser;
 import org.microbule.spi.JaxrsServiceDiscovery;
 
 public class DefaultJaxrsServiceDiscovery implements JaxrsServiceDiscovery {
@@ -45,7 +45,7 @@ public class DefaultJaxrsServiceDiscovery implements JaxrsServiceDiscovery {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public JaxrsEndpointChooser createEndpointChooser(Class<?> serviceInterface, String serviceName) {
+    public JaxrsAddressChooser createEndpointChooser(Class<?> serviceInterface, String serviceName) {
         final Config config = configService.createProxyConfig(serviceInterface, serviceName);
         final String baseAddress = config.value(PROXY_ADDRESS_PROP).orElseThrow(() -> new ConfigurationException("Missing '%s' property.", PROXY_ADDRESS_PROP));
         return () -> baseAddress;

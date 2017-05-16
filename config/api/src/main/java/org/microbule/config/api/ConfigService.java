@@ -15,18 +15,17 @@
  *
  */
 
-package org.microbule.example.cdi;
+package org.microbule.config.api;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+public interface ConfigService {
+//----------------------------------------------------------------------------------------------------------------------
+// Other Methods
+//----------------------------------------------------------------------------------------------------------------------
 
-import javax.inject.Qualifier;
-
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
-@Qualifier
-@Retention(RUNTIME)
-@Target({ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER, ElementType.TYPE})
-public @interface QLogger {
+    /**
+     * Creates a new configuration for the given path.
+     * @param path the path
+     * @return the configuration
+     */
+    Config createConfig(String... path);
 }

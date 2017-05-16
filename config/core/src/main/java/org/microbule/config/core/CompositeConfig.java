@@ -47,6 +47,17 @@ public class CompositeConfig implements Config {
 // Config Implementation
 //----------------------------------------------------------------------------------------------------------------------
 
+    public static Config create(List<Config> members) {
+        switch (members.size()) {
+            case 0:
+                return EmptyConfig.INSTANCE;
+            case 1:
+                return members.get(0);
+            default:
+                return new CompositeConfig(members);
+        }
+    }
+
     @Override
     public Config filtered(String... paths) {
         return new CompositeConfig(members.stream().map(config -> config.filtered(paths)).collect(Collectors.toList()));

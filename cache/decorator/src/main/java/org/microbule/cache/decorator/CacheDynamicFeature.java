@@ -59,8 +59,8 @@ public class CacheDynamicFeature implements DynamicFeature {
         try {
             final Method resourceMethod = serviceInterface.getMethod(resourceInfo.getResourceMethod().getName(), resourceInfo.getResourceMethod().getParameterTypes());
             if (methods.contains(resourceMethod)) {
-                if (LOGGER.isInfoEnabled()) {
-                    LOGGER.info("Adding cache filter to method {}({})...", resourceMethod.getName(), Arrays.stream(resourceMethod.getParameterTypes()).map(Class::getSimpleName).collect(Collectors.joining(", ")));
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Adding cache filter to method {}({})...", resourceMethod.getName(), Arrays.stream(resourceMethod.getParameterTypes()).map(Class::getSimpleName).collect(Collectors.joining(", ")));
                 }
                 context.register(new ContainerCacheFilter(resourceMethod.getAnnotation(Cacheable.class)));
             }

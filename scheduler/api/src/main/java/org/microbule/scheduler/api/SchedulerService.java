@@ -15,23 +15,17 @@
  *
  */
 
-package org.microbule.config.api;
+package org.microbule.scheduler.api;
 
-public interface ConfigBuilder {
+import java.util.concurrent.TimeUnit;
+
+public interface SchedulerService {
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    /**
-     * Builds the {@link Config} object
-     * @return the config object
-     */
-    Config build();
+    <T> RefreshableReference<T> createRefreshableReference(Refresher<T> refresher, long delay, TimeUnit unit);
 
-    /**
-     * Adds a new path to this config builder
-     * @param path the path
-     * @return this config builder
-     */
-    ConfigBuilder withPath(String... path);
+    Scheduled schedule(Runnable task, long delay, TimeUnit unit);
+
 }

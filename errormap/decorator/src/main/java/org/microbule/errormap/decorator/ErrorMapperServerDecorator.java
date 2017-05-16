@@ -57,7 +57,7 @@ public class ErrorMapperServerDecorator implements JaxrsServerDecorator {
     @Override
     public void decorate(JaxrsServiceDescriptor descriptor, Config config) {
         final String strategy = config.value(STRATEGY).orElse(ErrorMapperUtils.DEFAULT_STRATEGY);
-        LOGGER.info("Using \"{}\" error response strategy for {} JAX-RS server.", strategy, descriptor.serviceInterface().getSimpleName());
+        LOGGER.debug("Using \"{}\" error response strategy for {} JAX-RS server.", strategy, descriptor.serviceInterface().getSimpleName());
         descriptor.addProvider(new WebApplicationExceptionMapper(errorMapperService, strategy));
         descriptor.addProvider(new RootExceptionMapper(errorMapperService, strategy));
     }

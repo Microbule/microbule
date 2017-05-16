@@ -67,6 +67,15 @@
         </dependency>
 
         <!--
+        Refresh Service
+        -->
+        <dependency>
+            <groupId>org.microbule</groupId>
+            <artifactId>microbule-scheduler-core</artifactId>
+            <version>0.3.0-SNAPSHOT</version>
+        </dependency>
+
+        <!--
         Decorators
         -->
         <dependency>

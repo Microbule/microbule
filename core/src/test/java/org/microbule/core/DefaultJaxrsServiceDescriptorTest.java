@@ -23,12 +23,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.microbule.test.core.hello.HelloService;
 
-public class JaxrsServiceDescriptorImplTest extends Assert {
+public class DefaultJaxrsServiceDescriptorTest extends Assert {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    private JaxrsServiceDescriptorImpl descriptor;
+    private DefaultJaxrsServiceDescriptor descriptor;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
@@ -36,7 +36,7 @@ public class JaxrsServiceDescriptorImplTest extends Assert {
 
     @Before
     public void initConfig() {
-        descriptor = new JaxrsServiceDescriptorImpl(HelloService.class);
+        descriptor = new DefaultJaxrsServiceDescriptor(HelloService.class);
     }
 
     @Test

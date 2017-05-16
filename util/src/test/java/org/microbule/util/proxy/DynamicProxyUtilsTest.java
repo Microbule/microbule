@@ -21,7 +21,6 @@ import org.junit.Test;
 import org.microbule.test.core.MockObjectTestCase;
 import org.microbule.test.core.hello.HelloService;
 import org.microbule.test.core.hello.HelloServiceImpl;
-import org.microbule.util.proxy.DynamicProxyUtils;
 
 public class DynamicProxyUtilsTest extends MockObjectTestCase {
 //----------------------------------------------------------------------------------------------------------------------
@@ -30,22 +29,28 @@ public class DynamicProxyUtilsTest extends MockObjectTestCase {
 
     @Test
     public void testCreateProxy() {
-        final HelloService proxy = DynamicProxyUtils.createProxy(HelloService.class, HelloServiceImpl::new);
+        final HelloService proxy = DynamicProxyUtils.createProxy(HelloService.class, HelloServiceImpl::new, "foo");
         assertEquals("Hello, Microbule!", proxy.sayHello("Microbule"));
     }
 
     @Test
     public void testEquals() {
-        final HelloService proxy1 = DynamicProxyUtils.createProxy(HelloService.class, HelloServiceImpl::new);
-        final HelloService proxy2 = DynamicProxyUtils.createProxy(HelloService.class, HelloServiceImpl::new);
+        final HelloService proxy1 = DynamicProxyUtils.createProxy(HelloService.class, HelloServiceImpl::new, "foo");
+        final HelloService proxy2 = DynamicProxyUtils.createProxy(HelloService.class, HelloServiceImpl::new, "foo");
         assertEquals(proxy1, proxy1);
         assertNotEquals(proxy1, proxy2);
     }
 
     @Test
     public void testHashCode() {
-        final HelloService proxy = DynamicProxyUtils.createProxy(HelloService.class, HelloServiceImpl::new);
+        final HelloService proxy = DynamicProxyUtils.createProxy(HelloService.class, HelloServiceImpl::new, "foo");
         assertEquals(System.identityHashCode(proxy), proxy.hashCode());
+    }
+
+    @Test
+    public void testToString() {
+        final HelloService proxy = DynamicProxyUtils.createProxy(HelloService.class, HelloServiceImpl::new, "foo");
+        assertEquals("foo", proxy.toString());
     }
 
     @Test
@@ -65,7 +70,7 @@ public class DynamicProxyUtilsTest extends MockObjectTestCase {
             public String version() {
                 return "1.0";
             }
-        });
+        }, "foo");
         proxy.sayHello("Microbule");
     }
 }

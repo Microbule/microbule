@@ -32,12 +32,14 @@ public abstract class JaxrsServiceDecoratorRegistry<T extends JaxrsServiceDecora
 
     private static final String ENABLED_PROPERTY = "enabled";
     private final Map<String, T> decoratorsMap;
+    private final Class<T> decoratorType;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
     public JaxrsServiceDecoratorRegistry(Class<T> decoratorType, MicrobuleContainer container) {
+        this.decoratorType = decoratorType;
         this.decoratorsMap = container.pluginMap(decoratorType, JaxrsServiceDecorator::name);
     }
 
@@ -55,10 +57,10 @@ public abstract class JaxrsServiceDecoratorRegistry<T extends JaxrsServiceDecora
         decoratorsMap.forEach((name, decorator) -> {
             final Config decoratorConfig = config.filtered(name);
             if (decoratorConfig.booleanValue(ENABLED_PROPERTY).orElse(Boolean.TRUE)) {
-                getLogger().info("Decorating {} service using decorator \"{}\".", descriptor.serviceInterface().getSimpleName(), name);
+                getLogger().debug("Decorating {} service using {} \"{}\".", descriptor.serviceInterface().getSimpleName(), decoratorType.getSimpleName(), name);
                 decorator.decorate(descriptor, decoratorConfig);
             } else {
-                getLogger().info("Skipping decorator \"{}\" for service {}.", name, descriptor.serviceInterface().getSimpleName());
+                getLogger().debug("Skipping decorator {} \"{}\" for service {}.", name, decoratorType.getSimpleName(), descriptor.serviceInterface().getSimpleName());
             }
         });
     }

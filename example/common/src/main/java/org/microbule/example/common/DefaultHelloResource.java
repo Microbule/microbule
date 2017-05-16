@@ -38,7 +38,7 @@ public class DefaultHelloResource implements HelloResource {
 
     @Override
     public HelloResponse sayHello(String name) {
-        logger.info("Saying hello to {}...", name);
+        logger.info("Saying hello to \"{}\"...", name);
         return new HelloResponse("Hello, " + name + "!");
     }
 }

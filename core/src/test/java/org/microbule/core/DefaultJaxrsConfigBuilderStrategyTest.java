@@ -19,7 +19,7 @@ package org.microbule.core;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.microbule.config.api.ConfigBuilder;
+import org.microbule.spi.JaxrsConfigBuilder;
 import org.microbule.test.core.MockObjectTestCase;
 import org.microbule.test.core.hello.HelloService;
 import org.mockito.InOrder;
@@ -36,7 +36,7 @@ public class DefaultJaxrsConfigBuilderStrategyTest extends MockObjectTestCase {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Mock
-    private ConfigBuilder configBuilder;
+    private JaxrsConfigBuilder<HelloService> configBuilder;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
@@ -45,12 +45,12 @@ public class DefaultJaxrsConfigBuilderStrategyTest extends MockObjectTestCase {
     @Test
     public void testBuildProxyConfig() {
         final DefaultJaxrsConfigBuilderStrategy strategy = new DefaultJaxrsConfigBuilderStrategy();
-        strategy.buildProxyConfig(HelloService.class, "HelloService", configBuilder);
+        strategy.buildProxyConfig(configBuilder);
 
         final InOrder order = inOrder(configBuilder);
-
-        order.verify(configBuilder).withPath("HelloService", "proxy");
-        order.verify(configBuilder).withPath("HelloService");
+        order.verify(configBuilder).serviceName();
+        order.verify(configBuilder).withPath("hello", "proxy");
+        order.verify(configBuilder).withPath("hello");
         order.verify(configBuilder).withPath("default", "proxy");
 
         verifyNoMoreInteractions(configBuilder);
@@ -59,12 +59,12 @@ public class DefaultJaxrsConfigBuilderStrategyTest extends MockObjectTestCase {
     @Test
     public void testBuildServerConfig() {
         final DefaultJaxrsConfigBuilderStrategy strategy = new DefaultJaxrsConfigBuilderStrategy();
-        strategy.buildServerConfig(HelloService.class, "HelloService", configBuilder);
+        strategy.buildServerConfig(configBuilder);
 
         final InOrder order = inOrder(configBuilder);
-
-        order.verify(configBuilder).withPath("HelloService", "server");
-        order.verify(configBuilder).withPath("HelloService");
+        order.verify(configBuilder).serviceName();
+        order.verify(configBuilder).withPath("hello", "server");
+        order.verify(configBuilder).withPath("hello");
         order.verify(configBuilder).withPath("default", "server");
 
         verifyNoMoreInteractions(configBuilder);
@@ -73,5 +73,7 @@ public class DefaultJaxrsConfigBuilderStrategyTest extends MockObjectTestCase {
     @Before
     public void trainMock() {
         when(configBuilder.withPath(any())).thenReturn(configBuilder);
+        when(configBuilder.serviceInterface()).thenReturn(HelloService.class);
+        when(configBuilder.serviceName()).thenReturn("hello");
     }
 }

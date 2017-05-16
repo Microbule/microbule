@@ -36,6 +36,7 @@ import org.microbule.container.core.SimpleContainer;
 import org.microbule.core.DefaultJaxrsProxyFactory;
 import org.microbule.core.DefaultJaxrsServerFactory;
 import org.microbule.core.DefaultJaxrsServiceDiscovery;
+import org.microbule.scheduler.core.DefaultSchedulerService;
 import org.microbule.test.core.MockObjectTestCase;
 
 public abstract class JaxrsServerTestCase<T> extends MockObjectTestCase implements JaxrsConfigService {
@@ -61,6 +62,12 @@ public abstract class JaxrsServerTestCase<T> extends MockObjectTestCase implemen
 // JaxrsConfigService Implementation
 //----------------------------------------------------------------------------------------------------------------------
 
+    @Override
+    public Config createConfig(String... path) {
+        MapConfig config = new MapConfig();
+        configureGlobalConfig(config);
+        return config;
+    }
 
     @Override
     public final <I> Config createProxyConfig(Class<I> serviceInterface, String serviceName) {
@@ -91,6 +98,10 @@ public abstract class JaxrsServerTestCase<T> extends MockObjectTestCase implemen
 //----------------------------------------------------------------------------------------------------------------------
 
     protected void addBeans(SimpleContainer container) {
+        // Do nothing!
+    }
+
+    protected void configureGlobalConfig(MapConfig globalConfig) {
         // Do nothing!
     }
 
@@ -136,10 +147,12 @@ public abstract class JaxrsServerTestCase<T> extends MockObjectTestCase implemen
     public void startServer() {
         addBeans(container);
         final DefaultJaxrsServerFactory factory = new DefaultJaxrsServerFactory(container, this);
-        proxyFactory = new DefaultJaxrsProxyFactory(container, this);
+        proxyFactory = new DefaultJaxrsProxyFactory(container, this, new DefaultSchedulerService(1));
         container.initialize();
 
         baseAddress = createBaseAddress();
         server = factory.createJaxrsServer(getServiceInterface(), createImplementation());
     }
+
+
 }

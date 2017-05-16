@@ -27,10 +27,10 @@
 
     <microbule:container id="container"/>
 
-    <bean id="configBuilderFactory" class="org.microbule.config.core.DefaultConfigBuilderFactory">
+    <bean id="configService" class="org.microbule.config.core.DefaultConfigService">
         <argument ref="container"/>
     </bean>
 
-    <service ref="configBuilderFactory" interface="org.microbule.config.api.ConfigBuilderFactory" />
+    <service ref="configService" interface="org.microbule.config.api.ConfigService" />
 
 </blueprint>

@@ -28,6 +28,7 @@ public final class DynamicProxyUtils {
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
+    private static final String TO_STRING_METHOD_NAME = "toString";
     private static final String EQUALS_METHOD_NAME = "equals";
     private static final String HASH_CODE_METHOD_NAME = "hashCode";
 
@@ -39,13 +40,17 @@ public final class DynamicProxyUtils {
         return proxyInterface.cast(Proxy.newProxyInstance(proxyInterface.getClassLoader(), new Class[]{proxyInterface}, handler));
     }
 
-    public static <T> T createProxy(final Class<T> proxyInterface, final Supplier<T> targetSupplier) {
+    public static <T> T createProxy(final Class<T> proxyInterface, final Supplier<T> targetSupplier, String descriptionPattern, Object... descriptionParams) {
+        final String description = String.format(descriptionPattern, descriptionParams);
         final InvocationHandler handler = (proxy, method, args) -> {
             if (isEqualsMethod(method)) {
                 return proxy == args[0];
             }
             if (isHashCode(method)) {
                 return System.identityHashCode(proxy);
+            }
+            if (isToStringMethod(method)) {
+                return description;
             }
             try {
                 return method.invoke(targetSupplier.get(), args);
@@ -64,6 +69,10 @@ public final class DynamicProxyUtils {
 
     public static boolean isHashCode(Method method) {
         return HASH_CODE_METHOD_NAME.equals(method.getName()) && method.getParameterTypes().length == 0;
+    }
+
+    public static boolean isToStringMethod(Method method) {
+        return TO_STRING_METHOD_NAME.equals(method.getName()) && method.getParameterCount() == 0;
     }
 
 //----------------------------------------------------------------------------------------------------------------------

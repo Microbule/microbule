@@ -42,6 +42,8 @@ public class CglibDynamicProxyStrategy implements JaxrsDynamicProxyStrategy {
             return 1;
         } else if (DynamicProxyUtils.isHashCode(method)) {
             return 2;
+        } else if (DynamicProxyUtils.isToStringMethod(method)) {
+            return 3;
         } else {
             return 0;
         }
@@ -52,17 +54,19 @@ public class CglibDynamicProxyStrategy implements JaxrsDynamicProxyStrategy {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public <T> T createDynamicProxy(Class<T> serviceInterface, Supplier<T> targetSupplier) {
+    public <T> T createDynamicProxy(Class<T> type, Supplier<T> targetSupplier, String descriptionPattern, Object... descriptionParams) {
+        final String description = String.format(descriptionPattern, descriptionParams);
         Enhancer enhancer = new Enhancer();
-        enhancer.setClassLoader(serviceInterface.getClassLoader());
-        enhancer.setInterfaces(new Class[]{serviceInterface});
+        enhancer.setClassLoader(type.getClassLoader());
+        enhancer.setInterfaces(new Class[]{type});
         enhancer.setSuperclass(Object.class);
         enhancer.setCallbackFilter(FILTER);
-        enhancer.setCallbacks(new Callback[] {
+        enhancer.setCallbacks(new Callback[]{
                 (Dispatcher) targetSupplier::get,
                 (MethodInterceptor) (proxy, method, params, methodProxy) -> proxy == params[0],
-                (MethodInterceptor) (proxy, method, params, methodProxy) -> System.identityHashCode(proxy)
+                (MethodInterceptor) (proxy, method, params, methodProxy) -> System.identityHashCode(proxy),
+                (MethodInterceptor) (proxy, method, params, methodProxy) -> description
         });
-        return serviceInterface.cast(enhancer.create());
+        return type.cast(enhancer.create());
     }
 }

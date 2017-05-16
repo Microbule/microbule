@@ -17,14 +17,12 @@
 
 package org.microbule.spi;
 
-import org.microbule.config.api.ConfigBuilder;
-
 public interface JaxrsConfigBuilderStrategy {
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    <T> ConfigBuilder buildProxyConfig(Class<T> serviceInterface, String serviceName, ConfigBuilder builder);
+    <T> JaxrsConfigBuilder<T> buildProxyConfig(JaxrsConfigBuilder<T> builder);
 
-    <T> ConfigBuilder buildServerConfig(Class<T> serviceInterface, String serviceName, ConfigBuilder builder);
+    <T> JaxrsConfigBuilder<T> buildServerConfig(JaxrsConfigBuilder<T> builder);
 }

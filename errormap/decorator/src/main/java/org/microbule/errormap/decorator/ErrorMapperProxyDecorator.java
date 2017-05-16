@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
 @Singleton
 @Named("errorMapperProxyDecorator")
 public class ErrorMapperProxyDecorator implements JaxrsProxyDecorator {
-//----------------------------------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
     private static final Logger LOGGER = LoggerFactory.getLogger(ErrorMapperProxyDecorator.class);
@@ -55,7 +55,7 @@ public class ErrorMapperProxyDecorator implements JaxrsProxyDecorator {
     @Override
     public void decorate(JaxrsServiceDescriptor descriptor, Config config) {
         final String strategy = config.value(STRATEGY).orElse(ErrorMapperUtils.DEFAULT_STRATEGY);
-        LOGGER.info("Using \"{}\" error response strategy for {} JAX-RS proxy.", strategy, descriptor.serviceInterface().getSimpleName());
+        LOGGER.debug("Using \"{}\" error response strategy for {} JAX-RS proxy.", strategy, descriptor.serviceInterface().getSimpleName());
         descriptor.addProvider(new ErrorMapperResponseExceptionMapper(errorMapperService, strategy));
     }
 

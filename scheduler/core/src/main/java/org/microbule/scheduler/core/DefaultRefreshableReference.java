@@ -15,40 +15,41 @@
  *
  */
 
-package org.microbule.core;
+package org.microbule.scheduler.core;
 
-import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.atomic.AtomicReference;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
+import org.microbule.scheduler.api.RefreshableReference;
 
-class JaxrsProxyCache<T> {
+public class DefaultRefreshableReference<T> implements RefreshableReference<T> {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    private final LoadingCache<String, T> cache;
+    private final AtomicReference<T> reference;
+    private final ScheduledFuture<?> future;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public JaxrsProxyCache(Function<String, T> factory) {
-        this.cache = CacheBuilder.newBuilder().expireAfterAccess(5, TimeUnit.MINUTES).build(new CacheLoader<String, T>() {
-            @Override
-            public T load(String address) {
-                return factory.apply(address);
-            }
-        });
+    public DefaultRefreshableReference(AtomicReference<T> reference, ScheduledFuture<?> future) {
+        this.reference = reference;
+        this.future = future;
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-// Other Methods
+// RefreshableReference Implementation
 //----------------------------------------------------------------------------------------------------------------------
 
-    public T getProxy(String endpoint) {
-        return cache.getUnchecked(endpoint);
+    @Override
+    public void cancel() {
+        future.cancel(true);
+    }
+
+    @Override
+    public T get() {
+        return reference.get();
     }
 }
