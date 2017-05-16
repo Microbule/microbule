@@ -24,6 +24,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import com.google.common.collect.MapMaker;
+import org.microbule.annotation.Startup;
 import org.microbule.api.JaxrsServer;
 import org.microbule.api.JaxrsServerFactory;
 import org.microbule.container.api.MicrobuleContainer;
@@ -32,6 +33,7 @@ import org.microbule.container.api.ServerListener;
 
 @Named("jaxrsServerBootstrap")
 @Singleton
+@Startup
 public class JaxrsServerBootstrap implements ServerListener {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
@@ -66,5 +68,14 @@ public class JaxrsServerBootstrap implements ServerListener {
         if (server != null) {
             server.shutdown();
         }
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
+// Canonical Methods
+//----------------------------------------------------------------------------------------------------------------------
+
+    @Override
+    public String toString() {
+        return "JAX-RS Server Bootstrap";
     }
 }

@@ -56,7 +56,7 @@ public class DefaultJaxrsProxyFactory extends JaxrsServiceDecoratorRegistry<Jaxr
     private final AtomicReference<JaxrsDynamicProxyStrategy> dynamicProxyStrategy;
     private final AtomicReference<JaxrsServiceNamingStrategy> namingStrategy;
     private final SchedulerService schedulerService;
-    private final Supplier<LoadingCache<Class<?>, JaxrsProxyDispatcher<? extends Object>>> proxyCache;
+    private final Supplier<LoadingCache<Class<?>, JaxrsProxyDispatcher<? extends Object>>> proxyCacheSupplier;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
@@ -70,7 +70,7 @@ public class DefaultJaxrsProxyFactory extends JaxrsServiceDecoratorRegistry<Jaxr
         this.serviceDiscovery = container.pluginReference(JaxrsServiceDiscovery.class, new DefaultJaxrsServiceDiscovery(configService));
         this.dynamicProxyStrategy = container.pluginReference(JaxrsDynamicProxyStrategy.class, new JdkDynamicProxyStrategy());
         this.namingStrategy = container.pluginReference(JaxrsServiceNamingStrategy.class, new DefaultJaxrsServiceNamingStrategy());
-        proxyCache = Suppliers.memoize(this::createProxyCache);
+        this.proxyCacheSupplier = Suppliers.memoize(this::createProxyCache);
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -79,7 +79,7 @@ public class DefaultJaxrsProxyFactory extends JaxrsServiceDecoratorRegistry<Jaxr
 
     @Override
     public <T> T createProxy(Class<T> serviceInterface) {
-        return dynamicProxyStrategy.get().createDynamicProxy(serviceInterface, () -> serviceInterface.cast(proxyCache.get().getUnchecked(serviceInterface).getTarget()), "Microbule \"%s\" proxy", serviceInterface.getSimpleName());
+        return dynamicProxyStrategy.get().createDynamicProxy(serviceInterface, () -> serviceInterface.cast(proxyCacheSupplier.get().getUnchecked(serviceInterface).getTarget()), "Microbule \"%s\" proxy", serviceInterface.getSimpleName());
     }
 
 //----------------------------------------------------------------------------------------------------------------------

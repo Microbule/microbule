@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 
 import javax.ws.rs.Path;
 
-import org.microbule.api.JaxrsProxy;
+import org.microbule.api.JaxrsProxyReference;
 import org.microbule.api.JaxrsProxyFactory;
 import org.microbule.container.api.ServerDefinition;
 import org.microbule.container.core.DefaultServerDefinition;
@@ -81,7 +81,7 @@ public class SpringContainer extends StaticContainer implements BeanPostProcesso
     @Bean
     @Lazy
     @SuppressWarnings("unchecked")
-    public <T> JaxrsProxy<T> createProxy(DependencyDescriptor point, @Autowired JaxrsProxyFactory factory) {
+    public <T> JaxrsProxyReference<T> createProxy(DependencyDescriptor point, @Autowired JaxrsProxyFactory factory) {
         final Class<?> serviceInterface = point.getResolvableType().getGeneric(0).getRawClass();
         final T proxy = (T) factory.createProxy(serviceInterface);
         return () -> proxy;

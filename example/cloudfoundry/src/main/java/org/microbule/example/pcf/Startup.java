@@ -19,7 +19,7 @@ package org.microbule.example.pcf;
 
 import java.util.concurrent.TimeUnit;
 
-import org.microbule.api.JaxrsProxy;
+import org.microbule.api.JaxrsProxyReference;
 import org.microbule.example.common.HelloResource;
 import org.microbule.scheduler.api.SchedulerService;
 import org.slf4j.Logger;
@@ -41,7 +41,7 @@ public class Startup {
     private static final Logger LOGGER = LoggerFactory.getLogger(Startup.class);
 
     @Autowired
-    private JaxrsProxy<HelloResource> helloResource;
+    private JaxrsProxyReference<HelloResource> helloResource;
 
     @Autowired
     private SchedulerService schedulerService;

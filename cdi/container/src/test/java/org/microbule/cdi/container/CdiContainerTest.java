@@ -21,7 +21,9 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import org.junit.Test;
+import org.microbule.api.JaxrsProxyReference;
 import org.microbule.test.cdi.CdiTestCase;
+import org.microbule.test.core.hello.HelloService;
 
 @Singleton
 public class CdiContainerTest extends CdiTestCase {
@@ -32,9 +34,17 @@ public class CdiContainerTest extends CdiTestCase {
     @Inject
     private Consumer consumer;
 
+    @Inject
+    private JaxrsProxyReference<HelloService> helloProxy;
+
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
+
+    @Test
+    public void testInjectingProxy() {
+        assertNotNull(helloProxy);
+    }
 
     @Test
     public void testPlugins() {

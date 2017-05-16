@@ -21,52 +21,39 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.microbule</groupId>
-        <artifactId>microbule-cdi-parent</artifactId>
+        <artifactId>microbule-itest-parent</artifactId>
         <version>0.3.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>microbule-cdi-container</artifactId>
-    <name>Microbule :: CDI :: Container</name>
-    <packaging>bundle</packaging>
+    <artifactId>microbule-itest-cdi</artifactId>
+    <name>Microbule :: Integration Tests :: CDI</name>
+
+    <properties>
+        <sonar.jacoco.itReportPath>${project.basedir}/reports/jacoco.exec</sonar.jacoco.itReportPath>
+    </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.microbule</groupId>
-            <artifactId>microbule-container-core</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-api</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-util</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-annotation</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-test-cdi</artifactId>
+            <artifactId>microbule-all</artifactId>
             <version>0.3.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.microbule</groupId>
-            <artifactId>microbule-core</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-scheduler-core</artifactId>
+            <artifactId>microbule-test-cdi-server</artifactId>
             <version>0.3.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <inherited>true</inherited>
+            </plugin>
+        </plugins>
+    </build>
 </project>

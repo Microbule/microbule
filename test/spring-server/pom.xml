@@ -21,15 +21,49 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.microbule</groupId>
-        <artifactId>microbule-cdi-parent</artifactId>
+        <artifactId>microbule-test-parent</artifactId>
         <version>0.3.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>microbule-cdi-container</artifactId>
-    <name>Microbule :: CDI :: Container</name>
-    <packaging>bundle</packaging>
+    <artifactId>microbule-test-spring-server</artifactId>
+    <name>Microbule :: Test :: Spring Server</name>
 
     <dependencies>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${validation.api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.microbule</groupId>
+            <artifactId>microbule-test-core</artifactId>
+            <version>0.3.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.microbule</groupId>
+            <artifactId>microbule-core</artifactId>
+            <version>0.3.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.microbule</groupId>
+            <artifactId>microbule-config-core</artifactId>
+            <version>0.3.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.microbule</groupId>
+            <artifactId>microbule-spring-bootstrap</artifactId>
+            <version>0.3.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http-jetty</artifactId>
+            <version>${cxf.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http-hc</artifactId>
+            <version>${cxf.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.microbule</groupId>
             <artifactId>microbule-container-core</artifactId>
@@ -37,36 +71,13 @@
         </dependency>
         <dependency>
             <groupId>org.microbule</groupId>
-            <artifactId>microbule-api</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-util</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-annotation</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-test-cdi</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
-            <artifactId>microbule-core</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.microbule</groupId>
             <artifactId>microbule-scheduler-core</artifactId>
             <version>0.3.0-SNAPSHOT</version>
-            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
         </dependency>
     </dependencies>
 </project>

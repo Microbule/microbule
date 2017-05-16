@@ -27,9 +27,15 @@ import org.slf4j.LoggerFactory;
 @Named("helloService")
 public class HelloServiceImpl implements HelloService {
 //----------------------------------------------------------------------------------------------------------------------
+// Fields
+//----------------------------------------------------------------------------------------------------------------------
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(HelloServiceImpl.class);
+
+//----------------------------------------------------------------------------------------------------------------------
 // HelloService Implementation
 //----------------------------------------------------------------------------------------------------------------------
-    private static final Logger LOGGER = LoggerFactory.getLogger(HelloServiceImpl.class);
+
 
     @Override
     public String sayHello(String name) {
