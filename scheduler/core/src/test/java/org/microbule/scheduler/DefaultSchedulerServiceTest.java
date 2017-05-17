@@ -17,6 +17,8 @@
 
 package org.microbule.scheduler;
 
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -24,6 +26,7 @@ import org.awaitility.Awaitility;
 import org.junit.Test;
 import org.microbule.scheduler.api.RefreshableReference;
 import org.microbule.scheduler.api.Refresher;
+import org.microbule.scheduler.api.Scheduled;
 import org.microbule.scheduler.core.DefaultSchedulerService;
 import org.microbule.test.core.MockObjectTestCase;
 
@@ -73,9 +76,10 @@ public class DefaultSchedulerServiceTest extends MockObjectTestCase {
 
         final RefreshableReference<Long> reference = service.createRefreshableReference(new Refresher<Long>() {
             private final AtomicBoolean errored = new AtomicBoolean(false);
+
             @Override
             public Long refresh(Long currentValue) {
-                if(currentValue != null && currentValue == 1 && !errored.get()) {
+                if (currentValue != null && currentValue == 1 && !errored.get()) {
                     errored.set(true);
                     throw new RuntimeException("Not going to update!");
                 }
@@ -87,5 +91,20 @@ public class DefaultSchedulerServiceTest extends MockObjectTestCase {
         assertTrue(reference.get() > 1);
     }
 
+    @Test
+    public void testSchedule() throws Exception {
+        final DefaultSchedulerService service = new DefaultSchedulerService(1);
+        CountDownLatch latch = new CountDownLatch(1);
+        final Scheduled schedule = service.schedule(latch::countDown, 25, TimeUnit.MILLISECONDS);
+        assertTrue(latch.await(50, TimeUnit.MILLISECONDS));
+    }
+
+    @Test(expected = RejectedExecutionException.class)
+    public void testShutdown() throws Exception {
+        final DefaultSchedulerService service = new DefaultSchedulerService(1);
+        service.shutdownScheduler();
+        CountDownLatch latch = new CountDownLatch(1);
+        service.schedule(latch::countDown, 25, TimeUnit.MILLISECONDS);
+    }
 
 }
