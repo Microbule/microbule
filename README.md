@@ -7,7 +7,7 @@
 [![Coverage](https://sonarqube.com/api/badges/measure?key=org.microbule:microbule-parent&metric=coverage)](https://sonarqube.com/dashboard?id=org.microbule%3Amicrobule-parent)
 [![Tech Debt](https://sonarqube.com/api/badges/measure?key=org.microbule:microbule-parent&metric=sqale_debt_ratio)](https://sonarqube.com/dashboard?id=org.microbule%3Amicrobule-parent)
 [![License](http://img.shields.io/:license-apache-brightgreen.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
-[![Gitter chat](https://badges.gitter.im/Microbule/Lobby)](https://gitter.im/Microbule/Lobby)
+[![Gitter chat](https://img.shields.io/gitter/room/nwjs/nw.js.svg)](https://gitter.im/Microbule/Lobby)
 
 Microbule provides a framework for developing [Microservices](http://www.martinfowler.com/articles/microservices.html)
 quickly and easily!  Services are written using the standard
