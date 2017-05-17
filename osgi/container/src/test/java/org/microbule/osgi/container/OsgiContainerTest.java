@@ -45,8 +45,6 @@ public class OsgiContainerTest extends MockObjectTestCase {
         osgiRule.registerService(HelloService.class, new HelloServiceImpl(), props().with("microbule.server", "true"));
 
         final OsgiContainer container = new OsgiContainer(osgiRule.getBundleContext(), 100);
-        final List<HelloService> plugins = container.pluginList(HelloService.class);
-
         final List<ServerDefinition> serverDefinitions = new LinkedList<>();
         container.addServerListener(new ServerListener() {
             @Override
@@ -59,6 +57,7 @@ public class OsgiContainerTest extends MockObjectTestCase {
                 serverDefinitions.removeIf(def -> def.id().equals(id));
             }
         });
+        final List<HelloService> plugins = container.pluginList(HelloService.class);
         final long expiration = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(150);
         await().until(() -> System.nanoTime() >= expiration);
         final ServiceRegistration<HelloServiceImpl> registration = osgiRule.registerService(HelloService.class, new HelloServiceImpl(), props().with("microbule.server", "true"));

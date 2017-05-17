@@ -16,14 +16,13 @@
   ~
   -->
 
-<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" xmlns:microbule="http://www.microbule.org/blueprint">
 
     <bean id="resource" class="org.microbule.example.common.DefaultHelloResource" />
 
-    <service ref="resource" interface="org.microbule.example.common.HelloResource">
-        <service-properties>
-            <entry key="microbule.server" value="true"/>
-        </service-properties>
-    </service>
+    <microbule:server ref="resource" serviceInterface="org.microbule.example.common.HelloResource" />
+
+    <microbule:proxy id="myProxy" serviceInterface="org.microbule.example.common.HelloResource" />
+
 
 </blueprint>

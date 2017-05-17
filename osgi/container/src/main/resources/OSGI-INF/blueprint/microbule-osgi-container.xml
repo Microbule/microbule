@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
   ~ Copyright (c) 2017 The Microbule Authors.
   ~
@@ -17,14 +16,9 @@
   ~
   -->
 
-<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" xmlns:microbule="http://www.microbule.org/blueprint">
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 
-    <microbule:container id="container"/>
+    <bean id="classLoaderResolver" class="org.microbule.osgi.container.OsgiClassLoaderResolver" />
 
-    <bean id="strategy" class="org.microbule.cglib.CglibDynamicProxyStrategy">
-        <argument ref="container"/>
-    </bean>
-
-    <service ref="strategy" interface="org.microbule.spi.JaxrsDynamicProxyStrategy"/>
-
+    <service ref="classLoaderResolver" interface="org.microbule.util.reflect.ClassLoaderResolver" />
 </blueprint>

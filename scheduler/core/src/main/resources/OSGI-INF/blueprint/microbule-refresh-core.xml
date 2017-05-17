@@ -18,7 +18,7 @@
 
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 
-    <bean id="schedulerService" class="org.microbule.scheduler.core.DefaultSchedulerService"/>
+    <bean id="schedulerService" class="org.microbule.scheduler.core.DefaultSchedulerService" destroy-method="shutdownScheduler"/>
 
     <service ref="schedulerService" interface="org.microbule.scheduler.api.SchedulerService"/>
 

@@ -15,8 +15,8 @@ public abstract class CdiServerTestCase extends CdiTestCase {
 
     @BeforeClass
     public static void configure() {
-        System.setProperty("HelloService.proxy.proxyAddress", "http://localhost:8080/HelloService");
-        System.setProperty("default.server.baseAddress", "http://localhost:8080");
+        System.setProperty("HelloService.proxy.proxyAddress", "http://localhost:8484/HelloService");
+        System.setProperty("default.server.baseAddress", "http://localhost:8484");
     }
 
     @Test

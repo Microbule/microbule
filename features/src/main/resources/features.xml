@@ -50,36 +50,36 @@
         <feature version="${cxf.version}" dependency="true">cxf-jaxrs</feature>
         <feature version="${cxf.version}" dependency="true">cxf-rs-description-swagger2</feature>
 
-        <bundle dependency="true">
+        <bundle dependency="true" start-level="60">
             mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.cglib/${cglib.version}
         </bundle>
-        <bundle dependency="true">mvn:org.apache.geronimo.specs/geronimo-atinject_1.0_spec/1.0</bundle>
-        <bundle dependency="true">mvn:com.google.guava/guava/${guava.version}</bundle>
-        <bundle dependency="true">mvn:org.apache.commons/commons-lang3/${commons.lang3.version}</bundle>
-        <bundle dependency="true">mvn:com.savoirtech.eos/eos-core/${eos.version}</bundle>
+        <bundle dependency="true" start-level="60">mvn:org.apache.geronimo.specs/geronimo-atinject_1.0_spec/1.0</bundle>
+        <bundle dependency="true" start-level="60">mvn:com.google.guava/guava/${guava.version}</bundle>
+        <bundle dependency="true" start-level="60">mvn:org.apache.commons/commons-lang3/${commons.lang3.version}</bundle>
+        <bundle dependency="true" start-level="60">mvn:com.savoirtech.eos/eos-core/${eos.version}</bundle>
 
-        <bundle>mvn:org.microbule/microbule-util/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-util/${project.version}</bundle>
 
-        <bundle>mvn:org.microbule/microbule-container-api/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-container-core/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-container-api/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-container-core/${project.version}</bundle>
 
-        <bundle>mvn:org.microbule/microbule-config-api/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-config-spi/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-config-core/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-config-env/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-config-sysprop/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-config-api/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-config-spi/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-config-core/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-config-env/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-config-sysprop/${project.version}</bundle>
 
-        <bundle>mvn:org.microbule/microbule-scheduler-api/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-scheduler-core/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-scheduler-api/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-scheduler-core/${project.version}</bundle>
 
-        <bundle>mvn:org.microbule/microbule-annotation/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-api/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-spi/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-cglib/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-core/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-osgi-container/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-osgi-blueprint/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-osgi-config/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-annotation/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-api/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-spi/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-cglib/${project.version}</bundle>
+        <bundle start-level="70">mvn:org.microbule/microbule-core/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-osgi-container/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-osgi-blueprint/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-osgi-config/${project.version}</bundle>
     </feature>
 
     <!--
@@ -88,69 +88,69 @@
     ====================================================================================================================
     -->
     <feature name="microbule-errormap" version="${project.version}">
-        <bundle>mvn:org.microbule/microbule-errormap-api/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-errormap-spi/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-errormap-core/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-errormap-decorator/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-errormap-api/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-errormap-spi/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-errormap-core/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-errormap-decorator/${project.version}</bundle>
     </feature>
 
     <feature name="microbule-gson" version="${project.version}">
-        <bundle dependency="true">mvn:com.google.code.gson/gson/${gson.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-gson-api/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-gson-spi/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-gson-provider/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-gson-core/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-gson-decorator/${project.version}</bundle>
+        <bundle dependency="true" start-level="60">mvn:com.google.code.gson/gson/${gson.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-gson-api/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-gson-spi/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-gson-provider/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-gson-core/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-gson-decorator/${project.version}</bundle>
     </feature>
 
     <feature name="microbule-gzip" version="${project.version}">
-        <bundle>mvn:org.microbule/microbule-gzip-decorator/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-gzip-decorator/${project.version}</bundle>
     </feature>
 
     <feature name="microbule-tracer" version="${project.version}">
-        <bundle>mvn:org.microbule/microbule-tracer-spi/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-tracer-decorator/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-tracer-spi/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-tracer-decorator/${project.version}</bundle>
     </feature>
 
     <feature name="microbule-logging" version="${project.version}">
-        <bundle>mvn:org.microbule/microbule-logging-decorator/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-logging-decorator/${project.version}</bundle>
     </feature>
 
     <feature name="microbule-swagger" version="${project.version}">
-        <bundle>mvn:org.microbule/microbule-swagger-decorator/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-swagger-decorator/${project.version}</bundle>
     </feature>
 
     <feature name="microbule-cors" version="${project.version}">
-        <bundle>mvn:org.microbule/microbule-cors-decorator/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-cors-decorator/${project.version}</bundle>
     </feature>
 
     <feature name="microbule-requestlog" version="${project.version}">
-        <bundle>mvn:org.microbule/microbule-requestlog-decorator/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-requestlog-decorator/${project.version}</bundle>
     </feature>
 
     <feature name="microbule-circuitbreaker" version="${project.version}">
-        <bundle>mvn:org.microbule/microbule-circuitbreaker-decorator/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-circuitbreaker-decorator/${project.version}</bundle>
     </feature>
 
 
     <feature name="microbule-cache" version="${project.version}">
-        <bundle>mvn:org.microbule/microbule-cache-annotation/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-cache-decorator/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-cache-annotation/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-cache-decorator/${project.version}</bundle>
     </feature>
 
     <feature name="microbule-validation" version="${project.version}">
-        <bundle dependency="true">mvn:javax.validation/validation-api/${validation.api.version}</bundle>
-        <bundle dependency="true">mvn:org.jboss.logging/jboss-logging/${jboss.logging.version}</bundle>
-        <bundle dependency="true">mvn:com.fasterxml/classmate/${classmate.version}</bundle>
-        <bundle dependency="true">mvn:javax.el/javax.el-api/${javax.el.api.version}</bundle>
-        <bundle dependency="true">mvn:org.glassfish.web/javax.el/${glassfish.el.version}</bundle>
-        <bundle dependency="true">mvn:org.hibernate/hibernate-validator/${hibernate.validator.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-validation-annotation/${project.version}</bundle>
-        <bundle>mvn:org.microbule/microbule-validation-decorator/${project.version}</bundle>
+        <bundle dependency="true" start-level="60">mvn:javax.validation/validation-api/${validation.api.version}</bundle>
+        <bundle dependency="true" start-level="60">mvn:org.jboss.logging/jboss-logging/${jboss.logging.version}</bundle>
+        <bundle dependency="true" start-level="60">mvn:com.fasterxml/classmate/${classmate.version}</bundle>
+        <bundle dependency="true" start-level="60">mvn:javax.el/javax.el-api/${javax.el.api.version}</bundle>
+        <bundle dependency="true" start-level="60">mvn:org.glassfish.web/javax.el/${glassfish.el.version}</bundle>
+        <bundle dependency="true" start-level="60">mvn:org.hibernate/hibernate-validator/${hibernate.validator.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-validation-annotation/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-validation-decorator/${project.version}</bundle>
     </feature>
 
     <feature name="microbule-timeout" version="${project.version}">
-        <bundle>mvn:org.microbule/microbule-timeout-decorator/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-timeout-decorator/${project.version}</bundle>
     </feature>
 
     <!--

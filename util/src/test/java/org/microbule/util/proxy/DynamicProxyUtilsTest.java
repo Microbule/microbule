@@ -29,27 +29,27 @@ public class DynamicProxyUtilsTest extends MockObjectTestCase {
 
     @Test
     public void testCreateProxy() {
-        final HelloService proxy = DynamicProxyUtils.createProxy(HelloService.class, HelloServiceImpl::new, "foo");
+        final HelloService proxy = DynamicProxyUtils.createProxy(getClass().getClassLoader(), HelloService.class, HelloServiceImpl::new, "foo");
         assertEquals("Hello, Microbule!", proxy.sayHello("Microbule"));
     }
 
     @Test
     public void testEquals() {
-        final HelloService proxy1 = DynamicProxyUtils.createProxy(HelloService.class, HelloServiceImpl::new, "foo");
-        final HelloService proxy2 = DynamicProxyUtils.createProxy(HelloService.class, HelloServiceImpl::new, "foo");
+        final HelloService proxy1 = DynamicProxyUtils.createProxy(getClass().getClassLoader(), HelloService.class, HelloServiceImpl::new, "foo");
+        final HelloService proxy2 = DynamicProxyUtils.createProxy(getClass().getClassLoader(), HelloService.class, HelloServiceImpl::new, "foo");
         assertEquals(proxy1, proxy1);
         assertNotEquals(proxy1, proxy2);
     }
 
     @Test
     public void testHashCode() {
-        final HelloService proxy = DynamicProxyUtils.createProxy(HelloService.class, HelloServiceImpl::new, "foo");
+        final HelloService proxy = DynamicProxyUtils.createProxy(getClass().getClassLoader(), HelloService.class, HelloServiceImpl::new, "foo");
         assertEquals(System.identityHashCode(proxy), proxy.hashCode());
     }
 
     @Test
     public void testToString() {
-        final HelloService proxy = DynamicProxyUtils.createProxy(HelloService.class, HelloServiceImpl::new, "foo");
+        final HelloService proxy = DynamicProxyUtils.createProxy(getClass().getClassLoader(), HelloService.class, HelloServiceImpl::new, "foo");
         assertEquals("foo", proxy.toString());
     }
 
@@ -60,7 +60,7 @@ public class DynamicProxyUtilsTest extends MockObjectTestCase {
 
     @Test(expected = IllegalArgumentException.class)
     public void testWithException() {
-        final HelloService proxy = DynamicProxyUtils.createProxy(HelloService.class, () -> new HelloService() {
+        final HelloService proxy = DynamicProxyUtils.createProxy(getClass().getClassLoader(), HelloService.class, () -> new HelloService() {
             @Override
             public String sayHello(String name) {
                 throw new IllegalArgumentException(name);

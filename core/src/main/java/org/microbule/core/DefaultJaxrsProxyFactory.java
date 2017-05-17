@@ -40,6 +40,8 @@ import org.microbule.spi.JaxrsDynamicProxyStrategy;
 import org.microbule.spi.JaxrsProxyDecorator;
 import org.microbule.spi.JaxrsServiceDiscovery;
 import org.microbule.spi.JaxrsServiceNamingStrategy;
+import org.microbule.util.reflect.ClassLoaderResolver;
+import org.microbule.util.reflect.DefaultClassLoaderResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,7 +70,7 @@ public class DefaultJaxrsProxyFactory extends JaxrsServiceDecoratorRegistry<Jaxr
         this.configService = configService;
         this.schedulerService = schedulerService;
         this.serviceDiscovery = container.pluginReference(JaxrsServiceDiscovery.class, new DefaultJaxrsServiceDiscovery(configService));
-        this.dynamicProxyStrategy = container.pluginReference(JaxrsDynamicProxyStrategy.class, new JdkDynamicProxyStrategy());
+        this.dynamicProxyStrategy = container.pluginReference(JaxrsDynamicProxyStrategy.class, new JdkDynamicProxyStrategy(container.pluginReference(ClassLoaderResolver.class, new DefaultClassLoaderResolver())));
         this.namingStrategy = container.pluginReference(JaxrsServiceNamingStrategy.class, new DefaultJaxrsServiceNamingStrategy());
         this.proxyCacheSupplier = Suppliers.memoize(this::createProxyCache);
     }
