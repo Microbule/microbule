@@ -1,7 +1,7 @@
 # Microbule
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.microbule/microbule-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.microbule/microbule-parent)
-[![Javadocs](https://javadoc.io/badge/Microbule/microbule.svg)](https://javadoc.io/doc/Microbule/microbule)
+[![Javadocs](https://javadoc.io/badge/org.microbule/microbule-parent.svg)](https://javadoc.io/doc/Microbule/microbule)
 [![Build Status](https://travis-ci.org/Microbule/microbule.svg?branch=master)](https://travis-ci.org/Microbule/microbule)
 [![Quality Gate](https://sonarqube.com/api/badges/gate?key=org.microbule:microbule-parent)](https://sonarqube.com/dashboard?id=org.microbule%3Amicrobule-parent)
 [![Coverage](https://sonarqube.com/api/badges/measure?key=org.microbule:microbule-parent&metric=coverage)](https://sonarqube.com/dashboard?id=org.microbule%3Amicrobule-parent)
