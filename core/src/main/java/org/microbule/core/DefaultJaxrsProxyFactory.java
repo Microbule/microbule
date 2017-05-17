@@ -102,7 +102,7 @@ public class DefaultJaxrsProxyFactory extends JaxrsServiceDecoratorRegistry<Jaxr
         final Config config = configService.createConfig(JaxrsProxyFactory.class.getSimpleName(), "cache");
         final Long expiration = config.longValue("expiration").orElse(5L);
         final TimeUnit expirationUnit = config.enumValue("expirationUnit", TimeUnit.class).orElse(TimeUnit.MINUTES);
-        final LoadingCache<Class<?>, JaxrsProxyDispatcher<? extends Object>> cache = CacheBuilder.newBuilder()
+        return CacheBuilder.newBuilder()
                 .removalListener(this)
                 .expireAfterAccess(expiration, expirationUnit).build(new CacheLoader<Class<?>, JaxrsProxyDispatcher<? extends Object>>() {
             @Override
@@ -110,7 +110,6 @@ public class DefaultJaxrsProxyFactory extends JaxrsServiceDecoratorRegistry<Jaxr
                 return createDispatcher(serviceInterface);
             }
         });
-        return cache;
     }
 
     private <T> JaxrsProxyDispatcher<T> createDispatcher(Class<T> serviceInterface) {
