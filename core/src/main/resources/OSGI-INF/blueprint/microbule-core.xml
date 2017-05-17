@@ -24,7 +24,7 @@
     <reference id="configService" interface="org.microbule.config.api.ConfigService" />
     <reference id="schedulerService" interface="org.microbule.scheduler.api.SchedulerService" />
 
-    <bean id="proxyFactory" class="org.microbule.core.DefaultJaxrsProxyFactory">
+    <bean id="proxyFactory" class="org.microbule.core.DefaultJaxrsProxyFactory" destroy-method="destroy">
         <argument ref="container" />
         <argument ref="jaxrsConfigService" />
         <argument ref="schedulerService" />

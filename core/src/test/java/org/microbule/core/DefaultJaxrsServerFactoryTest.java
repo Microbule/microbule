@@ -108,6 +108,7 @@ public class DefaultJaxrsServerFactoryTest extends MockObjectTestCase {
     @After
     public void stopServer() {
         container.shutdown();
+        proxyFactory.destroy();
     }
 
     @Test

@@ -26,12 +26,12 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.cache.RemovalListener;
 import com.google.common.cache.RemovalNotification;
 import org.microbule.config.api.Config;
-import org.microbule.scheduler.api.SchedulerService;
 import org.microbule.scheduler.api.RefreshableReference;
+import org.microbule.scheduler.api.SchedulerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-class JaxrsTargetCache<T> implements RemovalListener<String, RefreshableReference<T>> {
+class JaxrsTargetCache<T> implements RemovalListener<String, RefreshableReference<T>>, AutoCloseable {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
@@ -55,12 +55,24 @@ class JaxrsTargetCache<T> implements RemovalListener<String, RefreshableReferenc
         final TimeUnit timeoutUnit = cacheConfig.enumValue(TIMEOUT_UNIT_PROP, TimeUnit.class).orElse(DEFAULT_UNIT);
         final long refreshDelay = cacheConfig.longValue(REFRESH_DELAY_PROP).orElse(DEFAULT_REFRESH_DELAY);
         final TimeUnit refreshDelayUnit = cacheConfig.enumValue(REFRESH_DELAY_UNIT_PROP, TimeUnit.class).orElse(DEFAULT_UNIT);
-        this.cache = CacheBuilder.newBuilder().expireAfterAccess(timeout, timeoutUnit).build(new CacheLoader<String, RefreshableReference<T>>() {
-            @Override
-            public RefreshableReference<T> load(String address) throws Exception {
-                return schedulerService.createRefreshableReference(currentValue -> factory.apply(address), refreshDelay, refreshDelayUnit);
-            }
-        });
+        this.cache = CacheBuilder.newBuilder()
+                .removalListener(this)
+                .expireAfterAccess(timeout, timeoutUnit)
+                .build(new CacheLoader<String, RefreshableReference<T>>() {
+                    @Override
+                    public RefreshableReference<T> load(String address) throws Exception {
+                        return schedulerService.createRefreshableReference(currentValue -> factory.apply(address), refreshDelay, refreshDelayUnit);
+                    }
+                });
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
+// AutoCloseable Implementation
+//----------------------------------------------------------------------------------------------------------------------
+
+    @Override
+    public void close() {
+        cache.invalidateAll();
     }
 
 //----------------------------------------------------------------------------------------------------------------------

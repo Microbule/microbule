@@ -20,6 +20,7 @@ package org.microbule.core;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
+import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -29,6 +30,8 @@ import com.google.common.base.Suppliers;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.cache.RemovalListener;
+import com.google.common.cache.RemovalNotification;
 import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
 import org.microbule.api.JaxrsConfigService;
 import org.microbule.api.JaxrsProxyFactory;
@@ -45,7 +48,7 @@ import org.slf4j.LoggerFactory;
 
 @Singleton
 @Named("jaxrsProxyFactory")
-public class DefaultJaxrsProxyFactory extends JaxrsServiceDecoratorRegistry<JaxrsProxyDecorator> implements JaxrsProxyFactory {
+public class DefaultJaxrsProxyFactory extends JaxrsServiceDecoratorRegistry<JaxrsProxyDecorator> implements JaxrsProxyFactory, RemovalListener<Class<?>, JaxrsProxyDispatcher<? extends Object>> {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
@@ -83,6 +86,15 @@ public class DefaultJaxrsProxyFactory extends JaxrsServiceDecoratorRegistry<Jaxr
     }
 
 //----------------------------------------------------------------------------------------------------------------------
+// RemovalListener Implementation
+//----------------------------------------------------------------------------------------------------------------------
+
+    @Override
+    public void onRemoval(RemovalNotification<Class<?>, JaxrsProxyDispatcher<?>> notification) {
+        notification.getValue().close();
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -90,20 +102,14 @@ public class DefaultJaxrsProxyFactory extends JaxrsServiceDecoratorRegistry<Jaxr
         final Config config = configService.createConfig(JaxrsProxyFactory.class.getSimpleName(), "cache");
         final Long expiration = config.longValue("expiration").orElse(5L);
         final TimeUnit expirationUnit = config.enumValue("expirationUnit", TimeUnit.class).orElse(TimeUnit.MINUTES);
-        final Long cleanupPeriod = config.longValue("cleanupPeriod").orElse(10L);
-        final TimeUnit cleanupPeriodUnit = config.enumValue("cleanupPeriodUnit", TimeUnit.class).orElse(TimeUnit.MINUTES);
-
-        final LoadingCache<Class<?>, JaxrsProxyDispatcher<? extends Object>> cache = CacheBuilder.newBuilder().expireAfterAccess(expiration, expirationUnit).build(new CacheLoader<Class<?>, JaxrsProxyDispatcher<? extends Object>>() {
+        final LoadingCache<Class<?>, JaxrsProxyDispatcher<? extends Object>> cache = CacheBuilder.newBuilder()
+                .removalListener(this)
+                .expireAfterAccess(expiration, expirationUnit).build(new CacheLoader<Class<?>, JaxrsProxyDispatcher<? extends Object>>() {
             @Override
             public JaxrsProxyDispatcher<? extends Object> load(Class<?> serviceInterface) throws Exception {
                 return createDispatcher(serviceInterface);
             }
         });
-        schedulerService.schedule(() -> {
-            LOGGER.debug("Cleaning up JAX-RS service proxy cache...");
-            cache.cleanUp();
-            LOGGER.debug("Finished cleaning up JAX-RS service proxy cache.");
-        }, cleanupPeriod, cleanupPeriodUnit);
         return cache;
     }
 
@@ -130,6 +136,11 @@ public class DefaultJaxrsProxyFactory extends JaxrsServiceDecoratorRegistry<Jaxr
     private <T> JaxrsAddressChooser createEndpointChooser(Class<T> serviceInterface, String serviceName) {
         LOGGER.debug("Creating \"{}\" service JaxrsAddressChooser ({})...", serviceName, serviceInterface.getSimpleName());
         return serviceDiscovery.get().createAddressChooser(serviceInterface, serviceName);
+    }
+
+    @PreDestroy
+    public void destroy() {
+        proxyCacheSupplier.get().invalidateAll();
     }
 
     @Override

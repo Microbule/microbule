@@ -54,6 +54,7 @@
             mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.cglib/${cglib.version}
         </bundle>
         <bundle dependency="true" start-level="60">mvn:org.apache.geronimo.specs/geronimo-atinject_1.0_spec/1.0</bundle>
+        <bundle dependency="true" start-level="60">mvn:com.google.code.gson/gson/${gson.version}</bundle>
         <bundle dependency="true" start-level="60">mvn:com.google.guava/guava/${guava.version}</bundle>
         <bundle dependency="true" start-level="60">mvn:org.apache.commons/commons-lang3/${commons.lang3.version}</bundle>
         <bundle dependency="true" start-level="60">mvn:com.savoirtech.eos/eos-core/${eos.version}</bundle>
@@ -95,7 +96,7 @@
     </feature>
 
     <feature name="microbule-gson" version="${project.version}">
-        <bundle dependency="true" start-level="60">mvn:com.google.code.gson/gson/${gson.version}</bundle>
+
         <bundle start-level="60">mvn:org.microbule/microbule-gson-api/${project.version}</bundle>
         <bundle start-level="60">mvn:org.microbule/microbule-gson-spi/${project.version}</bundle>
         <bundle start-level="60">mvn:org.microbule/microbule-gson-provider/${project.version}</bundle>
