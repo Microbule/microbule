@@ -198,6 +198,7 @@
                     <version>${deploy.plugin.version}</version>
                     <configuration>
                         <retryFailedDeploymentCount>3</retryFailedDeploymentCount>
+                        <deployAtEnd>true</deployAtEnd>
                     </configuration>
                 </plugin>
 
