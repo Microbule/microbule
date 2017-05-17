@@ -1,10 +1,13 @@
 # Microbule
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.microbule/microbule-parent/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.microbule/microbule-parent)
+[![Javadocs](https://javadoc.io/badge/Microbule/microbule.svg)](https://javadoc.io/doc/Microbule/microbule)
 [![Build Status](https://travis-ci.org/Microbule/microbule.svg?branch=master)](https://travis-ci.org/Microbule/microbule)
 [![Quality Gate](https://sonarqube.com/api/badges/gate?key=org.microbule:microbule-parent)](https://sonarqube.com/dashboard?id=org.microbule%3Amicrobule-parent)
 [![Coverage](https://sonarqube.com/api/badges/measure?key=org.microbule:microbule-parent&metric=coverage)](https://sonarqube.com/dashboard?id=org.microbule%3Amicrobule-parent)
 [![Tech Debt](https://sonarqube.com/api/badges/measure?key=org.microbule:microbule-parent&metric=sqale_debt_ratio)](https://sonarqube.com/dashboard?id=org.microbule%3Amicrobule-parent)
+[![License](http://img.shields.io/:license-apache-brightgreen.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
+[![Gitter chat](https://badges.gitter.im/Microbule/Lobby)](https://gitter.im/Microbule/Lobby)
 
 Microbule provides a framework for developing [Microservices](http://www.martinfowler.com/articles/microservices.html)
 quickly and easily!  Services are written using the standard
