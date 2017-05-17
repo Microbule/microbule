@@ -17,35 +17,18 @@
 
 package org.microbule.core;
 
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 import org.microbule.spi.JaxrsDynamicProxyStrategy;
 import org.microbule.util.proxy.DynamicProxyUtils;
-import org.microbule.util.reflect.ClassLoaderResolver;
 
 public class JdkDynamicProxyStrategy implements JaxrsDynamicProxyStrategy {
-//----------------------------------------------------------------------------------------------------------------------
-// Fields
-//----------------------------------------------------------------------------------------------------------------------
-
-    private final AtomicReference<ClassLoaderResolver> resolverRef;
-
-//----------------------------------------------------------------------------------------------------------------------
-// Constructors
-//----------------------------------------------------------------------------------------------------------------------
-
-    public JdkDynamicProxyStrategy(AtomicReference<ClassLoaderResolver> resolverRef) {
-        this.resolverRef = resolverRef;
-    }
-
 //----------------------------------------------------------------------------------------------------------------------
 // JaxrsDynamicProxyStrategy Implementation
 //----------------------------------------------------------------------------------------------------------------------
 
-
     @Override
     public <T> T createDynamicProxy(Class<T> type, Supplier<T> targetSupplier, String descriptionPattern, Object... descriptionParams) {
-        return DynamicProxyUtils.createProxy(resolverRef.get().resolveClassLoader(type, getClass().getClassLoader()), type, targetSupplier, descriptionPattern, descriptionParams);
+        return DynamicProxyUtils.createProxy(type, targetSupplier, descriptionPattern, descriptionParams);
     }
 }

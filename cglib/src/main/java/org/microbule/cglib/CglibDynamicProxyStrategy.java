@@ -17,10 +17,8 @@
 
 package org.microbule.cglib;
 
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
@@ -29,11 +27,9 @@ import net.sf.cglib.proxy.CallbackFilter;
 import net.sf.cglib.proxy.Dispatcher;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
-import org.microbule.container.api.MicrobuleContainer;
 import org.microbule.spi.JaxrsDynamicProxyStrategy;
 import org.microbule.util.proxy.DynamicProxyUtils;
-import org.microbule.util.reflect.ClassLoaderResolver;
-import org.microbule.util.reflect.DefaultClassLoaderResolver;
+import org.microbule.util.reflect.DelegatingClassLoader;
 
 @Named("cglibDynamicProxyStrategy")
 @Singleton
@@ -53,16 +49,6 @@ public class CglibDynamicProxyStrategy implements JaxrsDynamicProxyStrategy {
             return 0;
         }
     };
-    private final AtomicReference<ClassLoaderResolver> resolverRef;
-
-//----------------------------------------------------------------------------------------------------------------------
-// Constructors
-//----------------------------------------------------------------------------------------------------------------------
-
-    @Inject
-    public CglibDynamicProxyStrategy(MicrobuleContainer container) {
-        resolverRef = container.pluginReference(ClassLoaderResolver.class, new DefaultClassLoaderResolver());
-    }
 
 //----------------------------------------------------------------------------------------------------------------------
 // JaxrsDynamicProxyStrategy Implementation
@@ -71,8 +57,8 @@ public class CglibDynamicProxyStrategy implements JaxrsDynamicProxyStrategy {
     @Override
     public <T> T createDynamicProxy(Class<T> type, Supplier<T> targetSupplier, String descriptionPattern, Object... descriptionParams) {
         final String description = String.format(descriptionPattern, descriptionParams);
-        Enhancer enhancer = new Enhancer();
-        enhancer.setClassLoader(resolverRef.get().resolveClassLoader(type, this));
+        final Enhancer enhancer = new Enhancer();
+        enhancer.setClassLoader(new DelegatingClassLoader(type.getClassLoader(), Enhancer.class.getClassLoader()));
         enhancer.setInterfaces(new Class[]{type});
         enhancer.setSuperclass(Object.class);
         enhancer.setCallbackFilter(FILTER);

@@ -65,7 +65,7 @@ public class MicrobuleNamespaceHandler implements NamespaceHandler {
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    MicrobuleNamespaceHandler(long defaultQuietPeriodInMs) {
+    public MicrobuleNamespaceHandler(long defaultQuietPeriodInMs) {
         this.defaultQuietPeriodInMs = defaultQuietPeriodInMs;
     }
 

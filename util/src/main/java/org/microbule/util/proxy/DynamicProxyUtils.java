@@ -36,11 +36,11 @@ public final class DynamicProxyUtils {
 // Static Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    public static <T> T createProxy(ClassLoader classLoader, final Class<T> proxyInterface, InvocationHandler handler) {
-        return proxyInterface.cast(Proxy.newProxyInstance(classLoader, new Class[]{proxyInterface}, handler));
+    public static <T> T createProxy(final Class<T> proxyInterface, InvocationHandler handler) {
+        return proxyInterface.cast(Proxy.newProxyInstance(proxyInterface.getClassLoader(), new Class[]{proxyInterface}, handler));
     }
 
-    public static <T> T createProxy(ClassLoader classLoader, final Class<T> proxyInterface, final Supplier<T> targetSupplier, String descriptionPattern, Object... descriptionParams) {
+    public static <T> T createProxy(final Class<T> proxyInterface, final Supplier<T> targetSupplier, String descriptionPattern, Object... descriptionParams) {
         final String description = String.format(descriptionPattern, descriptionParams);
         final InvocationHandler handler = (proxy, method, args) -> {
             if (isEqualsMethod(method)) {
@@ -58,7 +58,7 @@ public final class DynamicProxyUtils {
                 throw e.getTargetException();
             }
         };
-        return createProxy(classLoader, proxyInterface, handler);
+        return createProxy(proxyInterface, handler);
     }
 
     public static boolean isEqualsMethod(Method method) {

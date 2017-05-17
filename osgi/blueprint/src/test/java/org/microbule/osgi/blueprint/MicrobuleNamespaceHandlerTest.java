@@ -21,11 +21,14 @@ import org.apache.aries.blueprint.reflect.ServiceMetadataImpl;
 import org.apache.aries.blueprint.reflect.ValueMetadataImpl;
 import org.junit.Before;
 import org.junit.Test;
+import org.microbule.osgi.container.OsgiContainer;
 import org.microbule.test.core.MockObjectTestCase;
 import org.microbule.test.core.hello.HelloService;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
+import org.osgi.framework.BundleContext;
+import org.osgi.service.blueprint.reflect.BeanArgument;
 import org.osgi.service.blueprint.reflect.BeanMetadata;
 import org.osgi.service.blueprint.reflect.ComponentMetadata;
 import org.osgi.service.blueprint.reflect.MapEntry;
@@ -90,6 +93,39 @@ public class MicrobuleNamespaceHandlerTest extends MockObjectTestCase {
     public void testGetSchemaLocation() {
         assertEquals(getClass().getClassLoader().getResource("schemas/blueprint/microbule.xsd"), handler.getSchemaLocation(MicrobuleNamespaceHandler.NAMESPACE_URI));
         assertNull(handler.getSchemaLocation("foo"));
+    }
+
+    @Test
+    public void testParseUnknown() throws Exception {
+        Element root = parseRootElement();
+        NodeList nodes = root.getElementsByTagNameNS("http://www.osgi.org/xmlns/blueprint/v1.0.0", "bean");
+        Element element = (Element) nodes.item(0);
+        assertNull(handler.parse(element, parserContext));
+    }
+        @Test
+    public void testParseContainer() throws Exception {
+        Element root = parseRootElement();
+        NodeList nodes = root.getElementsByTagNameNS(NAMESPACE_URI, "container");
+        Element element = (Element) nodes.item(0);
+
+        Metadata parsed = handler.parse(element, parserContext);
+        assertTrue(parsed instanceof BeanMetadata);
+        BeanMetadata beanMetadata= (BeanMetadata)parsed;
+
+        assertEquals(OsgiContainer.class.getName(), beanMetadata.getClassName());
+        assertEquals(2, beanMetadata.getArguments().size());
+        final BeanArgument argument1 = beanMetadata.getArguments().get(0);
+        assertTrue(argument1.getValue() instanceof RefMetadata);
+        RefMetadata bundleContextRef = (RefMetadata)argument1.getValue();
+        assertEquals("blueprintBundleContext", bundleContextRef.getComponentId());
+        assertEquals(BundleContext.class.getName(), argument1.getValueType());
+
+        final BeanArgument argument2 = beanMetadata.getArguments().get(1);
+        assertTrue(argument2.getValue() instanceof ValueMetadata);
+        ValueMetadata quietPeriodInMs = (ValueMetadata)argument2.getValue();
+        assertEquals("1000", quietPeriodInMs.getStringValue());
+        assertEquals(Long.TYPE.getName(), quietPeriodInMs.getType());
+        assertEquals(Long.TYPE.getName(), argument2.getValueType());
     }
 
     @Test

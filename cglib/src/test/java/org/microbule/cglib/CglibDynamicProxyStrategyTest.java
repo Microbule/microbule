@@ -18,7 +18,6 @@
 package org.microbule.cglib;
 
 import org.junit.Test;
-import org.microbule.container.core.SimpleContainer;
 import org.microbule.test.core.MockObjectTestCase;
 import org.microbule.test.core.hello.HelloService;
 import org.microbule.test.core.hello.HelloServiceImpl;
@@ -30,7 +29,7 @@ public class CglibDynamicProxyStrategyTest extends MockObjectTestCase {
 
     @Test
     public void testEquals() {
-        final CglibDynamicProxyStrategy strategy = new CglibDynamicProxyStrategy(new SimpleContainer());
+        final CglibDynamicProxyStrategy strategy = new CglibDynamicProxyStrategy();
         final HelloService proxy1 = strategy.createDynamicProxy(HelloService.class, HelloServiceImpl::new, "my description");
         final HelloService proxy2 = strategy.createDynamicProxy(HelloService.class, HelloServiceImpl::new, "my description");
         assertEquals(proxy1, proxy1);
@@ -40,14 +39,14 @@ public class CglibDynamicProxyStrategyTest extends MockObjectTestCase {
 
     @Test
     public void testToString() {
-        final CglibDynamicProxyStrategy strategy = new CglibDynamicProxyStrategy(new SimpleContainer());
+        final CglibDynamicProxyStrategy strategy = new CglibDynamicProxyStrategy();
         final HelloService proxy1 = strategy.createDynamicProxy(HelloService.class, HelloServiceImpl::new, "my description");
         assertEquals("my description", proxy1.toString());
     }
 
     @Test
     public void testClassCaching() {
-        final CglibDynamicProxyStrategy strategy = new CglibDynamicProxyStrategy(new SimpleContainer());
+        final CglibDynamicProxyStrategy strategy = new CglibDynamicProxyStrategy();
         final HelloService proxy1 = strategy.createDynamicProxy(HelloService.class, HelloServiceImpl::new, "my description");
         final HelloService proxy2 = strategy.createDynamicProxy(HelloService.class, HelloServiceImpl::new, "my description");
         assertEquals(proxy1.getClass(), proxy2.getClass());
@@ -55,14 +54,14 @@ public class CglibDynamicProxyStrategyTest extends MockObjectTestCase {
 
     @Test
     public void testHashCode() {
-        final CglibDynamicProxyStrategy strategy = new CglibDynamicProxyStrategy(new SimpleContainer());
+        final CglibDynamicProxyStrategy strategy = new CglibDynamicProxyStrategy();
         final HelloService proxy1 = strategy.createDynamicProxy(HelloService.class, HelloServiceImpl::new, "my description");
         assertEquals(System.identityHashCode(proxy1), proxy1.hashCode());
     }
 
     @Test
     public void testRegularMethodCall() {
-        final CglibDynamicProxyStrategy strategy = new CglibDynamicProxyStrategy(new SimpleContainer());
+        final CglibDynamicProxyStrategy strategy = new CglibDynamicProxyStrategy();
         final HelloService proxy1 = strategy.createDynamicProxy(HelloService.class, HelloServiceImpl::new, "my description");
         assertEquals("Hello, Microbule!", proxy1.sayHello("Microbule"));
     }
