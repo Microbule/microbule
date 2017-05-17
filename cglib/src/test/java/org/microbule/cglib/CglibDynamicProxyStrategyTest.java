@@ -34,6 +34,7 @@ public class CglibDynamicProxyStrategyTest extends MockObjectTestCase {
         final HelloService proxy1 = strategy.createDynamicProxy(HelloService.class, HelloServiceImpl::new, "my description");
         final HelloService proxy2 = strategy.createDynamicProxy(HelloService.class, HelloServiceImpl::new, "my description");
         assertEquals(proxy1, proxy1);
+        assertNotEquals(proxy1, proxy2);
     }
 
 
