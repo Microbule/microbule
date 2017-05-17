@@ -42,8 +42,8 @@ public class DefaultSchedulerServiceTest extends MockObjectTestCase {
     @Test
     public void testRefreshedValue() {
         final DefaultSchedulerService service = new DefaultSchedulerService();
-        final RefreshableReference<Long> reference = service.createRefreshableReference(currentValue -> currentValue == null ? 0 : currentValue + 1, 25, TimeUnit.MILLISECONDS);
-        await(40);
+        final RefreshableReference<Long> reference = service.createRefreshableReference(currentValue -> currentValue == null ? 0 : currentValue + 1, 100, TimeUnit.MILLISECONDS);
+        await(150);
         reference.cancel();
         assertEquals(Long.valueOf(1), reference.get());
     }
