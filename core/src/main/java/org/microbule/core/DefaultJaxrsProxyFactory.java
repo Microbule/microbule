@@ -129,7 +129,7 @@ public class DefaultJaxrsProxyFactory extends JaxrsServiceDecoratorRegistry<Jaxr
 
     private <T> JaxrsAddressChooser createEndpointChooser(Class<T> serviceInterface, String serviceName) {
         LOGGER.debug("Creating \"{}\" service JaxrsAddressChooser ({})...", serviceName, serviceInterface.getSimpleName());
-        return serviceDiscovery.get().createEndpointChooser(serviceInterface, serviceName);
+        return serviceDiscovery.get().createAddressChooser(serviceInterface, serviceName);
     }
 
     @Override

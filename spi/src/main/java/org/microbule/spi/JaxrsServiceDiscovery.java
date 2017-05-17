@@ -23,5 +23,5 @@ public interface JaxrsServiceDiscovery {
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    JaxrsAddressChooser createEndpointChooser(Class<?> serviceInterface, String serviceName);
+    JaxrsAddressChooser createAddressChooser(Class<?> serviceInterface, String serviceName);
 }
