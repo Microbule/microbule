@@ -47,17 +47,17 @@ public class MicrobuleNamespaceHandler implements NamespaceHandler {
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    public static final String CONTAINER_ELEMENT = "container";
-    public static final String QUIET_PERIOD_IN_MS_ATTR = "quietPeriodInMs";
+    private static final String CONTAINER_ELEMENT = "container";
+    private static final String QUIET_PERIOD_IN_MS_ATTR = "quietPeriodInMs";
     public static final String JAXRS_PROXY_FACTORY_ID = "_jaxrsProxyFactory";
-    public static final String SERVICE_INTERFACE_ATTR = "serviceInterface";
-    public static final String REF_ATTR = "ref";
+    private static final String SERVICE_INTERFACE_ATTR = "serviceInterface";
+    private static final String REF_ATTR = "ref";
     public static final String NAMESPACE_URI = "http://www.microbule.org/blueprint";
-    public static final String CREATE_PROXY_METHOD = "createProxy";
+    private static final String CREATE_PROXY_METHOD = "createProxy";
     private static final Logger LOGGER = LoggerFactory.getLogger(MicrobuleNamespaceHandler.class);
     private static final String SCHEMA_LOCATION = "schemas/blueprint/microbule.xsd";
     private static final String ID_ATTR = "id";
-    private static final String BUNDLE_CONTEXT_ID = "blueprintBundleContext";
+    public static final String BUNDLE_CONTEXT_ID = "blueprintBundleContext";
 
     private final long defaultQuietPeriodInMs;
 
@@ -65,7 +65,7 @@ public class MicrobuleNamespaceHandler implements NamespaceHandler {
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public MicrobuleNamespaceHandler(long defaultQuietPeriodInMs) {
+    MicrobuleNamespaceHandler(long defaultQuietPeriodInMs) {
         this.defaultQuietPeriodInMs = defaultQuietPeriodInMs;
     }
 
@@ -149,7 +149,7 @@ public class MicrobuleNamespaceHandler implements NamespaceHandler {
         return metadata;
     }
 
-    public Metadata parseProxyElement(Element element, ParserContext parserContext) {
+    private Metadata parseProxyElement(Element element, ParserContext parserContext) {
         whenNotExists(parserContext, JAXRS_PROXY_FACTORY_ID, this::createJaxrsProxyFactoryReference);
 
         MutableBeanMetadata bean = parserContext.createMetadata(MutableBeanMetadata.class);
