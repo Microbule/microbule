@@ -40,6 +40,7 @@
         <feature version="${project.version}">microbule-circuitbreaker</feature>
         <feature version="${project.version}">microbule-gson</feature>
         <feature version="${project.version}">microbule-metrics</feature>
+        <feature version="${project.version}">microbule-version</feature>
     </feature>
 
     <!--
@@ -161,6 +162,10 @@
 
     <feature name="microbule-timeout" version="${project.version}">
         <bundle start-level="60">mvn:org.microbule/microbule-timeout-decorator/${project.version}</bundle>
+    </feature>
+
+    <feature name="microbule-version" version="${project.version}">
+        <bundle start-level="60">mvn:org.microbule/microbule-version-decorator/${project.version}</bundle>
     </feature>
 
     <!--

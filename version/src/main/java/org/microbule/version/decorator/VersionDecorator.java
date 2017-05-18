@@ -1,5 +1,7 @@
 package org.microbule.version.decorator;
 
+import java.net.URL;
+
 import javax.inject.Named;
 import javax.inject.Singleton;
 
@@ -16,6 +18,7 @@ public class VersionDecorator implements JaxrsServerDecorator {
 
     @Override
     public void decorate(JaxrsServiceDescriptor descriptor, Config config) {
+        final URL url = descriptor.serviceInterface().getProtectionDomain().getCodeSource().getLocation();
         descriptor.addProvider(new VersionRequestFilter(new VersionResponse(descriptor.serviceInterface().getPackage().getImplementationVersion())));
     }
 
