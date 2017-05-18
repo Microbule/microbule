@@ -7,10 +7,7 @@ import com.codahale.metrics.Reservoir;
 import com.codahale.metrics.Timer;
 import org.microbule.test.core.MockObjectTestCase;
 
-/**
- * Created by jcarman on 5/17/17.
- */
-public class AbstractTimingStrategyTest extends MockObjectTestCase {
+public abstract class AbstractTimingStrategyTest extends MockObjectTestCase {
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
