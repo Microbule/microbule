@@ -15,7 +15,7 @@
   ~
   -->
 
-<xsd:schema xmlns="http://www.cengage.com/omnibus"
+<xsd:schema xmlns="http://www.microbule.org/blueprint"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
             xmlns:beans="http://www.osgi.org/xmlns/blueprint/v1.0.0"
             targetNamespace="http://www.microbule.org/blueprint"

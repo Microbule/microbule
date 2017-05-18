@@ -177,40 +177,6 @@ public class MicrobuleNamespaceHandlerTest extends MockObjectTestCase {
         verify(componentDefinitionRegistry).registerComponentDefinition(jaxrsProxyFactoryCaptor.capture());
     }
 
-//    @Test
-//    public void testParseProducerWhenOmnibusExists() throws Exception {
-//        Element root = parseRootElement();
-//
-//        OmnibusNamespaceHandler handler = new OmnibusNamespaceHandler();
-//        NodeList nodes = root.getElementsByTagNameNS("http://www.cengage.com/omnibus", "producer");
-//        Element element = (Element) nodes.item(0);
-//
-//        when(componentDefinitionRegistry.containsComponentDefinition("_omnibus")).thenReturn(true);
-//        Metadata parsed = handler.parse(element, parserContext);
-//
-//
-//        assertTrue(parsed instanceof BeanMetadata);
-//        BeanMetadata beanMetadata = (BeanMetadata) parsed;
-//        assertEquals("_stopHeartBeat", beanMetadata.getDestroyMethod());
-//        assertEquals("_startHeartBeat", beanMetadata.getInitMethod());
-//        assertEquals("createProducer", beanMetadata.getFactoryMethod());
-//        assertTrue(beanMetadata.getFactoryComponent() instanceof RefMetadata);
-//
-//        RefMetadata omnibusFactoryRef = (RefMetadata) beanMetadata.getFactoryComponent();
-//        assertEquals("_omnibus", omnibusFactoryRef.getComponentId());
-//
-//        assertEquals(Arrays.asList("blueprintBundleContext", "_omnibus"), beanMetadata.getDependsOn());
-//        verify(parserContext, atLeastOnce()).getComponentDefinitionRegistry();
-//        verify(componentDefinitionRegistry).containsComponentDefinition("_omnibus");
-//    }
-//
-//    @Test
-//    public void testParseUnknown() throws Exception {
-//        Element root = parseRootElement();
-//
-//        assertNull(new OmnibusNamespaceHandler().parse((Element) root.getElementsByTagName("bean").item(0), parserContext));
-//    }
-
     @Before
     public void trainParserContext() {
         when(parserContext.getComponentDefinitionRegistry()).thenReturn(componentDefinitionRegistry);
