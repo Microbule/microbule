@@ -126,7 +126,7 @@ public class DefaultJaxrsProxyFactory extends JaxrsServiceDecoratorRegistry<Jaxr
         return new JaxrsTargetCache<>(baseAddress -> {
             LOGGER.debug("Creating dynamic proxy for \"{}\" service at address: {}", serviceName, baseAddress);
             final Config config = configService.createProxyConfig(serviceInterface, serviceName);
-            final DefaultJaxrsServiceDescriptor descriptor = new DefaultJaxrsServiceDescriptor(serviceInterface);
+            final DefaultJaxrsServiceDescriptor descriptor = new DefaultJaxrsServiceDescriptor(serviceInterface, serviceName);
             decorate(descriptor, config);
             return JAXRSClientFactory.create(baseAddress, serviceInterface, descriptor.getProviders(), descriptor.getFeatures(), null);
         }, schedulerService, cacheConfig);

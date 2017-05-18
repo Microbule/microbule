@@ -30,4 +30,6 @@ public interface JaxrsServiceDescriptor {
     JaxrsServiceDescriptor addProvider(Object provider);
 
     Class<?> serviceInterface();
+
+    String serviceName();
 }

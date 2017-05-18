@@ -64,6 +64,7 @@
         <module>annotation</module>
         <module>scheduler</module>
         <module>metrics</module>
+        <module>version</module>
     </modules>
 
     <properties>

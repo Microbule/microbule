@@ -75,7 +75,7 @@ public class DefaultJaxrsServerFactory extends JaxrsServiceDecoratorRegistry<Jax
         final String fullAddress = baseAddress + serverAddress;
         LOGGER.info("Starting {} JAX-RS server ({})...", serviceInterface.getSimpleName(), fullAddress);
 
-        final DefaultJaxrsServiceDescriptor descriptor = new DefaultJaxrsServiceDescriptor(serviceInterface);
+        final DefaultJaxrsServiceDescriptor descriptor = new DefaultJaxrsServiceDescriptor(serviceInterface, serviceName);
         decorate(descriptor, serverConfig);
         final JAXRSServerFactoryBean sf = new JAXRSServerFactoryBean();
         sf.setBus(BusFactory.getDefaultBus(true));

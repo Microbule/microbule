@@ -1,25 +1,22 @@
-package org.microbule.metrics.decorator;
+package org.microbule.version.decorator;
 
 import javax.ws.rs.container.ContainerRequestContext;
 
-import com.codahale.metrics.MetricRegistry;
 import org.microbule.util.jaxrs.ExtensionRequestFilter;
 
-public class MetricsRequestFilter extends ExtensionRequestFilter<MetricsResponse> {
+public class VersionRequestFilter extends ExtensionRequestFilter<VersionResponse> {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    private final MetricRegistry metricRegistry;
-    private final String namePrefix;
+    private final VersionResponse response;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public MetricsRequestFilter(MetricRegistry metricRegistry, String namePrefix) {
-        this.metricRegistry = metricRegistry;
-        this.namePrefix = namePrefix;
+    public VersionRequestFilter(VersionResponse response) {
+        this.response = response;
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -27,12 +24,12 @@ public class MetricsRequestFilter extends ExtensionRequestFilter<MetricsResponse
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    protected MetricsResponse createResponse(ContainerRequestContext requestContext) {
-        return new MetricsResponse(metricRegistry.getTimers((name, metric) -> name.startsWith(namePrefix)));
+    protected VersionResponse createResponse(ContainerRequestContext requestContext) {
+        return response;
     }
 
     @Override
     protected String markerParam() {
-        return "_metrics";
+        return "_version";
     }
 }

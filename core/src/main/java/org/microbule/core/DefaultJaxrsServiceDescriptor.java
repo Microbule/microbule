@@ -29,6 +29,7 @@ public class DefaultJaxrsServiceDescriptor implements JaxrsServiceDescriptor {
 //----------------------------------------------------------------------------------------------------------------------
 
     private final Class<?> serviceInterface;
+    private final String serviceName;
     private final List<Object> providers = new LinkedList<>();
     private final List<Feature> features = new LinkedList<>();
 
@@ -36,8 +37,9 @@ public class DefaultJaxrsServiceDescriptor implements JaxrsServiceDescriptor {
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    DefaultJaxrsServiceDescriptor(Class<?> serviceInterface) {
+    DefaultJaxrsServiceDescriptor(Class<?> serviceInterface, String serviceName) {
         this.serviceInterface = serviceInterface;
+        this.serviceName = serviceName;
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -56,6 +58,11 @@ public class DefaultJaxrsServiceDescriptor implements JaxrsServiceDescriptor {
 
     public Class<?> serviceInterface() {
         return serviceInterface;
+    }
+
+    @Override
+    public String serviceName() {
+        return serviceName;
     }
 
 //----------------------------------------------------------------------------------------------------------------------

@@ -36,7 +36,7 @@ public class DefaultJaxrsServiceDescriptorTest extends Assert {
 
     @Before
     public void initConfig() {
-        descriptor = new DefaultJaxrsServiceDescriptor(HelloService.class);
+        descriptor = new DefaultJaxrsServiceDescriptor(HelloService.class, "hello");
     }
 
     @Test
@@ -54,5 +54,10 @@ public class DefaultJaxrsServiceDescriptorTest extends Assert {
     @Test
     public void testServiceInterface() {
         assertEquals(HelloService.class, descriptor.serviceInterface());
+    }
+
+    @Test
+    public void testServiceName() {
+        assertEquals("hello", descriptor.serviceName());
     }
 }
