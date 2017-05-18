@@ -1,8 +1,15 @@
 package org.microbule.metrics.decorator;
 
+import java.io.StringReader;
+
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import com.codahale.metrics.Timer;
 import org.junit.Test;
 import org.microbule.container.core.SimpleContainer;
+import org.microbule.gson.core.GsonServiceImpl;
+import org.microbule.gson.decorator.GsonDecorator;
 import org.microbule.metrics.core.DefaultMetricsService;
 import org.microbule.metrics.core.strategy.ExponentiallyDecayingTimingStrategy;
 import org.microbule.metrics.core.strategy.SlidingTimeWindowTimingStrategy;
@@ -16,6 +23,7 @@ public class MetricsDecoratorTest extends JaxrsServerTestCase<TimedResource> {
 //----------------------------------------------------------------------------------------------------------------------
 
     private DefaultMetricsService metricsService;
+    private GsonServiceImpl gsonService;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
@@ -30,6 +38,10 @@ public class MetricsDecoratorTest extends JaxrsServerTestCase<TimedResource> {
         container.addBean(new SlidingWindowTimingStrategy());
         container.addBean(new UniformTimingStrategy());
         container.addBean(new MetricsDecorator(metricsService));
+        gsonService = new GsonServiceImpl(container);
+        container.addBean(gsonService);
+        container.addBean(new MetricsGsonCustomizer());
+        container.addBean(new GsonDecorator(gsonService));
     }
 
     @Override
@@ -51,6 +63,18 @@ public class MetricsDecoratorTest extends JaxrsServerTestCase<TimedResource> {
 
         final Timer timer = metricsService.getRegistry().timer("TimedResource.defaultTimer");
         assertEquals(1, timer.getCount());
+    }
+
+    @Test
+    public void testMetricsFilter() {
+        Response response = createWebTarget().queryParam("_metrics", "").request(MediaType.APPLICATION_JSON_TYPE).get();
+        assertEquals(200, response.getStatus());
+        MetricsResponse metricsResponse = gsonService.fromJson(new StringReader(response.readEntity(String.class)), MetricsResponse.class);
+
+        metricsResponse.getTimers().forEach((k,v) -> {
+            assertTrue(k.startsWith("TimedResource"));
+        });
+
     }
 
 //----------------------------------------------------------------------------------------------------------------------

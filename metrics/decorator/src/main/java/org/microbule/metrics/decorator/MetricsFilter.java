@@ -14,7 +14,7 @@ import javax.ws.rs.ext.Provider;
 import com.codahale.metrics.Timer;
 
 @Provider
-@Priority(Priorities.USER)
+@Priority(Priorities.USER - 200)
 public class MetricsFilter implements ContainerRequestFilter, ContainerResponseFilter {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields

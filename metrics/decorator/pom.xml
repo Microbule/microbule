@@ -53,6 +53,11 @@
         </dependency>
         <dependency>
             <groupId>org.microbule</groupId>
+            <artifactId>microbule-gson-spi</artifactId>
+            <version>0.3.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.microbule</groupId>
             <artifactId>microbule-test-server</artifactId>
             <version>0.3.0-SNAPSHOT</version>
             <scope>test</scope>
@@ -60,6 +65,18 @@
         <dependency>
             <groupId>org.microbule</groupId>
             <artifactId>microbule-metrics-core</artifactId>
+            <version>0.3.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.microbule</groupId>
+            <artifactId>microbule-gson-decorator</artifactId>
+            <version>0.3.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.microbule</groupId>
+            <artifactId>microbule-gson-core</artifactId>
             <version>0.3.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>

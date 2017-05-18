@@ -52,10 +52,7 @@ public class DefaultMetricsService implements MetricsService {
         });
     }
 
-//----------------------------------------------------------------------------------------------------------------------
-// Getter/Setter Methods
-//----------------------------------------------------------------------------------------------------------------------
-
+    @Override
     public MetricRegistry getRegistry() {
         return registry;
     }

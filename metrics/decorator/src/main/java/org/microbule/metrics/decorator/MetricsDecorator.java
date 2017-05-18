@@ -34,6 +34,7 @@ public class MetricsDecorator implements JaxrsServerDecorator {
     @Override
     public void decorate(JaxrsServiceDescriptor descriptor, Config config) {
         descriptor.addProvider(new MetricsFeature(metricsService, descriptor, config));
+        descriptor.addProvider(new MetricsRequestFilter(metricsService.getRegistry(), descriptor.serviceInterface().getSimpleName()));
     }
 
     @Override
