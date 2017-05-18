@@ -25,4 +25,10 @@ public interface TimedResource {
     @Timed(strategy = "decay")
     @Path("/decayTimer")
     String decayTimer();
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Timed
+    @Path("/errorTimer")
+    String errorTimer();
 }

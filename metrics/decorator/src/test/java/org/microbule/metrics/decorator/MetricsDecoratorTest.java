@@ -2,6 +2,7 @@ package org.microbule.metrics.decorator;
 
 import java.io.StringReader;
 
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -74,7 +75,20 @@ public class MetricsDecoratorTest extends JaxrsServerTestCase<TimedResource> {
         metricsResponse.getTimers().forEach((k,v) -> {
             assertTrue(k.startsWith("TimedResource"));
         });
+    }
 
+    @Test
+    public void testNoMetricsWhenErrorOccurs() {
+        try {
+            createProxy().errorTimer();
+            fail("Should encounter an error!");
+        }
+        catch(InternalServerErrorException e) {
+            // Do nothing!
+        }
+
+        final Timer timer = metricsService.getRegistry().timer("TimedResource.errorTimer");
+        assertEquals(0, timer.getCount());
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -94,6 +108,11 @@ public class MetricsDecoratorTest extends JaxrsServerTestCase<TimedResource> {
         @Override
         public String defaultTimer() {
             return now();
+        }
+
+        @Override
+        public String errorTimer() {
+            throw new InternalServerErrorException("Oops!");
         }
 
 //----------------------------------------------------------------------------------------------------------------------
