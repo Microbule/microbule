@@ -42,8 +42,8 @@ public interface HelloResource {
     @Path("/{name}")
     @Produces(MediaType.APPLICATION_JSON)
     @GET
-    @Timed
+    @Timed(strategy = "timeWindow")
     @Cacheable
     @ApiOperation(value = "Say Hello", notes = "Returns a greeting", response = HelloResponse.class)
-    HelloResponse sayHello(@ApiParam(value="name", required = true) @PathParam("name") @Size(min = 5, message = "Name must be at least 5 characters long.") String name);
+    HelloResponse sayHello(@ApiParam(value = "name", required = true) @PathParam("name") @Size(min = 5, message = "Name must be at least 5 characters long.") String name);
 }

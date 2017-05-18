@@ -19,7 +19,7 @@
 
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 
-    <service id="metricsService" interface="org.microbule.metrics.api.MetricsService"/>
+    <reference id="metricsService" interface="org.microbule.metrics.api.MetricsService"/>
 
     <bean id="decorator" class="org.microbule.metrics.decorator.MetricsDecorator">
         <argument ref="metricsService"/>
