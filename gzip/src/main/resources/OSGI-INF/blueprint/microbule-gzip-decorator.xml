@@ -21,16 +21,8 @@
 
     <bean id="decorator" class="org.microbule.gzip.decorator.GzipDecorator"/>
 
-    <service ref="decorator" interface="org.microbule.spi.JaxrsServerDecorator">
-        <service-properties>
-            <entry key="name" value="gzip"/>
-        </service-properties>
-    </service>
+    <service ref="decorator" interface="org.microbule.spi.JaxrsServerDecorator"/>
 
-    <service ref="decorator" interface="org.microbule.spi.JaxrsProxyDecorator">
-        <service-properties>
-            <entry key="name" value="gzip"/>
-        </service-properties>
-    </service>
+    <service ref="decorator" interface="org.microbule.spi.JaxrsProxyDecorator"/>
 
 </blueprint>

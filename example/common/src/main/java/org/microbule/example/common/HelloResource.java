@@ -29,6 +29,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.microbule.annotation.JaxrsService;
 import org.microbule.cache.annotation.Cacheable;
+import org.microbule.metrics.annotation.Timed;
 
 @Path("/")
 @Api(value = "/", produces = "application/json")
@@ -41,6 +42,7 @@ public interface HelloResource {
     @Path("/{name}")
     @Produces(MediaType.APPLICATION_JSON)
     @GET
+    @Timed
     @Cacheable
     @ApiOperation(value = "Say Hello", notes = "Returns a greeting", response = HelloResponse.class)
     HelloResponse sayHello(@ApiParam(value="name", required = true) @PathParam("name") @Size(min = 5, message = "Name must be at least 5 characters long.") String name);

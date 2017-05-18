@@ -21,10 +21,6 @@
 
     <bean id="decorator" class="org.microbule.requestlog.decorator.RequestLogDecorator"/>
 
-    <service ref="decorator" interface="org.microbule.spi.JaxrsServerDecorator">
-        <service-properties>
-            <entry key="name" value="requestlog" />
-        </service-properties>
-    </service>
+    <service ref="decorator" interface="org.microbule.spi.JaxrsServerDecorator"/>
 
 </blueprint>

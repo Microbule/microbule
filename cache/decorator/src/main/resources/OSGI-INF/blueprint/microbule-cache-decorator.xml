@@ -21,10 +21,6 @@
 
     <bean id="decorator" class="org.microbule.cache.decorator.CacheServerDecorator"/>
 
-    <service ref="decorator" interface="org.microbule.spi.JaxrsServerDecorator">
-        <service-properties>
-            <entry key="name" value="cache"/>
-        </service-properties>
-    </service>
+    <service ref="decorator" interface="org.microbule.spi.JaxrsServerDecorator"/>
 
 </blueprint>

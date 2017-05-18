@@ -149,7 +149,7 @@ public class MicrobuleNamespaceHandler implements NamespaceHandler {
         return metadata;
     }
 
-    private Metadata parseProxyElement(Element element, ParserContext parserContext) {
+    protected Metadata parseProxyElement(Element element, ParserContext parserContext) {
         whenNotExists(parserContext, JAXRS_PROXY_FACTORY_ID, this::createJaxrsProxyFactoryReference);
 
         MutableBeanMetadata bean = parserContext.createMetadata(MutableBeanMetadata.class);
@@ -158,9 +158,13 @@ public class MicrobuleNamespaceHandler implements NamespaceHandler {
         bean.setRuntimeClass(JaxrsProxyFactory.class);
         bean.setFactoryComponent(ref(parserContext, JAXRS_PROXY_FACTORY_ID));
         bean.setFactoryMethod(CREATE_PROXY_METHOD);
-        bean.addArgument(value(parserContext, element.getAttribute(SERVICE_INTERFACE_ATTR), Class.class), Class.class.getName(), 0);
+        bean.addArgument(value(parserContext, serviceInterfaceOf(element), Class.class), Class.class.getName(), 0);
         LOGGER.info("Created proxy bean: {}", bean);
         return bean;
+    }
+
+    protected String serviceInterfaceOf(Element element) {
+        return element.getAttribute(SERVICE_INTERFACE_ATTR);
     }
 
     private void whenNotExists(ParserContext parserContext, String componentId, Consumer<ParserContext> fn) {
@@ -169,11 +173,11 @@ public class MicrobuleNamespaceHandler implements NamespaceHandler {
         }
     }
 
-    private Metadata parseServerElement(Element element, ParserContext parserContext) {
+    protected Metadata parseServerElement(Element element, ParserContext parserContext) {
         final MutableServiceMetadata metadata = parserContext.createMetadata(MutableServiceMetadata.class);
         metadata.setId(parserContext.generateId());
         metadata.setServiceComponent(ref(parserContext, element.getAttribute(REF_ATTR)));
-        metadata.addInterface(element.getAttribute(SERVICE_INTERFACE_ATTR));
+        metadata.addInterface(serviceInterfaceOf(element));
         metadata.addServiceProperty(value(parserContext, "microbule.server", String.class), value(parserContext, "true", String.class));
         LOGGER.info("Created server service:{}", metadata);
         return metadata;

@@ -39,6 +39,7 @@
         <feature version="${project.version}">microbule-tracer</feature>
         <feature version="${project.version}">microbule-circuitbreaker</feature>
         <feature version="${project.version}">microbule-gson</feature>
+        <feature version="${project.version}">microbule-metrics</feature>
     </feature>
 
     <!--
@@ -96,12 +97,20 @@
     </feature>
 
     <feature name="microbule-gson" version="${project.version}">
-
         <bundle start-level="60">mvn:org.microbule/microbule-gson-api/${project.version}</bundle>
         <bundle start-level="60">mvn:org.microbule/microbule-gson-spi/${project.version}</bundle>
         <bundle start-level="60">mvn:org.microbule/microbule-gson-provider/${project.version}</bundle>
         <bundle start-level="60">mvn:org.microbule/microbule-gson-core/${project.version}</bundle>
         <bundle start-level="60">mvn:org.microbule/microbule-gson-decorator/${project.version}</bundle>
+    </feature>
+
+    <feature name="microbule-metrics" version="${project.version}">
+        <bundle dependency="true" start-level="60">mvn:io.dropwizard.metrics/metrics-core/${dropwizard.metrics.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-metrics-annotation/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-metrics-api/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-metrics-spi/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-metrics-core/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-metrics-decorator/${project.version}</bundle>
     </feature>
 
     <feature name="microbule-gzip" version="${project.version}">

@@ -21,10 +21,6 @@
 
     <bean id="decorator" class="org.microbule.timeout.decorator.TimeoutProxyDecorator"/>
 
-    <service ref="decorator" interface="org.microbule.spi.JaxrsProxyDecorator">
-        <service-properties>
-            <entry key="name" value="timeout"/>
-        </service-properties>
-    </service>
+    <service ref="decorator" interface="org.microbule.spi.JaxrsProxyDecorator"/>
 
 </blueprint>

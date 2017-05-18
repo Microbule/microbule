@@ -34,7 +34,6 @@ public class CacheResourceImpl implements CacheResource {
 // CacheResource Implementation
 //----------------------------------------------------------------------------------------------------------------------
 
-
     @Override
     public String getValueWithEtag() {
         resourceState.setEntityTag(ENTITY_TAG);

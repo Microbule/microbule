@@ -21,10 +21,6 @@
 
     <bean id="decorator" class="org.microbule.cors.decorator.CorsDecorator"/>
 
-    <service ref="decorator" interface="org.microbule.spi.JaxrsServerDecorator">
-        <service-properties>
-            <entry key="name" value="cors" />
-        </service-properties>
-    </service>
+    <service ref="decorator" interface="org.microbule.spi.JaxrsServerDecorator"/>
 
 </blueprint>

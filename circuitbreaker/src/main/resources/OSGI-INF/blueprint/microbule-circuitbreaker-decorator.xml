@@ -21,10 +21,6 @@
 
     <bean id="decorator" class="org.microbule.circuitbreaker.decorator.CircuitBreakerDecorator"/>
 
-    <service ref="decorator" interface="org.microbule.spi.JaxrsProxyDecorator">
-        <service-properties>
-            <entry key="name" value="circuitbreaker" />
-        </service-properties>
-    </service>
+    <service ref="decorator" interface="org.microbule.spi.JaxrsProxyDecorator" />
 
 </blueprint>
