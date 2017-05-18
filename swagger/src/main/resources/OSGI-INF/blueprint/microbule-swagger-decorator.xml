@@ -21,10 +21,6 @@
 
     <bean id="decorator" class="org.microbule.swagger.decorator.SwaggerDecorator"/>
 
-    <service ref="decorator" interface="org.microbule.spi.JaxrsServerDecorator">
-        <service-properties>
-            <entry key="name" value="swagger"/>
-        </service-properties>
-    </service>
+    <service ref="decorator" interface="org.microbule.spi.JaxrsServerDecorator"/>
 
 </blueprint>

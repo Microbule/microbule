@@ -19,26 +19,18 @@
 
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 
-    <reference id="errorMapperService" interface="org.microbule.errormap.api.ErrorMapperService" />
+    <reference id="errorMapperService" interface="org.microbule.errormap.api.ErrorMapperService"/>
 
     <bean id="serverDecorator" class="org.microbule.errormap.decorator.ErrorMapperServerDecorator">
-        <argument ref="errorMapperService" />
+        <argument ref="errorMapperService"/>
     </bean>
 
-    <service ref="serverDecorator" interface="org.microbule.spi.JaxrsServerDecorator">
-        <service-properties>
-            <entry key="name" value="errormap" />
-        </service-properties>
-    </service>
+    <service ref="serverDecorator" interface="org.microbule.spi.JaxrsServerDecorator"/>
 
     <bean id="proxyDecorator" class="org.microbule.errormap.decorator.ErrorMapperProxyDecorator">
-        <argument ref="errorMapperService" />
+        <argument ref="errorMapperService"/>
     </bean>
 
-    <service ref="proxyDecorator" interface="org.microbule.spi.JaxrsProxyDecorator">
-        <service-properties>
-            <entry key="name" value="errormap" />
-        </service-properties>
-    </service>
+    <service ref="proxyDecorator" interface="org.microbule.spi.JaxrsProxyDecorator"/>
 
 </blueprint>

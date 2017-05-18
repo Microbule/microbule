@@ -21,17 +21,14 @@
 
     <bean id="decorator" class="org.microbule.validation.decorator.ValidationDecorator"/>
 
-    <service ref="decorator" interface="org.microbule.spi.JaxrsServerDecorator">
-        <service-properties>
-            <entry key="name" value="validation"/>
-        </service-properties>
-    </service>
+    <service ref="decorator" interface="org.microbule.spi.JaxrsServerDecorator"/>
 
     <!--
     ConstraintViolationException Mapper
     -->
-    <bean id="constraintViolationExceptionMapper" class="org.microbule.validation.decorator.ConstraintViolationExceptionMapper" />
+    <bean id="constraintViolationExceptionMapper"
+          class="org.microbule.validation.decorator.ConstraintViolationExceptionMapper"/>
 
-    <service ref="constraintViolationExceptionMapper" interface="org.microbule.errormap.spi.ErrorMapper" />
+    <service ref="constraintViolationExceptionMapper" interface="org.microbule.errormap.spi.ErrorMapper"/>
 
 </blueprint>
