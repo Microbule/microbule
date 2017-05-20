@@ -33,6 +33,8 @@ import org.microbule.container.api.MicrobuleContainer;
 import org.microbule.container.api.PluginListener;
 import org.microbule.gson.api.GsonService;
 import org.microbule.gson.spi.GsonCustomizer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Singleton
 @Named("gsonService")
@@ -41,6 +43,7 @@ public class GsonServiceImpl implements GsonService {
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(GsonServiceImpl.class);
     private final List<GsonCustomizer> customizers = new CopyOnWriteArrayList<>();
     private final AtomicReference<Gson> gson = new AtomicReference<>(new GsonBuilder().create());
 
@@ -86,14 +89,17 @@ public class GsonServiceImpl implements GsonService {
 
         @Override
         public boolean registerPlugin(GsonCustomizer plugin) {
+
             customizers.add(plugin);
+            LOGGER.debug("Rebuilding GSON instance to include plugin {}.", plugin);
             rebuild();
             return true;
         }
 
         @Override
-        public void unregisterPlugin(GsonCustomizer bean) {
-            customizers.remove(bean);
+        public void unregisterPlugin(GsonCustomizer plugin) {
+            customizers.remove(plugin);
+            LOGGER.debug("Rebuilding GSON instance without plugin {}.", plugin);
             rebuild();
         }
 

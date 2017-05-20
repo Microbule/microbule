@@ -101,6 +101,8 @@
         <bundle start-level="60">mvn:org.microbule/microbule-gson-api/${project.version}</bundle>
         <bundle start-level="60">mvn:org.microbule/microbule-gson-spi/${project.version}</bundle>
         <bundle start-level="60">mvn:org.microbule/microbule-gson-provider/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-gson-util/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-gson-time/${project.version}</bundle>
         <bundle start-level="60">mvn:org.microbule/microbule-gson-core/${project.version}</bundle>
         <bundle start-level="60">mvn:org.microbule/microbule-gson-decorator/${project.version}</bundle>
     </feature>

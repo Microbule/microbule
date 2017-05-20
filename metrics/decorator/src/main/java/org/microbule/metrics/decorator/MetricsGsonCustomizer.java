@@ -14,6 +14,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import org.microbule.gson.spi.GsonCustomizer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Named("metricsGsonCustomizer")
 @Singleton
@@ -23,6 +25,7 @@ public class MetricsGsonCustomizer implements GsonCustomizer {
 //----------------------------------------------------------------------------------------------------------------------
 
     private static final double DURATION_FACTOR = 1.0 / TimeUnit.SECONDS.toNanos(1);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MetricsGsonCustomizer.class);
 
 //----------------------------------------------------------------------------------------------------------------------
 // GsonCustomizer Implementation
@@ -30,6 +33,7 @@ public class MetricsGsonCustomizer implements GsonCustomizer {
 
     @Override
     public void customize(GsonBuilder builder) {
+        LOGGER.info("Adding GSON type adapter for DropWizard Metrics' Timer class...");
         builder.registerTypeAdapter(Timer.class, new TimerSerializer());
     }
 

@@ -35,6 +35,8 @@
         <module>core</module>
         <module>provider</module>
         <module>decorator</module>
+        <module>util</module>
+        <module>time</module>
     </modules>
 
     <dependencies>
