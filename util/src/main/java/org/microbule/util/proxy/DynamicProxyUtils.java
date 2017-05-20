@@ -46,7 +46,7 @@ public final class DynamicProxyUtils {
             if (isEqualsMethod(method)) {
                 return proxy == args[0];
             }
-            if (isHashCode(method)) {
+            if (isHashCodeMethod(method)) {
                 return System.identityHashCode(proxy);
             }
             if (isToStringMethod(method)) {
@@ -67,7 +67,7 @@ public final class DynamicProxyUtils {
                 && Object.class.equals(method.getParameterTypes()[0]);
     }
 
-    public static boolean isHashCode(Method method) {
+    public static boolean isHashCodeMethod(Method method) {
         return HASH_CODE_METHOD_NAME.equals(method.getName()) && method.getParameterTypes().length == 0;
     }
 

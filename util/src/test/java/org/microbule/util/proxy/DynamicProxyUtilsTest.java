@@ -48,6 +48,25 @@ public class DynamicProxyUtilsTest extends MockObjectTestCase {
     }
 
     @Test
+    public void testIsHashCode() throws Exception {
+        assertFalse(DynamicProxyUtils.isHashCodeMethod(BadMethods.class.getMethod("equals")));
+        assertFalse(DynamicProxyUtils.isHashCodeMethod(BadMethods.class.getMethod("hashCode", String.class)));
+    }
+
+    @Test
+    public void testIsToString() throws Exception {
+        assertFalse(DynamicProxyUtils.isToStringMethod(BadMethods.class.getMethod("equals")));
+        assertFalse(DynamicProxyUtils.isToStringMethod(BadMethods.class.getMethod("toString", String.class)));
+    }
+
+    @Test
+    public void testIsEquals() throws Exception {
+        assertFalse(DynamicProxyUtils.isEqualsMethod(BadMethods.class.getMethod("toString", String.class)));
+        assertFalse(DynamicProxyUtils.isEqualsMethod(BadMethods.class.getMethod("equals")));
+        assertFalse(DynamicProxyUtils.isEqualsMethod(BadMethods.class.getMethod("equals",String.class)));
+    }
+
+    @Test
     public void testToString() {
         final HelloService proxy = DynamicProxyUtils.createProxy(HelloService.class, HelloServiceImpl::new, "foo");
         assertEquals("foo", proxy.toString());
@@ -57,6 +76,7 @@ public class DynamicProxyUtilsTest extends MockObjectTestCase {
     public void testIsUtilsClass() throws Exception {
         assertIsUtilsClass(DynamicProxyUtils.class);
     }
+
 
     @Test(expected = IllegalArgumentException.class)
     public void testWithException() {
@@ -73,4 +93,15 @@ public class DynamicProxyUtilsTest extends MockObjectTestCase {
         }, "foo");
         proxy.sayHello("Microbule");
     }
+
+    interface BadMethods {
+        boolean equals(String str);
+
+        boolean equals();
+
+        int hashCode(String str);
+
+        String toString(String str);
+    }
+
 }

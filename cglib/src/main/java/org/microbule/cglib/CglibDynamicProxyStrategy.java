@@ -41,7 +41,7 @@ public class CglibDynamicProxyStrategy implements JaxrsDynamicProxyStrategy {
     private static final CallbackFilter FILTER = method -> {
         if (DynamicProxyUtils.isEqualsMethod(method)) {
             return 1;
-        } else if (DynamicProxyUtils.isHashCode(method)) {
+        } else if (DynamicProxyUtils.isHashCodeMethod(method)) {
             return 2;
         } else if (DynamicProxyUtils.isToStringMethod(method)) {
             return 3;
