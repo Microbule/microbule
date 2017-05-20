@@ -36,6 +36,7 @@ import org.microbule.test.core.hello.HelloServiceImpl;
 import org.mockito.Mock;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -131,7 +132,7 @@ public class DefaultJaxrsServerFactoryTest extends MockObjectTestCase {
 
         assertEquals("Hello, Microbule!", hello.sayHello("Microbule"));
 
-        verify(proxyDecorator).decorate(any(JaxrsServiceDescriptor.class), any(Config.class));
+        verify(proxyDecorator, atLeastOnce()).decorate(any(JaxrsServiceDescriptor.class), any(Config.class));
     }
 
     @Test
