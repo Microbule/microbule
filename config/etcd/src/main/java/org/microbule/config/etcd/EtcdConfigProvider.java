@@ -88,7 +88,7 @@ public class EtcdConfigProvider implements ConfigProvider {
         return etcdResponse.map(r -> {
             Map<String, String> values = new HashMap<>();
             fillMap(values, r.getNode(), keyPath);
-            return (Config)new MapConfig(values, "/");
+            return (Config) new MapConfig(values, "/");
         }).orElse(EmptyConfig.INSTANCE);
     }
 
@@ -98,12 +98,10 @@ public class EtcdConfigProvider implements ConfigProvider {
     }
 
     private void fillMap(Map<String, String> values, EtcdNode node, String keyPath) {
-        if (node != null) {
-            if (node.isDir()) {
-                node.getNodes().forEach(child -> fillMap(values, child, keyPath));
-            } else {
-                values.put(StringUtils.substringAfter(node.getKey(), keyPath), node.getValue());
-            }
+        if (node.isDir()) {
+            node.getNodes().forEach(child -> fillMap(values, child, keyPath));
+        } else {
+            values.put(StringUtils.substringAfter(node.getKey(), keyPath), node.getValue());
         }
     }
 }
