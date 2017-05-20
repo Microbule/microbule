@@ -18,6 +18,7 @@
 package org.microbule.container.core;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -87,7 +88,7 @@ public class SimpleContainerTest extends MockObjectTestCase {
 
         container.removeBean("World");
 
-        assertEquals(Arrays.asList("Hello"), strings);
+        assertEquals(Collections.singletonList("Hello"), strings);
     }
 
     @Test
@@ -119,6 +120,8 @@ public class SimpleContainerTest extends MockObjectTestCase {
         container.initialize();
         assertEquals("hello", ref.get());
         container.removeBean("hello");
+        assertEquals("thedefault", ref.get());
+        container.removeBean("world");
         assertEquals("thedefault", ref.get());
     }
 
