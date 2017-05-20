@@ -21,8 +21,6 @@ import java.util.Comparator;
 import java.util.SortedSet;
 import java.util.concurrent.ConcurrentSkipListSet;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.microbule.config.api.Config;
 import org.microbule.config.spi.ConfigProvider;
@@ -34,7 +32,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.when;
 
-public class DefaultConfigServiceTest extends MockObjectTestCase  {
+public class DefaultConfigServiceTest extends MockObjectTestCase {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
@@ -78,7 +76,7 @@ public class DefaultConfigServiceTest extends MockObjectTestCase  {
 
 
         when(container.pluginSortedSet(same(ConfigProvider.class), any())).thenAnswer(invocation -> {
-            SortedSet<ConfigProvider> set = new ConcurrentSkipListSet<>((Comparator<ConfigProvider>)invocation.getArgument(1));
+            SortedSet<ConfigProvider> set = new ConcurrentSkipListSet<>((Comparator<ConfigProvider>) invocation.getArgument(1));
             set.add(provider1);
             set.add(provider2);
             return set;
@@ -89,10 +87,6 @@ public class DefaultConfigServiceTest extends MockObjectTestCase  {
         Config config = configService.createConfig("a");
         assertEquals("config1.a1", config.value("one").get());
 
-
-        Logger.getLogger(DefaultConfigService.class).setLevel(Level.WARN);
-        config = configService.createConfig("b");
-        Logger.getLogger(DefaultConfigService.class).setLevel(Level.INFO);
-        assertEquals("config2.b3", config.value("three").get());
+        assertEquals("config2.b3", createWithoutLogging(() -> configService.createConfig("b")).value("three").get());
     }
 }

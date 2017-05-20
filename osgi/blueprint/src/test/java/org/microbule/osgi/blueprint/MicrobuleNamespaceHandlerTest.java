@@ -46,9 +46,14 @@ import org.xml.sax.SAXException;
 import static org.microbule.osgi.blueprint.MicrobuleNamespaceHandler.NAMESPACE_URI;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 public class MicrobuleNamespaceHandlerTest extends MockObjectTestCase {
+//----------------------------------------------------------------------------------------------------------------------
+// Fields
+//----------------------------------------------------------------------------------------------------------------------
+
     public static final int QUIET_PERIOD_IN_MS = 3000;
     @Mock
     private ParserContext parserContext;
@@ -96,13 +101,6 @@ public class MicrobuleNamespaceHandlerTest extends MockObjectTestCase {
     }
 
     @Test
-    public void testParseUnknown() throws Exception {
-        Element root = parseRootElement();
-        NodeList nodes = root.getElementsByTagNameNS("http://www.osgi.org/xmlns/blueprint/v1.0.0", "bean");
-        Element element = (Element) nodes.item(0);
-        assertNull(handler.parse(element, parserContext));
-    }
-        @Test
     public void testParseContainer() throws Exception {
         Element root = parseRootElement();
         NodeList nodes = root.getElementsByTagNameNS(NAMESPACE_URI, "container");
@@ -110,50 +108,22 @@ public class MicrobuleNamespaceHandlerTest extends MockObjectTestCase {
 
         Metadata parsed = handler.parse(element, parserContext);
         assertTrue(parsed instanceof BeanMetadata);
-        BeanMetadata beanMetadata= (BeanMetadata)parsed;
+        BeanMetadata beanMetadata = (BeanMetadata) parsed;
 
         assertEquals(OsgiContainer.class.getName(), beanMetadata.getClassName());
         assertEquals(2, beanMetadata.getArguments().size());
         final BeanArgument argument1 = beanMetadata.getArguments().get(0);
         assertTrue(argument1.getValue() instanceof RefMetadata);
-        RefMetadata bundleContextRef = (RefMetadata)argument1.getValue();
+        RefMetadata bundleContextRef = (RefMetadata) argument1.getValue();
         assertEquals("blueprintBundleContext", bundleContextRef.getComponentId());
         assertEquals(BundleContext.class.getName(), argument1.getValueType());
 
         final BeanArgument argument2 = beanMetadata.getArguments().get(1);
         assertTrue(argument2.getValue() instanceof ValueMetadata);
-        ValueMetadata quietPeriodInMs = (ValueMetadata)argument2.getValue();
+        ValueMetadata quietPeriodInMs = (ValueMetadata) argument2.getValue();
         assertEquals("1000", quietPeriodInMs.getStringValue());
         assertEquals(Long.TYPE.getName(), quietPeriodInMs.getType());
         assertEquals(Long.TYPE.getName(), argument2.getValueType());
-    }
-
-    @Test
-    public void testParseServer() throws Exception {
-        Element root = parseRootElement();
-        NodeList nodes = root.getElementsByTagNameNS(NAMESPACE_URI, "server");
-        Element element = (Element) nodes.item(0);
-
-        Metadata parsed = handler.parse(element, parserContext);
-
-        assertTrue(parsed instanceof ServiceMetadata);
-        ServiceMetadata serviceMetadata = (ServiceMetadata)parsed;
-        assertEquals(1, serviceMetadata.getServiceProperties().size());
-
-        final MapEntry entry = serviceMetadata.getServiceProperties().get(0);
-        final ValueMetadata key = (ValueMetadata) entry.getKey();
-        assertEquals("microbule.server", key.getStringValue());
-        assertEquals(String.class.getName(), key.getType());
-
-        final ValueMetadata value = (ValueMetadata) entry.getValue();
-        assertEquals("true", value.getStringValue());
-        assertEquals(String.class.getName(), value.getType());
-
-        assertEquals(Lists.newArrayList(HelloService.class.getName()), serviceMetadata.getInterfaces());
-        final Target target = serviceMetadata.getServiceComponent();
-        assertTrue(target instanceof  RefMetadata);
-        RefMetadata targetRef = (RefMetadata)target;
-        assertEquals("helloService", targetRef.getComponentId());
     }
 
     @Test
@@ -175,6 +145,63 @@ public class MicrobuleNamespaceHandlerTest extends MockObjectTestCase {
         verify(parserContext, atLeastOnce()).getComponentDefinitionRegistry();
         verify(componentDefinitionRegistry).containsComponentDefinition(MicrobuleNamespaceHandler.JAXRS_PROXY_FACTORY_ID);
         verify(componentDefinitionRegistry).registerComponentDefinition(jaxrsProxyFactoryCaptor.capture());
+    }
+
+    @Test
+    public void testParseProxyWhenJaxrsProxyAlreadyDefined() throws Exception {
+        Element root = parseRootElement();
+        NodeList nodes = root.getElementsByTagNameNS(NAMESPACE_URI, "proxy");
+        Element element = (Element) nodes.item(0);
+        when(componentDefinitionRegistry.containsComponentDefinition(MicrobuleNamespaceHandler.JAXRS_PROXY_FACTORY_ID)).thenReturn(true);
+        Metadata parsed = handler.parse(element, parserContext);
+
+        assertTrue(parsed instanceof BeanMetadata);
+        BeanMetadata beanMetadata = (BeanMetadata) parsed;
+        assertEquals("createProxy", beanMetadata.getFactoryMethod());
+        assertTrue(beanMetadata.getFactoryComponent() instanceof RefMetadata);
+
+        RefMetadata omnibusFactoryRef = (RefMetadata) beanMetadata.getFactoryComponent();
+        assertEquals(MicrobuleNamespaceHandler.JAXRS_PROXY_FACTORY_ID, omnibusFactoryRef.getComponentId());
+        assertEquals(Collections.singletonList(MicrobuleNamespaceHandler.JAXRS_PROXY_FACTORY_ID), beanMetadata.getDependsOn());
+        verify(parserContext, atLeastOnce()).getComponentDefinitionRegistry();
+        verify(componentDefinitionRegistry).containsComponentDefinition(MicrobuleNamespaceHandler.JAXRS_PROXY_FACTORY_ID);
+        verifyNoMoreInteractions(componentDefinitionRegistry);
+    }
+
+    @Test
+    public void testParseServer() throws Exception {
+        Element root = parseRootElement();
+        NodeList nodes = root.getElementsByTagNameNS(NAMESPACE_URI, "server");
+        Element element = (Element) nodes.item(0);
+
+        Metadata parsed = handler.parse(element, parserContext);
+
+        assertTrue(parsed instanceof ServiceMetadata);
+        ServiceMetadata serviceMetadata = (ServiceMetadata) parsed;
+        assertEquals(1, serviceMetadata.getServiceProperties().size());
+
+        final MapEntry entry = serviceMetadata.getServiceProperties().get(0);
+        final ValueMetadata key = (ValueMetadata) entry.getKey();
+        assertEquals("microbule.server", key.getStringValue());
+        assertEquals(String.class.getName(), key.getType());
+
+        final ValueMetadata value = (ValueMetadata) entry.getValue();
+        assertEquals("true", value.getStringValue());
+        assertEquals(String.class.getName(), value.getType());
+
+        assertEquals(Lists.newArrayList(HelloService.class.getName()), serviceMetadata.getInterfaces());
+        final Target target = serviceMetadata.getServiceComponent();
+        assertTrue(target instanceof RefMetadata);
+        RefMetadata targetRef = (RefMetadata) target;
+        assertEquals("helloService", targetRef.getComponentId());
+    }
+
+    @Test
+    public void testParseUnknown() throws Exception {
+        Element root = parseRootElement();
+        NodeList nodes = root.getElementsByTagNameNS("http://www.osgi.org/xmlns/blueprint/v1.0.0", "bean");
+        Element element = (Element) nodes.item(0);
+        assertNull(handler.parse(element, parserContext));
     }
 
     @Before
