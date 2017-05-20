@@ -20,7 +20,10 @@ package org.microbule.test.core;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.awaitility.Awaitility;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -59,5 +62,16 @@ public class MicrobuleTestCase extends Assert {
     private void await(long pollInterval, long duration) {
         final long expiration = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(duration);
         Awaitility.await().pollInterval(pollInterval, TimeUnit.MILLISECONDS).pollDelay(pollInterval, TimeUnit.MILLISECONDS).until(() -> System.nanoTime() >= expiration);
+    }
+
+    protected <T> T createWithoutLogging(Supplier<T> supplier) {
+        final Logger logger = Logger.getLogger("org.microbule");
+        final Level previousLevel = logger.getLevel();
+        try {
+            logger.setLevel(Level.WARN);
+            return supplier.get();
+        } finally {
+            logger.setLevel(previousLevel);
+        }
     }
 }
