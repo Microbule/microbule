@@ -25,6 +25,8 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.cache.RemovalListener;
 import com.google.common.cache.RemovalNotification;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.microbule.config.api.Config;
 import org.microbule.scheduler.api.RefreshableReference;
 import org.microbule.scheduler.api.SchedulerService;
@@ -36,6 +38,7 @@ class JaxrsProxyCache<T> implements RemovalListener<String, RefreshableReference
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
     private static final String TIMEOUT_PROP = "timeout";
     private static final String TIMEOUT_UNIT_PROP = "timeoutUnit";
     private static final String REFRESH_DELAY_PROP = "refreshDelay";
@@ -66,13 +69,17 @@ class JaxrsProxyCache<T> implements RemovalListener<String, RefreshableReference
                         return schedulerService.createRefreshableReference(currentValue -> {
                             final CachedJaxrsProxy<T> newValue = factory.apply(address);
                             if (currentValue == null) {
-                                LOGGER.info("Created dynamic proxy for \"{}\" service at address: {}", serviceName, address);
+                                if (LOGGER.isInfoEnabled()) {
+                                    LOGGER.info("Created dynamic proxy for \"{}\" service at address {}:\n\n{}\n", serviceName, address, GSON.toJson(newValue.getConfig()));
+                                }
                                 return newValue;
                             } else if (currentValue.getConfig().equals(newValue.getConfig())) {
                                 LOGGER.debug("Retained current dynamic proxy for \"{}\" service at address: {}", serviceName, address);
                                 return currentValue;
                             } else {
-                                LOGGER.info("Refreshed dynamic proxy for \"{}\" service at address: {}", serviceName, address);
+                                if (LOGGER.isInfoEnabled()) {
+                                    LOGGER.info("Refreshed dynamic proxy for \"{}\" service at address {}:\n\n{}\n", serviceName, address, GSON.toJson(newValue.getConfig()));
+                                }
                                 return newValue;
                             }
                         }, refreshDelay, refreshDelayUnit);

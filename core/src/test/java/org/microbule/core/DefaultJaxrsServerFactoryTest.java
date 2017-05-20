@@ -136,11 +136,32 @@ public class DefaultJaxrsServerFactoryTest extends MockObjectTestCase {
     }
 
     @Test
+    public void testCallingServiceWithoutLogging() {
+        final String greeting = createWithoutLogging(() -> proxyFactory.createProxy(HelloService.class).sayHello("Microbule"));
+
+        assertEquals("Hello, Microbule!", greeting);
+
+        verify(proxyDecorator, atLeastOnce()).decorate(any(JaxrsServiceDescriptor.class), any(Config.class));
+    }
+
+    @Test
     public void testCallingServiceAfterRefresh() {
         final HelloService hello = proxyFactory.createProxy(HelloService.class);
 
         assertEquals("Hello, Microbule!", hello.sayHello("Microbule"));
-
         await(100);
+        assertEquals("Hello, Microbule!", hello.sayHello("Microbule"));
+    }
+
+    @Test
+    public void testCallingServiceAfterRefreshWithoutLogging() {
+        final String greeting = createWithoutLogging(() -> {
+            final HelloService hello = proxyFactory.createProxy(HelloService.class);
+            hello.sayHello("Microbule");
+            await(100);
+            return hello.sayHello("Microbule");
+        });
+
+        assertEquals("Hello, Microbule!", greeting);
     }
 }
