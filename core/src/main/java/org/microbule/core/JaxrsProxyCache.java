@@ -45,12 +45,14 @@ class JaxrsProxyCache<T> implements RemovalListener<String, RefreshableReference
     private static final long DEFAULT_REFRESH_DELAY = 1;
     private static final Logger LOGGER = LoggerFactory.getLogger(JaxrsProxyCache.class);
     private final LoadingCache<String, RefreshableReference<CachedJaxrsProxy<T>>> cache;
+    private final String serviceName;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
     JaxrsProxyCache(Function<String, CachedJaxrsProxy<T>> factory, SchedulerService schedulerService, String serviceName, Config cacheConfig) {
+        this.serviceName = serviceName;
         final long timeout = cacheConfig.longValue(TIMEOUT_PROP).orElse(DEFAULT_TIMEOUT);
         final TimeUnit timeoutUnit = cacheConfig.enumValue(TIMEOUT_UNIT_PROP, TimeUnit.class).orElse(DEFAULT_UNIT);
         final long refreshDelay = cacheConfig.longValue(REFRESH_DELAY_PROP).orElse(DEFAULT_REFRESH_DELAY);
@@ -93,7 +95,7 @@ class JaxrsProxyCache<T> implements RemovalListener<String, RefreshableReference
 
     @Override
     public void onRemoval(RemovalNotification<String, RefreshableReference<CachedJaxrsProxy<T>>> notification) {
-        LOGGER.debug("Canceling refresh...");
+        LOGGER.debug("Canceling dynamic proxy refresh for \"{}\" service.", serviceName);
         notification.getValue().cancel();
     }
 
