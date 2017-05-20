@@ -31,7 +31,7 @@ import org.microbule.scheduler.api.SchedulerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-class JaxrsTargetCache<T> implements RemovalListener<String, RefreshableReference<T>>, AutoCloseable {
+class JaxrsProxyCache<T> implements RemovalListener<String, RefreshableReference<CachedJaxrsProxy<T>>>, AutoCloseable {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
@@ -43,14 +43,14 @@ class JaxrsTargetCache<T> implements RemovalListener<String, RefreshableReferenc
     private static final long DEFAULT_TIMEOUT = 5;
     private static final TimeUnit DEFAULT_UNIT = TimeUnit.MINUTES;
     private static final long DEFAULT_REFRESH_DELAY = 1;
-    private static final Logger LOGGER = LoggerFactory.getLogger(JaxrsTargetCache.class);
-    private final LoadingCache<String, RefreshableReference<T>> cache;
+    private static final Logger LOGGER = LoggerFactory.getLogger(JaxrsProxyCache.class);
+    private final LoadingCache<String, RefreshableReference<CachedJaxrsProxy<T>>> cache;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    JaxrsTargetCache(Function<String, T> factory, SchedulerService schedulerService, Config cacheConfig) {
+    JaxrsProxyCache(Function<String, CachedJaxrsProxy<T>> factory, SchedulerService schedulerService, String serviceName, Config cacheConfig) {
         final long timeout = cacheConfig.longValue(TIMEOUT_PROP).orElse(DEFAULT_TIMEOUT);
         final TimeUnit timeoutUnit = cacheConfig.enumValue(TIMEOUT_UNIT_PROP, TimeUnit.class).orElse(DEFAULT_UNIT);
         final long refreshDelay = cacheConfig.longValue(REFRESH_DELAY_PROP).orElse(DEFAULT_REFRESH_DELAY);
@@ -58,10 +58,22 @@ class JaxrsTargetCache<T> implements RemovalListener<String, RefreshableReferenc
         this.cache = CacheBuilder.newBuilder()
                 .removalListener(this)
                 .expireAfterAccess(timeout, timeoutUnit)
-                .build(new CacheLoader<String, RefreshableReference<T>>() {
+                .build(new CacheLoader<String, RefreshableReference<CachedJaxrsProxy<T>>>() {
                     @Override
-                    public RefreshableReference<T> load(String address) throws Exception {
-                        return schedulerService.createRefreshableReference(currentValue -> factory.apply(address), refreshDelay, refreshDelayUnit);
+                    public RefreshableReference<CachedJaxrsProxy<T>> load(String address) throws Exception {
+                        return schedulerService.createRefreshableReference(currentValue -> {
+                            final CachedJaxrsProxy<T> newValue = factory.apply(address);
+                            if (currentValue == null) {
+                                LOGGER.info("Created dynamic proxy for \"{}\" service at address: {}", serviceName, address);
+                                return newValue;
+                            } else if (currentValue.getConfig().equals(newValue.getConfig())) {
+                                LOGGER.debug("Retained current dynamic proxy for \"{}\" service at address: {}", serviceName, address);
+                                return currentValue;
+                            } else {
+                                LOGGER.info("Refreshed dynamic proxy for \"{}\" service at address: {}", serviceName, address);
+                                return newValue;
+                            }
+                        }, refreshDelay, refreshDelayUnit);
                     }
                 });
     }
@@ -80,7 +92,7 @@ class JaxrsTargetCache<T> implements RemovalListener<String, RefreshableReferenc
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public void onRemoval(RemovalNotification<String, RefreshableReference<T>> notification) {
+    public void onRemoval(RemovalNotification<String, RefreshableReference<CachedJaxrsProxy<T>>> notification) {
         LOGGER.debug("Canceling refresh...");
         notification.getValue().cancel();
     }
@@ -90,6 +102,6 @@ class JaxrsTargetCache<T> implements RemovalListener<String, RefreshableReferenc
 //----------------------------------------------------------------------------------------------------------------------
 
     T getTarget(String address) {
-        return cache.getUnchecked(address).get();
+        return cache.getUnchecked(address).get().getProxy();
     }
 }

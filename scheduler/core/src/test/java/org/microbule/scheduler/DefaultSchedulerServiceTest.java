@@ -22,7 +22,6 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.awaitility.Awaitility;
 import org.junit.Test;
 import org.microbule.scheduler.api.RefreshableReference;
 import org.microbule.scheduler.api.Refresher;
@@ -49,15 +48,6 @@ public class DefaultSchedulerServiceTest extends MockObjectTestCase {
         await(150);
         reference.cancel();
         assertEquals(Long.valueOf(1), reference.get());
-    }
-
-    private void await(long duration) {
-        await(5, duration);
-    }
-
-    private void await(long pollInterval, long duration) {
-        final long expiration = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(duration);
-        Awaitility.await().pollInterval(pollInterval, TimeUnit.MILLISECONDS).pollDelay(pollInterval, TimeUnit.MILLISECONDS).until(() -> System.nanoTime() >= expiration);
     }
 
     @Test

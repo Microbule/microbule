@@ -18,7 +18,6 @@
 package org.microbule.util.jaxrs;
 
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
@@ -38,7 +37,11 @@ public final class WebTargetUtils {
 //----------------------------------------------------------------------------------------------------------------------
 
     public static WebTarget extend(WebTarget baseTarget, String... paths) {
-        return Stream.of(paths).reduce(baseTarget, WebTarget::path, (left, right) -> right);
+        WebTarget answer = baseTarget;
+        for (String path : paths) {
+            answer = answer.path(path);
+        }
+        return answer;
     }
 
     public static <T> Optional<T> parseJsonResponse(Response response, Class<T> type) {

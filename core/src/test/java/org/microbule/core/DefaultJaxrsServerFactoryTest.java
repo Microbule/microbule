@@ -25,8 +25,8 @@ import org.microbule.config.api.Config;
 import org.microbule.config.core.EmptyConfig;
 import org.microbule.config.core.MapConfig;
 import org.microbule.container.core.SimpleContainer;
-import org.microbule.scheduler.core.DefaultSchedulerService;
 import org.microbule.scheduler.api.SchedulerService;
+import org.microbule.scheduler.core.DefaultSchedulerService;
 import org.microbule.spi.JaxrsProxyDecorator;
 import org.microbule.spi.JaxrsServerDecorator;
 import org.microbule.spi.JaxrsServiceDescriptor;
@@ -81,11 +81,24 @@ public class DefaultJaxrsServerFactoryTest extends MockObjectTestCase {
         serverConfig.addValue("ignored.enabled", "false");
         when(configService.createServerConfig(HelloService.class, "HelloService")).thenReturn(serverConfig);
 
-        MapConfig proxyConfig = new MapConfig();
-        proxyConfig.addValue("proxyAddress", ADDRESS);
-        proxyConfig.addValue("ignored.enabled", "false");
-        when(configService.createProxyConfig(HelloService.class, "HelloService")).thenReturn(proxyConfig);
+        MapConfig proxyConfig1 = new MapConfig();
+        proxyConfig1.addValue("proxyAddress", ADDRESS);
+        proxyConfig1.addValue("ignored.enabled", "false");
+
+        MapConfig proxyConfig2 = new MapConfig();
+        proxyConfig2.addValue("proxyAddress", ADDRESS);
+        proxyConfig2.addValue("ignored.enabled", "true");
+        when(configService.createProxyConfig(HelloService.class, "HelloService")).thenReturn(proxyConfig1, proxyConfig1, proxyConfig2);
+
+
         when(configService.createConfig(any())).thenReturn(EmptyConfig.INSTANCE);
+
+        MapConfig cacheConfig = new MapConfig();
+        cacheConfig.addValue("refreshDelay", "20");
+        cacheConfig.addValue("refreshDelayUnit", "MILLISECONDS");
+
+        when(configService.createConfig("JaxrsProxyFactory", "cache")).thenReturn(cacheConfig);
+
         when(serverDecorator.name()).thenReturn("mock");
         container.addBean(serverDecorator);
         when(ignoredServerDecorator.name()).thenReturn("ignored");
@@ -119,5 +132,14 @@ public class DefaultJaxrsServerFactoryTest extends MockObjectTestCase {
         assertEquals("Hello, Microbule!", hello.sayHello("Microbule"));
 
         verify(proxyDecorator).decorate(any(JaxrsServiceDescriptor.class), any(Config.class));
+    }
+
+    @Test
+    public void testCallingServiceAfterRefresh() {
+        final HelloService hello = proxyFactory.createProxy(HelloService.class);
+
+        assertEquals("Hello, Microbule!", hello.sayHello("Microbule"));
+
+        await(100);
     }
 }

@@ -36,6 +36,7 @@ import org.apache.cxf.jaxrs.client.JAXRSClientFactory;
 import org.microbule.api.JaxrsConfigService;
 import org.microbule.api.JaxrsProxyFactory;
 import org.microbule.config.api.Config;
+import org.microbule.config.core.RecordingConfig;
 import org.microbule.container.api.MicrobuleContainer;
 import org.microbule.scheduler.api.SchedulerService;
 import org.microbule.spi.JaxrsAddressChooser;
@@ -105,31 +106,31 @@ public class DefaultJaxrsProxyFactory extends JaxrsServiceDecoratorRegistry<Jaxr
         return CacheBuilder.newBuilder()
                 .removalListener(this)
                 .expireAfterAccess(expiration, expirationUnit).build(new CacheLoader<Class<?>, JaxrsProxyDispatcher<? extends Object>>() {
-            @Override
-            public JaxrsProxyDispatcher<? extends Object> load(Class<?> serviceInterface) throws Exception {
-                return createDispatcher(serviceInterface);
-            }
-        });
+                    @Override
+                    public JaxrsProxyDispatcher<? extends Object> load(Class<?> serviceInterface) throws Exception {
+                        return createDispatcher(serviceInterface);
+                    }
+                });
     }
 
     private <T> JaxrsProxyDispatcher<T> createDispatcher(Class<T> serviceInterface) {
         final String serviceName = namingStrategy.get().serviceName(serviceInterface);
-        LOGGER.info("Creating {} JAX-RS proxy dispatcher ({})...", serviceName, serviceInterface.getSimpleName());
-        final JaxrsTargetCache<T> proxyCache = createProxyCache(serviceInterface, serviceName);
+        LOGGER.info("Creating \"{}\" proxy dispatcher ({})...", serviceName, serviceInterface.getSimpleName());
+        final JaxrsProxyCache<T> proxyCache = createProxyCache(serviceInterface, serviceName);
         final JaxrsAddressChooser addressChooser = createEndpointChooser(serviceInterface, serviceName);
         return new JaxrsProxyDispatcher<>(proxyCache, addressChooser);
     }
 
-    private <T> JaxrsTargetCache<T> createProxyCache(Class<T> serviceInterface, String serviceName) {
+    private <T> JaxrsProxyCache<T> createProxyCache(Class<T> serviceInterface, String serviceName) {
         final Config cacheConfig = configService.createConfig(JaxrsProxyFactory.class.getSimpleName(), "cache");
-        LOGGER.debug("Creating JaxrsTargetCache<{}> for \"{}\" service.", serviceInterface.getSimpleName(), serviceName);
-        return new JaxrsTargetCache<>(baseAddress -> {
-            LOGGER.debug("Creating dynamic proxy for \"{}\" service at address: {}", serviceName, baseAddress);
-            final Config config = configService.createProxyConfig(serviceInterface, serviceName);
+        LOGGER.debug("Creating JaxrsProxyCache<{}> for \"{}\" service.", serviceInterface.getSimpleName(), serviceName);
+        return new JaxrsProxyCache<>(baseAddress -> {
+            final RecordingConfig recordingConfig = new RecordingConfig(configService.createProxyConfig(serviceInterface, serviceName));
             final DefaultJaxrsServiceDescriptor descriptor = new DefaultJaxrsServiceDescriptor(serviceInterface, serviceName);
-            decorate(descriptor, config);
-            return JAXRSClientFactory.create(baseAddress, serviceInterface, descriptor.getProviders(), descriptor.getFeatures(), null);
-        }, schedulerService, cacheConfig);
+            decorate(descriptor, recordingConfig);
+            final T proxy = JAXRSClientFactory.create(baseAddress, serviceInterface, descriptor.getProviders(), descriptor.getFeatures(), null);
+            return new CachedJaxrsProxy<>(proxy, recordingConfig.getRecordedJson());
+        }, schedulerService, serviceName, cacheConfig);
     }
 
     private <T> JaxrsAddressChooser createEndpointChooser(Class<T> serviceInterface, String serviceName) {

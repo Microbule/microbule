@@ -19,7 +19,9 @@ package org.microbule.test.core;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
+import java.util.concurrent.TimeUnit;
 
+import org.awaitility.Awaitility;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
@@ -48,5 +50,14 @@ public class MicrobuleTestCase extends Assert {
     protected void expectException(Class<? extends Exception> type, String msg, Object... params) {
         exception.expect(type);
         exception.expectMessage(String.format(msg, params));
+    }
+
+    protected void await(long duration) {
+        await(5, duration);
+    }
+
+    private void await(long pollInterval, long duration) {
+        final long expiration = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(duration);
+        Awaitility.await().pollInterval(pollInterval, TimeUnit.MILLISECONDS).pollDelay(pollInterval, TimeUnit.MILLISECONDS).until(() -> System.nanoTime() >= expiration);
     }
 }

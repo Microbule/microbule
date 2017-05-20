@@ -7,14 +7,14 @@ public class JaxrsProxyDispatcher<T> implements AutoCloseable {
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    private final JaxrsTargetCache<T> targetCache;
+    private final JaxrsProxyCache<T> targetCache;
     private final JaxrsAddressChooser addressChooser;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public JaxrsProxyDispatcher(JaxrsTargetCache<T> targetCache, JaxrsAddressChooser addressChooser) {
+    public JaxrsProxyDispatcher(JaxrsProxyCache<T> targetCache, JaxrsAddressChooser addressChooser) {
         this.targetCache = targetCache;
         this.addressChooser = addressChooser;
     }
