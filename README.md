@@ -20,6 +20,7 @@ quickly and easily!  Services are written using the standard
 - [Support](#support)
 - [Community](#community)
 - [Contributing](#contributing)
+- [License](#license)
 - [What's in a Name?](#whats-in-a-name)
 
 ## Documentation
@@ -51,6 +52,10 @@ Please join us on [Gitter](https://gitter.im/Microbule/Lobby)!
 ## Contributing
 
 Please contribute using [Github Flow](https://guides.github.com/introduction/flow/). Create a branch, add commits, and [open a pull request](https://github.com/Microbule/microbule/compare).
+
+## License
+
+Microbule is licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).  
 
 ## What's in a Name?
 
