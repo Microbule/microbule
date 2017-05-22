@@ -21,8 +21,6 @@ import com.google.common.base.Charsets;
 import com.google.gson.JsonSyntaxException;
 import org.apache.commons.lang3.ObjectUtils;
 import org.microbule.gson.api.GsonService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
@@ -32,7 +30,6 @@ public class GsonProvider implements MessageBodyReader<Object>,MessageBodyWriter
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GsonProvider.class);
     private final GsonService gsonService;
     private final Function<JsonSyntaxException,? extends RuntimeException> exceptionProvider;
 

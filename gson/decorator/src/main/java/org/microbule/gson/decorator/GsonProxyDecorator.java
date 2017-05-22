@@ -35,7 +35,7 @@ public class GsonProxyDecorator implements JaxrsProxyDecorator {
 
     @Override
     public void decorate(JaxrsServiceDescriptor descriptor, Config config) {
-        descriptor.addProvider(new GsonProvider(gsonService, e -> new JsonResponseParsingException(e)));
+        descriptor.addProvider(new GsonProvider(gsonService, JsonResponseParsingException::new));
     }
 
     @Override

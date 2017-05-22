@@ -37,7 +37,7 @@ public class GsonServerDecorator implements JaxrsServerDecorator {
 
     @Override
     public void decorate(JaxrsServiceDescriptor descriptor, Config config) {
-        descriptor.addProvider(new GsonProvider(gsonService, e -> new JsonRequestParsingException(e)));
+        descriptor.addProvider(new GsonProvider(gsonService, JsonRequestParsingException::new));
         descriptor.addProvider(new ConstantErrorMapper(JsonRequestParsingException.class, Response.Status.BAD_REQUEST));
     }
 
