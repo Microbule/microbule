@@ -159,7 +159,7 @@ public class MicrobuleNamespaceHandler implements NamespaceHandler {
         bean.setFactoryComponent(ref(parserContext, JAXRS_PROXY_FACTORY_ID));
         bean.setFactoryMethod(CREATE_PROXY_METHOD);
         bean.addArgument(value(parserContext, serviceInterfaceOf(element), Class.class), Class.class.getName(), 0);
-        LOGGER.info("Created proxy bean: {}", bean);
+        LOGGER.debug("Created proxy bean: {}", bean);
         return bean;
     }
 
@@ -179,7 +179,7 @@ public class MicrobuleNamespaceHandler implements NamespaceHandler {
         metadata.setServiceComponent(ref(parserContext, element.getAttribute(REF_ATTR)));
         metadata.addInterface(serviceInterfaceOf(element));
         metadata.addServiceProperty(value(parserContext, "microbule.server", String.class), value(parserContext, "true", String.class));
-        LOGGER.info("Created server service:{}", metadata);
+        LOGGER.debug("Created server service:{}", metadata);
         return metadata;
     }
 }
