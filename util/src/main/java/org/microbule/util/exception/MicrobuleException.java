@@ -2,7 +2,7 @@ package org.microbule.util.exception;
 
 import static java.lang.String.format;
 
-public abstract class MicrobuleException extends RuntimeException {
+public class MicrobuleException extends RuntimeException {
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
