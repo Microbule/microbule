@@ -18,7 +18,7 @@ public class MicrobuleExceptionTest extends MicrobuleTestCase {
     public void testConstructorWithCause() {
         final Throwable cause = new IllegalArgumentException("Not gonna do it!");
         final MicrobuleException e = new MicrobuleException(cause, "One %s %s", "two", "three");
-        assertEquals("One, two, three", e.getMessage());
+        assertEquals("One two three", e.getMessage());
         assertEquals(cause, e.getCause());
     }
 }
