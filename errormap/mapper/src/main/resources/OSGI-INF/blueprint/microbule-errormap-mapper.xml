@@ -19,18 +19,25 @@
 
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 
-    <reference id="gsonService" interface="org.microbule.gson.api.GsonService" />
-
-    <service interface="org.microbule.spi.JaxrsServerDecorator">
-        <bean class="org.microbule.gson.decorator.GsonServerDecorator">
-            <argument ref="gsonService" />
-        </bean>
+    <!--
+    IllegalArgumentException
+    -->
+    <service interface="org.microbule.errormap.spi.ErrorMapper">
+        <bean class="org.microbule.errormap.mapper.IllegalArgumentExceptionMapper"/>
     </service>
 
-    <service interface="org.microbule.spi.JaxrsProxyDecorator">
-        <bean class="org.microbule.gson.decorator.GsonProxyDecorator">
-            <argument ref="gsonService" />
-        </bean>
+    <!--
+    Guava VerifyException
+    -->
+    <service interface="org.microbule.errormap.spi.ErrorMapper">
+        <bean class="org.microbule.errormap.mapper.VerifyExceptionMapper"/>
+    </service>
+
+    <!--
+    WebApplicationException
+    -->
+    <service interface="org.microbule.errormap.spi.ErrorMapper">
+        <bean class="org.microbule.errormap.mapper.WebApplicationExceptionErrorMapper"/>
     </service>
 
 </blueprint>

@@ -34,5 +34,6 @@
         <module>spi</module>
         <module>core</module>
         <module>decorator</module>
+        <module>mapper</module>
     </modules>
 </project>

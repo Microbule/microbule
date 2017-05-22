@@ -15,26 +15,23 @@
  *
  */
 
-package org.microbule.errormap.core;
+package org.microbule.errormap.mapper;
 
 import java.util.Collections;
 import java.util.List;
 
+import javax.inject.Named;
+import javax.inject.Singleton;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang3.StringUtils;
+import org.microbule.errormap.core.Responses;
 import org.microbule.errormap.spi.TypedErrorMapper;
 
+@Named("webApplicationExceptionMapper")
+@Singleton
 public class WebApplicationExceptionErrorMapper extends TypedErrorMapper<WebApplicationException> {
-//----------------------------------------------------------------------------------------------------------------------
-// Constructors
-//----------------------------------------------------------------------------------------------------------------------
-
-    public WebApplicationExceptionErrorMapper() {
-        super(WebApplicationException.class);
-    }
-
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------

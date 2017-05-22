@@ -9,7 +9,8 @@ import org.junit.Test;
 import org.microbule.container.core.SimpleContainer;
 import org.microbule.gson.api.GsonService;
 import org.microbule.gson.core.GsonServiceImpl;
-import org.microbule.gson.decorator.GsonDecorator;
+import org.microbule.gson.decorator.GsonProxyDecorator;
+import org.microbule.gson.decorator.GsonServerDecorator;
 import org.microbule.test.core.hello.HelloService;
 import org.microbule.test.server.hello.HelloTestCase;
 
@@ -21,7 +22,8 @@ public class VersionDecoratorTest extends HelloTestCase {
     protected void addBeans(SimpleContainer container) {
         gsonService = new GsonServiceImpl(container);
         container.addBean(gsonService);
-        container.addBean(new GsonDecorator(gsonService));
+        container.addBean(new GsonServerDecorator(gsonService));
+        container.addBean(new GsonProxyDecorator(gsonService));
         container.addBean(new VersionDecorator());
     }
 

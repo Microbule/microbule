@@ -17,16 +17,18 @@
 
 package org.microbule.config.api;
 
-public class ConfigurationException extends RuntimeException {
+import org.microbule.util.exception.MicrobuleException;
+
+public class ConfigurationException extends MicrobuleException {
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
     public ConfigurationException(String message, Object... params) {
-        super(String.format(message, params));
+        super(message, params);
     }
 
     public ConfigurationException(Throwable cause, String message, Object... params) {
-        super(String.format(message, params), cause);
+        super(cause, message, params);
     }
 }

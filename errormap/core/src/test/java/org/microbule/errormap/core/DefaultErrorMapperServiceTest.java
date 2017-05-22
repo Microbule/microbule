@@ -25,26 +25,27 @@ import org.junit.Test;
 import org.microbule.container.core.SimpleContainer;
 import org.microbule.errormap.core.json.JsonErrorResponseStrategy;
 import org.microbule.errormap.core.text.PlainTextErrorResponseStrategy;
+import org.microbule.errormap.spi.ConstantErrorMapper;
 import org.microbule.test.core.MockObjectTestCase;
 
-public class ErrorMapperServiceImplTest extends MockObjectTestCase {
+public class DefaultErrorMapperServiceTest extends MockObjectTestCase {
 
-    private ErrorMapperServiceImpl service;
+    private DefaultErrorMapperService service;
 
     @Before
     public void initService() {
         SimpleContainer container = new SimpleContainer();
         container.addBean(new PlainTextErrorResponseStrategy());
-        container.addBean(new WebApplicationExceptionErrorMapper());
         container.addBean(new JsonErrorResponseStrategy());
-        service = new ErrorMapperServiceImpl(container);
+        container.addBean(new ConstantErrorMapper(IllegalArgumentException.class, Response.Status.BAD_REQUEST));
+        service = new DefaultErrorMapperService(container);
         container.initialize();
     }
 
     @Test
     public void testCreateResponse() {
-        final Response response = service.createResponse("text", new NotFoundException("Didn't find it!"));
-        assertEquals(404, response.getStatus());
+        final Response response = service.createResponse("text", new IllegalArgumentException("Didn't find it!"));
+        assertEquals(400, response.getStatus());
         assertEquals("Didn't find it!", response.readEntity(String.class));
     }
 

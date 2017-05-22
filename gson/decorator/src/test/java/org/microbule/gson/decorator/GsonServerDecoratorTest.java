@@ -15,31 +15,34 @@
  *
  */
 
-package org.microbule.errormap.core;
-
-import java.util.Collections;
-
-import javax.ws.rs.NotFoundException;
-import javax.ws.rs.core.Response;
+package org.microbule.gson.decorator;
 
 import org.junit.Test;
+import org.microbule.gson.api.GsonService;
+import org.microbule.gson.provider.GsonProvider;
+import org.microbule.spi.JaxrsServiceDescriptor;
 import org.microbule.test.core.MockObjectTestCase;
+import org.mockito.Mock;
 
-public class WebApplicationExceptionErrorMapperTest extends MockObjectTestCase {
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+
+public class GsonServerDecoratorTest extends MockObjectTestCase {
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    @Test
-    public void testGetErrorMessages() {
-        final WebApplicationExceptionErrorMapper errorMapper = new WebApplicationExceptionErrorMapper();
-        assertEquals(Collections.singletonList("Not found!"), errorMapper.doGetErrorMessages(new NotFoundException("Not found!")));
-        assertEquals(Collections.singletonList("Not Found"), errorMapper.doGetErrorMessages(new NotFoundException("")));
-    }
+    @Mock
+    private GsonService gsonService;
+
+    @Mock
+    private JaxrsServiceDescriptor descriptor;
 
     @Test
-    public void testGetStatus() {
-        final WebApplicationExceptionErrorMapper errorMapper = new WebApplicationExceptionErrorMapper();
-        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), errorMapper.getStatus(new NotFoundException()).getStatusCode());
+    public void testDecorate() {
+        final GsonServerDecorator decorator = new GsonServerDecorator(gsonService);
+        assertEquals("gson", decorator.name());
+        decorator.decorate(descriptor, null);
+        verify(descriptor).addProvider(any(GsonProvider.class));
     }
 }

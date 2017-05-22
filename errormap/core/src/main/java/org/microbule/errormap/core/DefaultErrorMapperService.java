@@ -35,12 +35,12 @@ import org.slf4j.LoggerFactory;
 
 @Singleton
 @Named("errorMapperService")
-public class ErrorMapperServiceImpl implements ErrorMapperService {
+public class DefaultErrorMapperService implements ErrorMapperService {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ErrorMapperServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultErrorMapperService.class);
 
     private final Map<Class<?>, ErrorMapper> errorMappers;
     private final Map<String, ErrorResponseStrategy> responseStrategies;
@@ -50,7 +50,7 @@ public class ErrorMapperServiceImpl implements ErrorMapperService {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Inject
-    public ErrorMapperServiceImpl(MicrobuleContainer container) {
+    public DefaultErrorMapperService(MicrobuleContainer container) {
         this.errorMappers = container.pluginMap(ErrorMapper.class, ErrorMapper::getExceptionType);
         this.responseStrategies = container.pluginMap(ErrorResponseStrategy.class, ErrorResponseStrategy::name);
     }

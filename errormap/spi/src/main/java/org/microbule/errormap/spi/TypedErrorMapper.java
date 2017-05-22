@@ -21,6 +21,8 @@ import java.util.List;
 
 import javax.ws.rs.core.Response;
 
+import org.microbule.util.reflect.Types;
+
 public abstract class TypedErrorMapper<E extends Exception> implements ErrorMapper {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
@@ -32,8 +34,8 @@ public abstract class TypedErrorMapper<E extends Exception> implements ErrorMapp
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    protected TypedErrorMapper(Class<E> exceptionType) {
-        this.exceptionType = exceptionType;
+    protected TypedErrorMapper() {
+        this.exceptionType = Types.getTypeParameter(getClass(), TypedErrorMapper.class, 0);
     }
 
 //----------------------------------------------------------------------------------------------------------------------

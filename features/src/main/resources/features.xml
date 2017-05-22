@@ -95,6 +95,7 @@
         <bundle start-level="60">mvn:org.microbule/microbule-errormap-spi/${project.version}</bundle>
         <bundle start-level="60">mvn:org.microbule/microbule-errormap-core/${project.version}</bundle>
         <bundle start-level="60">mvn:org.microbule/microbule-errormap-decorator/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-errormap-mapper/${project.version}</bundle>
     </feature>
 
     <feature name="microbule-gson" version="${project.version}">

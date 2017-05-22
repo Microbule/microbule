@@ -45,14 +45,6 @@ public class ConstraintViolationExceptionMapper extends TypedErrorMapper<Constra
     private static final Logger LOGGER = LoggerFactory.getLogger(ConstraintViolationExceptionMapper.class);
 
 //----------------------------------------------------------------------------------------------------------------------
-// Constructors
-//----------------------------------------------------------------------------------------------------------------------
-
-    public ConstraintViolationExceptionMapper() {
-        super(ConstraintViolationException.class);
-    }
-
-//----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 

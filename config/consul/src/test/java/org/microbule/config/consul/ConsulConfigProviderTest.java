@@ -30,7 +30,8 @@ import org.microbule.config.api.Config;
 import org.microbule.config.core.ConfigUtils;
 import org.microbule.container.core.SimpleContainer;
 import org.microbule.gson.core.GsonServiceImpl;
-import org.microbule.gson.decorator.GsonDecorator;
+import org.microbule.gson.decorator.GsonProxyDecorator;
+import org.microbule.gson.decorator.GsonServerDecorator;
 import org.microbule.test.server.JaxrsServerTestCase;
 
 public class ConsulConfigProviderTest extends JaxrsServerTestCase<MockConsulService> {
@@ -48,7 +49,8 @@ public class ConsulConfigProviderTest extends JaxrsServerTestCase<MockConsulServ
 
     @Override
     protected void addBeans(SimpleContainer container) {
-        container.addBean(new GsonDecorator(new GsonServiceImpl(container)));
+        container.addBean(new GsonServerDecorator(new GsonServiceImpl(container)));
+        container.addBean(new GsonProxyDecorator(new GsonServiceImpl(container)));
     }
 
     @Override

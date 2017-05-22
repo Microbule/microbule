@@ -19,6 +19,10 @@ package org.microbule.gson.provider;
 
 import java.util.List;
 
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.microbule.config.api.Config;
@@ -33,7 +37,7 @@ import org.mockito.Mock;
 
 import static org.mockito.Mockito.when;
 
-public class GsonProviderTest extends JaxrsServerTestCase<PersonService> {
+public class GsonServerProviderTest extends JaxrsServerTestCase<PersonService> {
 
     @Mock
     private PersonService serviceImpl;
@@ -54,7 +58,7 @@ public class GsonProviderTest extends JaxrsServerTestCase<PersonService> {
 
             @Override
             public void decorate(JaxrsServiceDescriptor descriptor, Config config) {
-                descriptor.addProvider(new GsonProvider(gsonService));
+                descriptor.addProvider(new GsonProvider(gsonService, e -> new JsonRequestParsingException(e)));
             }
         });
 
@@ -66,9 +70,20 @@ public class GsonProviderTest extends JaxrsServerTestCase<PersonService> {
 
             @Override
             public void decorate(JaxrsServiceDescriptor descriptor, Config config) {
-                descriptor.addProvider(new GsonProvider(gsonService));
+                descriptor.addProvider(new GsonProvider(gsonService, e -> new JsonResponseParsingException(e)));
             }
         });
+    }
+
+    @Test
+    public void testGetSize() {
+        assertEquals(-1, new GsonProvider(null, null).getSize(null, null, null, null, null));
+    }
+
+    @Test
+    public void testWithJsonSyntaxException() {
+        final Response response = createWebTarget().path("people").request().post(Entity.entity("{{{}", MediaType.APPLICATION_JSON_TYPE));
+        assertEquals(500, response.getStatus());
     }
 
     @Test

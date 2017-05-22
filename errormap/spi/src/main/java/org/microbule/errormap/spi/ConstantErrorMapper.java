@@ -49,4 +49,12 @@ public class ConstantErrorMapper extends AbstractErrorMapper {
     public Response.Status getStatus(Exception exception) {
         return status;
     }
+
+//----------------------------------------------------------------------------------------------------------------------
+// Getter/Setter Methods
+//----------------------------------------------------------------------------------------------------------------------
+
+    public Response.Status getStatus() {
+        return status;
+    }
 }

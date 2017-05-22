@@ -27,7 +27,7 @@ import org.mockito.Mock;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
-public class GsonDecoratorTest extends MockObjectTestCase {
+public class GsonProxyDecoratorTest extends MockObjectTestCase {
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ public class GsonDecoratorTest extends MockObjectTestCase {
 
     @Test
     public void testDecorate() {
-        final GsonDecorator decorator = new GsonDecorator(gsonService);
+        final GsonProxyDecorator decorator = new GsonProxyDecorator(gsonService);
         assertEquals("gson", decorator.name());
         decorator.decorate(descriptor, null);
         verify(descriptor).addProvider(any(GsonProvider.class));
