@@ -19,7 +19,7 @@ public class RoundRobinTest extends MicrobuleTestCase {
 
     @Test
     public void testWithNullList() {
-        RoundRobin<String> balancer = new RoundRobin<>(new LinkedList<>());
+        RoundRobin<String> balancer = new RoundRobin<>(null);
         assertNull(balancer.nextItem());
     }
 
