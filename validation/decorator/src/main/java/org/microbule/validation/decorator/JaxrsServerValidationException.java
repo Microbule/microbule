@@ -10,7 +10,7 @@ public class JaxrsServerValidationException extends RuntimeException {
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    private final Set<ConstraintViolation<Object>> violations;
+    private final transient Set<ConstraintViolation<Object>> violations;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
