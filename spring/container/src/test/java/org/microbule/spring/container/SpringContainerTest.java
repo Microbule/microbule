@@ -19,7 +19,9 @@ package org.microbule.spring.container;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.microbule.api.JaxrsProxyReference;
 import org.microbule.test.core.MockObjectTestCase;
+import org.microbule.test.core.hello.HelloService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -31,6 +33,9 @@ public class SpringContainerTest extends MockObjectTestCase {
     @Autowired
     private Collector collector;
 
+    @Autowired
+    private JaxrsProxyReference<HelloService> helloService;
+
     @Test
     public void testPlugins() {
         assertEquals(2, collector.getPlugins().size());
@@ -39,5 +44,10 @@ public class SpringContainerTest extends MockObjectTestCase {
     @Test
     public void testServers() {
         assertEquals(1, collector.getServerDefinitions().size());
+    }
+
+    @Test
+    public void testRef() {
+        assertNotNull(helloService);
     }
 }
