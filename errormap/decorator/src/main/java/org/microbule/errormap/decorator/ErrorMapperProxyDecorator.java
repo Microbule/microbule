@@ -32,12 +32,14 @@ import org.slf4j.LoggerFactory;
 @Singleton
 @Named("errorMapperProxyDecorator")
 public class ErrorMapperProxyDecorator implements JaxrsProxyDecorator {
-    //----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ErrorMapperProxyDecorator.class);
     private static final String STRATEGY = "strategy";
     private final ErrorMapperService errorMapperService;
+    private final String defaultStrategy;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
@@ -45,7 +47,12 @@ public class ErrorMapperProxyDecorator implements JaxrsProxyDecorator {
 
     @Inject
     public ErrorMapperProxyDecorator(ErrorMapperService errorMapperService) {
+        this(errorMapperService, ErrorMapperUtils.DEFAULT_STRATEGY);
+    }
+
+    public ErrorMapperProxyDecorator(ErrorMapperService errorMapperService, String defaultStrategy) {
         this.errorMapperService = errorMapperService;
+        this.defaultStrategy = defaultStrategy;
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -54,7 +61,7 @@ public class ErrorMapperProxyDecorator implements JaxrsProxyDecorator {
 
     @Override
     public void decorate(JaxrsServiceDescriptor descriptor, Config config) {
-        final String strategy = config.value(STRATEGY).orElse(ErrorMapperUtils.DEFAULT_STRATEGY);
+        final String strategy = config.value(STRATEGY).orElse(defaultStrategy);
         LOGGER.debug("Using \"{}\" error response strategy for {} JAX-RS proxy.", strategy, descriptor.serviceInterface().getSimpleName());
         descriptor.addProvider(new ErrorMapperResponseExceptionMapper(errorMapperService, strategy));
     }

@@ -40,6 +40,7 @@ public class ErrorMapperServerDecorator implements JaxrsServerDecorator {
     private static final String STRATEGY = "strategy";
 
     private final ErrorMapperService errorMapperService;
+    private final String defaultStrategy;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
@@ -47,7 +48,12 @@ public class ErrorMapperServerDecorator implements JaxrsServerDecorator {
 
     @Inject
     public ErrorMapperServerDecorator(ErrorMapperService errorMapperService) {
+        this(errorMapperService, ErrorMapperUtils.DEFAULT_STRATEGY);
+    }
+
+    public ErrorMapperServerDecorator(ErrorMapperService errorMapperService, String defaultStrategy) {
         this.errorMapperService = errorMapperService;
+        this.defaultStrategy = defaultStrategy;
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -56,7 +62,7 @@ public class ErrorMapperServerDecorator implements JaxrsServerDecorator {
 
     @Override
     public void decorate(JaxrsServiceDescriptor descriptor, Config config) {
-        final String strategy = config.value(STRATEGY).orElse(ErrorMapperUtils.DEFAULT_STRATEGY);
+        final String strategy = config.value(STRATEGY).orElse(defaultStrategy);
         LOGGER.debug("Using \"{}\" error response strategy for {} JAX-RS server.", strategy, descriptor.serviceInterface().getSimpleName());
         descriptor.addProvider(new WebApplicationExceptionMapper(errorMapperService, strategy));
         descriptor.addProvider(new RootExceptionMapper(errorMapperService, strategy));
