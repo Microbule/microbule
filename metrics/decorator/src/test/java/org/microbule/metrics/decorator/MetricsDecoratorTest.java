@@ -72,7 +72,7 @@ public class MetricsDecoratorTest extends JaxrsServerTestCase<TimedResource> {
     public void testMetricsFilter() {
         Response response = createWebTarget().queryParam("_metrics", "").request(MediaType.APPLICATION_JSON_TYPE).get();
         assertEquals(200, response.getStatus());
-        MetricsResponse metricsResponse = gsonService.fromJson(new StringReader(response.readEntity(String.class)), MetricsResponse.class);
+        MetricsResponse metricsResponse = gsonService.parse(new StringReader(response.readEntity(String.class)), MetricsResponse.class);
 
         metricsResponse.getTimers().forEach((k,v) -> {
             assertTrue(k.startsWith("TimedResource"));

@@ -31,7 +31,7 @@ public class VersionDecoratorTest extends HelloTestCase {
     public void testGetVersion() {
         final Response response = createWebTarget().queryParam("_version", "bogus").request(MediaType.APPLICATION_JSON_TYPE).get();
         assertEquals(200, response.getStatus());
-        final VersionResponse versionResponse = gsonService.fromJson(new StringReader(response.readEntity(String.class)), VersionResponse.class);
+        final VersionResponse versionResponse = gsonService.parse(new StringReader(response.readEntity(String.class)), VersionResponse.class);
         final Package pkg = HelloService.class.getPackage();
         assertEquals(pkg.getImplementationVersion(), versionResponse.getVersion());
         assertEquals(pkg.getImplementationTitle(), versionResponse.getTitle());

@@ -55,7 +55,7 @@ public class GsonProvider implements MessageBodyReader<Object>,MessageBodyWriter
     public Object readFrom(Class<Object> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, String> httpHeaders, InputStream entityStream) throws IOException {
         try (InputStreamReader streamReader = new InputStreamReader(entityStream, Charsets.UTF_8)) {
             try {
-                return gsonService.fromJson(streamReader, resolveType(type, genericType));
+                return gsonService.parse(streamReader, resolveType(type, genericType));
             } catch (JsonSyntaxException e) {
                 throw exceptionProvider.apply(e);
             }
@@ -79,7 +79,7 @@ public class GsonProvider implements MessageBodyReader<Object>,MessageBodyWriter
     @Override
     public void writeTo(Object o, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream) throws IOException {
         try (OutputStreamWriter writer = new OutputStreamWriter(entityStream, Charsets.UTF_8)) {
-            gsonService.toJson(o, resolveType(type, genericType), writer);
+            gsonService.append(o, resolveType(type, genericType), writer);
         }
     }
 

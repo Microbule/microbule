@@ -22,6 +22,8 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -29,6 +31,7 @@ import javax.inject.Singleton;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import org.microbule.container.api.MicrobuleContainer;
 import org.microbule.container.api.PluginListener;
 import org.microbule.gson.api.GsonService;
@@ -61,13 +64,88 @@ public class DefaultGsonService implements GsonService {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    public <T> T fromJson(Reader json, Type type) {
+    public <A extends Appendable> A append(Object src, A writer) {
+        getGson().toJson(src, writer);
+        return writer;
+    }
+
+    @Override
+    public <A extends Appendable> A append(JsonElement json, A writer) {
+        getGson().toJson(json, writer);
+        return writer;
+    }
+
+    @Override
+    public <A extends Appendable> A append(Object src, Type type, A writer) {
+        getGson().toJson(src, type, writer);
+        return writer;
+    }
+
+    @Override
+    public <T> T createWithGson(Function<Gson, T> function) {
+        return function.apply(getGson());
+    }
+
+    @Override
+    public void doWithGson(Consumer<Gson> consumer) {
+        consumer.accept(getGson());
+    }
+
+    @Override
+    public <T> T parse(Reader json, Type type) {
         return getGson().fromJson(json, type);
     }
 
     @Override
-    public void toJson(Object src, Type type, Appendable writer) {
-        getGson().toJson(src, type, writer);
+    public <T> T parse(JsonElement json, Class<T> type) {
+        return getGson().fromJson(json, type);
+    }
+
+    @Override
+    public <T> T parse(JsonElement json, Type type) {
+        return getGson().fromJson(json, type);
+    }
+
+    @Override
+    public <T> T parse(String json, Class<T> type) {
+        return getGson().fromJson(json, type);
+    }
+
+    @Override
+    public <T> T parse(String json, Type type) {
+        return getGson().fromJson(json, type);
+    }
+
+    @Override
+    public <T> T parse(Reader json, Class<T> type) {
+        return getGson().fromJson(json, type);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T extends JsonElement> T toJson(Object src) {
+        return (T) getGson().toJsonTree(src);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T extends JsonElement> T toJson(Object src, Type type) {
+        return (T) getGson().toJsonTree(src, type);
+    }
+
+    @Override
+    public String toJsonString(Object src) {
+        return getGson().toJson(src);
+    }
+
+    @Override
+    public String toJsonString(JsonElement json) {
+        return getGson().toJson(json);
+    }
+
+    @Override
+    public String toJsonString(Object src, Type type) {
+        return getGson().toJson(src, type);
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -89,7 +167,6 @@ public class DefaultGsonService implements GsonService {
 
         @Override
         public boolean registerPlugin(GsonBuilderCustomizer plugin) {
-
             customizers.add(plugin);
             LOGGER.debug("Rebuilding GSON instance to include plugin {}.", plugin);
             rebuild();

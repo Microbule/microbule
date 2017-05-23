@@ -19,13 +19,160 @@ package org.microbule.gson.api;
 
 import java.io.Reader;
 import java.lang.reflect.Type;
+import java.util.function.Consumer;
+import java.util.function.Function;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 
 public interface GsonService {
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
-    <T> T fromJson(Reader json, Type type);
+    /**
+     * Appends an object's JSON value to the supplied {@link Appendable} object.
+     *
+     * @param src    the object
+     * @param writer the appendable
+     * @param <A>    the appendable type
+     * @return the appendable
+     */
+    <A extends Appendable> A append(Object src, A writer);
 
-    void toJson(Object src, Type type, Appendable writer);
+    /**
+     * Appends an {@link JsonElement}'s JSON value to the supplied {@link Appendable} object.
+     *
+     * @param json   the element
+     * @param writer the appendable
+     * @param <A>    the appendable type
+     * @return the appendable
+     */
+    <A extends Appendable> A append(JsonElement json, A writer);
+
+    /**
+     * Appends an object's JSON value to the supplied {@link Appendable} object.
+     *
+     * @param src    the object
+     * @param type   the object's type (to be used in the case of generics)
+     * @param writer the appendable
+     * @param <A>    the appendable type
+     * @return the appendable
+     */
+    <A extends Appendable> A append(Object src, Type type, A writer);
+    /**
+     * Allows access to the {@link Gson} instance in order to create some object.  Do NOT maintain a reference to the
+     * {@link Gson} object!
+     *
+     * @param function a function
+     * @param <T>      the type to return
+     * @return the value created by the function
+     */
+    <T> T createWithGson(Function<Gson, T> function);
+
+    /**
+     * Allows access to the {@link Gson} instance.  Do NOT maintain a reference to the supplied {@link Gson} object!
+     *
+     * @param consumer a consumer
+     */
+    void doWithGson(Consumer<Gson> consumer);
+
+    /**
+     * Parses an object from the supplied {@link Reader}.
+     *
+     * @param json the reader containing the JSON
+     * @param type the generic type
+     * @param <T>  the object type to return (uses type inference)
+     * @return the parsed object
+     */
+    <T> T parse(Reader json, Type type);
+
+    /**
+     * Parses an object from the supplied {@link JsonElement}.
+     *
+     * @param json the JSON element
+     * @param type the type
+     * @param <T>  the object type
+     * @return the parsed object
+     */
+    <T> T parse(JsonElement json, Class<T> type);
+
+    /**
+     * Parses an object from the supplied {@link JsonElement}.
+     *
+     * @param json the JSON element
+     * @param type the generic type
+     * @param <T>  the object type (uses type inference)
+     * @return the parsed object
+     */
+    <T> T parse(JsonElement json, Type type);
+
+    /**
+     * Parses an object from the supplied JSON string.
+     *
+     * @param json the JSON string
+     * @param type the type
+     * @param <T>  the object type
+     * @return the parsed object
+     */
+    <T> T parse(String json, Class<T> type);
+
+    /**
+     * Parses an object from the supplied JSON string.
+     *
+     * @param json the JSON string
+     * @param type the generic type
+     * @param <T>  the object type
+     * @return the parsed object
+     */
+    <T> T parse(String json, Type type);
+
+    /**
+     * Parses an object from the supplied {@link Reader}.
+     *
+     * @param json the reader containing the JSON
+     * @param type the type
+     * @param <T>  the object type to return
+     * @return the parsed object
+     */
+    <T> T parse(Reader json, Class<T> type);
+
+    /**
+     * Transforms an input object into a {@link JsonElement}.
+     * @param src the source object
+     * @param <T> the JSON element type (uses type inference)
+     * @return the parsed JSON element
+     */
+    <T extends JsonElement> T toJson(Object src);
+
+    /**
+     * Transforms an input object into a {@link JsonElement}.
+     * @param src the source object
+     * @param type the source object's generic type
+     * @param <T> the JSON element type (uses type inference)
+     * @return the parsed JSON element
+     */
+    <T extends JsonElement> T toJson(Object src, Type type);
+
+    /**
+     * Transforms an object into its JSON string representation.
+     * @param src the source object
+     * @return the JSON string
+     */
+    String toJsonString(Object src);
+
+    /**
+     * Transforms a {@link JsonElement} into its JSON string representation.
+     * @param json the JSON element
+     * @return the JSON string
+     */
+    String toJsonString(JsonElement json);
+
+    /**
+     * Transforms an object into its JSON string representation.
+     * @param src the source object
+     * @param type the source object's generic type
+     * @return the JSON string
+     */
+    String toJsonString(Object src, Type type);
 }

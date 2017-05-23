@@ -21,6 +21,8 @@ import java.io.StringReader;
 import java.io.StringWriter;
 
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import org.junit.Before;
 import org.junit.Test;
 import org.microbule.container.core.SimpleContainer;
 import org.microbule.gson.spi.GsonBuilderCustomizer;
@@ -34,27 +36,29 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 public class DefaultGsonServiceTest extends MockObjectTestCase {
 //----------------------------------------------------------------------------------------------------------------------
-// Other Methods
+// Fields
 //----------------------------------------------------------------------------------------------------------------------
 
     @Mock
     private GsonBuilderCustomizer customizer;
+    private DefaultGsonService service;
+
+//----------------------------------------------------------------------------------------------------------------------
+// Other Methods
+//----------------------------------------------------------------------------------------------------------------------
+
+    @Before
+    public void initGsonService() {
+        final SimpleContainer container = new SimpleContainer();
+        service = new DefaultGsonService(container);
+        container.initialize();
+    }
 
     @Test
-    public void testToJson() {
-        final SimpleContainer container = new SimpleContainer();
-        final DefaultGsonService service = new DefaultGsonService(container);
-        container.initialize();
-
-        final StringWriter sw = new StringWriter();
-        service.toJson(new Person("Hello", "Microbule"), Person.class, sw);
-
-        final String json = sw.toString();
-
-        final Person clone = service.fromJson(new StringReader(json), Person.class);
-
-        assertEquals("Hello", clone.getFirstName());
-        assertEquals("Microbule", clone.getLastName());
+    public void testDoWithGson() {
+        service.doWithGson(gson -> {
+            assertTrue(gson.htmlSafe());
+        });
     }
 
     @Test
@@ -72,6 +76,65 @@ public class DefaultGsonServiceTest extends MockObjectTestCase {
         assertFalse(service.getGson().htmlSafe());
         container.shutdown();
         verifyNoMoreInteractions(customizer);
+    }
+
+    @Test
+    public void testAppending() {
+        final Person person = new Person("Hello", "Microbule");
+        JsonObject json = service.toJson(person);
+
+        assertEquals(json.toString(), service.append(person, new StringWriter()).toString());
+        assertEquals(json.toString(), service.append(person, Person.class.getGenericSuperclass(), new StringWriter()).toString());
+        assertEquals(json.toString(), service.append(json, new StringWriter()).toString());
+    }
+
+    @Test
+    public void testCreateWithGson() {
+        final Person person = new Person("Hello", "Microbule");
+        final String json = service.createWithGson(gson -> gson.toJson(person));
+        assertEquals(json, service.toJsonString(person));
+    }
+
+    @Test
+    public void testParsing() {
+        final Person person = new Person("Hello", "Microbule");
+        JsonObject json = service.toJson(person);
+
+        assertJsonEquals(person, service.parse(new StringReader(json.toString()), Person.class));
+        assertJsonEquals(person, service.parse(new StringReader(json.toString()), Person.class.getGenericSuperclass()));
+
+        assertJsonEquals(person, service.parse(json.toString(), Person.class));
+        assertJsonEquals(person, service.parse(json.toString(), Person.class.getGenericSuperclass()));
+
+        assertJsonEquals(person, service.parse(json, Person.class));
+        assertJsonEquals(person, service.parse(json, Person.class.getGenericSuperclass()));
+    }
+
+    private <T> void assertJsonEquals(T expected, T actual) {
+        assertEquals(service.toJsonString(expected), service.toJsonString(actual));
+    }
+
+    @Test
+    public void testToJson() {
+        final Person person = new Person("Hello", "Microbule");
+        JsonObject json = new JsonObject();
+        json.addProperty("firstName", "Hello");
+        json.addProperty("lastName", "Microbule");
+
+        assertEquals(json, service.toJson(person));
+        assertEquals(json, service.toJson(person, Person.class.getGenericSuperclass()));
+    }
+
+    @Test
+    public void testToJsonString() {
+        final Person person = new Person("Hello", "Microbule");
+        JsonObject json = new JsonObject();
+        json.addProperty("firstName", "Hello");
+        json.addProperty("lastName", "Microbule");
+
+        assertEquals(json.toString(), service.toJsonString(person));
+        assertEquals(json.toString(), service.toJsonString(person, Person.class.getGenericSuperclass()));
+        assertEquals(json.toString(), service.toJsonString(json));
     }
 
 //----------------------------------------------------------------------------------------------------------------------
