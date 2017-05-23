@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import javax.validation.Payload;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -34,12 +33,12 @@ import org.junit.Test;
 import org.microbule.test.core.MockObjectTestCase;
 import org.microbule.validation.annotation.payload.StatusProvider;
 
-public class ConstraintViolationExceptionMapperTest extends MockObjectTestCase {
+public class JaxrsServerValidationExceptionErrorMapperTest extends MockObjectTestCase {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    private ConstraintViolationExceptionMapper mapper;
+    private JaxrsServerValidationExceptionErrorMapper mapper;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
@@ -47,14 +46,14 @@ public class ConstraintViolationExceptionMapperTest extends MockObjectTestCase {
 
     @Before
     public void setUp() {
-        mapper = new ConstraintViolationExceptionMapper();
+        mapper = new JaxrsServerValidationExceptionErrorMapper();
     }
 
     @Test
     public void testErrorCode() {
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-        Set<ConstraintViolation<ValidatedBean>> violations = validator.validate(new ValidatedBean());
-        ConstraintViolationException exception = new ConstraintViolationException(violations);
+        Set<ConstraintViolation<Object>> violations = validator.validate(new ValidatedBean());
+        JaxrsServerValidationException exception = new JaxrsServerValidationException(violations);
         int code = mapper.getStatus(exception).getStatusCode();
         assertEquals(400, code);
     }
@@ -62,8 +61,8 @@ public class ConstraintViolationExceptionMapperTest extends MockObjectTestCase {
     @Test
     public void testErrorMessage() {
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-        Set<ConstraintViolation<ValidatedBean>> violations = validator.validate(new ValidatedBean());
-        ConstraintViolationException exception = new ConstraintViolationException(violations);
+        Set<ConstraintViolation<Object>> violations = validator.validate(new ValidatedBean());
+        JaxrsServerValidationException exception = new JaxrsServerValidationException(violations);
         final List<String> errorMessages = mapper.getErrorMessages(exception);
         assertEquals(Lists.newArrayList("A cannot be null.", "B cannot be null."), errorMessages);
     }
@@ -71,9 +70,9 @@ public class ConstraintViolationExceptionMapperTest extends MockObjectTestCase {
     @Test
     public void testMapping() {
         final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-        final Set<ConstraintViolation<MyBean>> violations = validator.validate(new MyBean());
-        final ConstraintViolationExceptionMapper mapper = new ConstraintViolationExceptionMapper();
-        final ConstraintViolationException exception = new ConstraintViolationException(violations);
+        final Set<ConstraintViolation<Object>> violations = validator.validate(new MyBean());
+        final JaxrsServerValidationExceptionErrorMapper mapper = new JaxrsServerValidationExceptionErrorMapper();
+        final JaxrsServerValidationException exception = new JaxrsServerValidationException(violations);
         final List<String> messages = mapper.getErrorMessages(exception);
         assertEquals(Lists.newArrayList("Field \"bar\" cannot be empty!", "Field \"foo\" cannot be empty!"), messages);
         assertEquals(Response.Status.BAD_REQUEST, mapper.getStatus(exception));
@@ -82,39 +81,38 @@ public class ConstraintViolationExceptionMapperTest extends MockObjectTestCase {
     @Test
     public void testWithCustomStatusProviderWithMultiplePayloads() {
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-        Set<ConstraintViolation<CustomErrorCodeBean>> violations = validator.validate(new CustomErrorCodeBean());
-        ConstraintViolationException exception = new ConstraintViolationException(violations);
+        Set<ConstraintViolation<Object>> violations = validator.validate(new CustomErrorCodeBean());
+        JaxrsServerValidationException exception = new JaxrsServerValidationException(violations);
 
         assertEquals(Lists.newArrayList("A cannot be null.", "B cannot be null."), mapper.getErrorMessages(exception));
         assertEquals(401, mapper.getStatus(exception).getStatusCode());
     }
 
-        @Test
+    @Test
     public void testWithCustomStatusProviderWithSinglePayload() {
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         final CustomErrorCodeBean bean = new CustomErrorCodeBean();
         bean.a = "Hello, World!";
-        Set<ConstraintViolation<CustomErrorCodeBean>> violations = validator.validate(bean);
-        ConstraintViolationException exception = new ConstraintViolationException(violations);
+        Set<ConstraintViolation<Object>> violations = validator.validate(bean);
+        JaxrsServerValidationException exception = new JaxrsServerValidationException(violations);
 
         assertEquals(Lists.newArrayList("B cannot be null."), mapper.getErrorMessages(exception));
         assertEquals(403, mapper.getStatus(exception).getStatusCode());
     }
 
-//----------------------------------------------------------------------------------------------------------------------
-// Inner Classes
-//----------------------------------------------------------------------------------------------------------------------
-
-
     @Test
     public void testWithInvalidStatusProviderPayload() {
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         final InvalidErrorCodeBean bean = new InvalidErrorCodeBean();
-        Set<ConstraintViolation<InvalidErrorCodeBean>> violations = validator.validate(bean);
-        ConstraintViolationException exception = new ConstraintViolationException(violations);
+        Set<ConstraintViolation<Object>> violations = validator.validate(bean);
+        JaxrsServerValidationException exception = new JaxrsServerValidationException(violations);
         assertEquals(Lists.newArrayList("A cannot be null."), mapper.getErrorMessages(exception));
         assertEquals(400, mapper.getStatus(exception).getStatusCode());
     }
+
+//----------------------------------------------------------------------------------------------------------------------
+// Inner Classes
+//----------------------------------------------------------------------------------------------------------------------
 
     public interface AnotherPayload extends Payload {
     }

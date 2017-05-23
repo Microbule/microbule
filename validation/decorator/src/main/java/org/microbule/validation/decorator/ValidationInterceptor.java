@@ -23,8 +23,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import javax.validation.ValidationException;
 import javax.validation.Validator;
 import javax.validation.executable.ExecutableValidator;
 import javax.validation.groups.Default;
@@ -61,29 +59,17 @@ public class ValidationInterceptor extends AbstractPhaseInterceptor<Message> {
 
     @Override
     public void handleMessage(Message message) {
-        try {
-            final List<Object> arguments = MessageContentsList.getContentsList(message);
-            if (!arguments.isEmpty()) {
-                final Object serviceObject = message.getExchange().get(Message.SERVICE_OBJECT);
-                final Method method = (Method) message.get(METHOD_KEY);
-                validateParameters(serviceObject, method, arguments.toArray());
+        final List<Object> arguments = MessageContentsList.getContentsList(message);
+        if (!arguments.isEmpty()) {
+            final Object instance = message.getExchange().get(Message.SERVICE_OBJECT);
+            final Method method = (Method) message.get(METHOD_KEY);
+            final ExecutableValidator methodValidator = validator.forExecutables();
+            final Class<?>[] groups = Optional.ofNullable(method.getAnnotation(Groups.class)).map(Groups::value).orElse(DEFAULT_GROUPS);
+            final Set<ConstraintViolation<Object>> violations = methodValidator.validateParameters(instance, method, arguments.toArray(), groups);
+            if (!violations.isEmpty()) {
+                message.put(FaultListener.class.getName(), new NoOpFaultListener());
+                throw new JaxrsServerValidationException(violations);
             }
-        } catch (ValidationException e) {
-            message.put(FaultListener.class.getName(), new NoOpFaultListener());
-            throw e;
-        }
-    }
-
-//----------------------------------------------------------------------------------------------------------------------
-// Other Methods
-//----------------------------------------------------------------------------------------------------------------------
-
-    private <T> void validateParameters(final T instance, final Method method, final Object[] arguments) {
-        final ExecutableValidator methodValidator = validator.forExecutables();
-        final Class<?>[] groups = Optional.ofNullable(method.getAnnotation(Groups.class)).map(Groups::value).orElse(DEFAULT_GROUPS);
-        final Set<ConstraintViolation<T>> violations = methodValidator.validateParameters(instance, method, arguments, groups);
-        if (!violations.isEmpty()) {
-            throw new ConstraintViolationException(violations);
         }
     }
 }

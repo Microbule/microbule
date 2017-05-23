@@ -21,7 +21,7 @@ xmlns:microbule="http://www.microbule.org/blueprint">
 
     <microbule:container id="container" />
 
-    <bean id="gsonService" class="org.microbule.gson.core.GsonServiceImpl">
+    <bean id="gsonService" class="org.microbule.gson.core.DefaultGsonService">
         <argument ref="container" />
     </bean>
 

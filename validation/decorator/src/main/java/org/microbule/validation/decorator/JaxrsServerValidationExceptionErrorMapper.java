@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import javax.ws.rs.core.Response;
 
 import org.microbule.errormap.spi.TypedErrorMapper;
@@ -35,27 +34,27 @@ import org.slf4j.LoggerFactory;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 
 
-@Named("constraintViolationExceptionMapper")
+@Named("jaxrsServerValidationExceptionMapper")
 @Singleton
-public class ConstraintViolationExceptionMapper extends TypedErrorMapper<ConstraintViolationException> {
+public class JaxrsServerValidationExceptionErrorMapper extends TypedErrorMapper<JaxrsServerValidationException> {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ConstraintViolationExceptionMapper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JaxrsServerValidationExceptionErrorMapper.class);
 
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override
-    protected List<String> doGetErrorMessages(ConstraintViolationException exception) {
-        return exception.getConstraintViolations().stream().map(ConstraintViolation::getMessage).sorted().collect(Collectors.toList());
+    protected List<String> doGetErrorMessages(JaxrsServerValidationException exception) {
+        return exception.violations().map(ConstraintViolation::getMessage).sorted().collect(Collectors.toList());
     }
 
     @Override
-    protected Response.Status doGetStatus(ConstraintViolationException exception) {
-        return exception.getConstraintViolations().stream()
+    protected Response.StatusType doGetStatus(JaxrsServerValidationException exception) {
+        return exception.violations()
                 .flatMap(cve -> cve.getConstraintDescriptor().getPayload().stream())
                 .filter(StatusProvider.class::isAssignableFrom)
                 .map(payloadClass -> {

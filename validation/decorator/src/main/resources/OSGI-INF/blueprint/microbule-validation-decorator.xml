@@ -26,9 +26,8 @@
     <!--
     ConstraintViolationException Mapper
     -->
-    <bean id="constraintViolationExceptionMapper"
-          class="org.microbule.validation.decorator.ConstraintViolationExceptionMapper"/>
-
-    <service ref="constraintViolationExceptionMapper" interface="org.microbule.errormap.spi.ErrorMapper"/>
+    <service interface="org.microbule.errormap.spi.ErrorMapper">
+        <bean class="org.microbule.validation.decorator.JaxrsServerValidationExceptionErrorMapper" />
+    </service>
 
 </blueprint>

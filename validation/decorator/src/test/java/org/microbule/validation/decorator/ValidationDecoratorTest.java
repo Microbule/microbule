@@ -20,7 +20,6 @@ package org.microbule.validation.decorator;
 import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -69,14 +68,14 @@ public class ValidationDecoratorTest extends HelloTestCase {
 // Inner Classes
 //----------------------------------------------------------------------------------------------------------------------
 
-    private static class CveMapper implements ExceptionMapper<ConstraintViolationException> {
+    private static class CveMapper implements ExceptionMapper<JaxrsServerValidationException> {
 //----------------------------------------------------------------------------------------------------------------------
 // ExceptionMapper Implementation
 //----------------------------------------------------------------------------------------------------------------------
 
         @Override
-        public Response toResponse(ConstraintViolationException exception) {
-            final String message = exception.getConstraintViolations().stream().map(ConstraintViolation::getMessage).collect(Collectors.joining(","));
+        public Response toResponse(JaxrsServerValidationException exception) {
+            final String message = exception.violations().map(ConstraintViolation::getMessage).collect(Collectors.joining(","));
             return Response.status(Response.Status.BAD_REQUEST).entity(message).type(MediaType.TEXT_PLAIN_TYPE).build();
         }
     }

@@ -9,12 +9,12 @@ import org.microbule.errormap.spi.ConstantErrorMapper;
 
 @Named("verifyExceptionMapper")
 @Singleton
-public class VerifyExceptionMapper extends ConstantErrorMapper {
+public class VerifyExceptionErrorMapper extends ConstantErrorMapper {
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public VerifyExceptionMapper() {
+    public VerifyExceptionErrorMapper() {
         super(VerifyException.class, Response.Status.BAD_REQUEST);
     }
 }

@@ -17,14 +17,13 @@
 
 package org.microbule.test.server;
 
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
-import java.util.Map;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.ServerSocket;
 
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
-import org.apache.commons.lang3.reflect.TypeUtils;
 import org.apache.cxf.transport.http.asyncclient.AsyncHTTPConduit;
 import org.junit.After;
 import org.junit.Before;
@@ -38,6 +37,7 @@ import org.microbule.core.DefaultJaxrsServerFactory;
 import org.microbule.core.DefaultJaxrsServiceDiscovery;
 import org.microbule.scheduler.core.DefaultSchedulerService;
 import org.microbule.test.core.MockObjectTestCase;
+import org.microbule.util.reflect.Types;
 
 public abstract class JaxrsServerTestCase<T> extends MockObjectTestCase implements JaxrsConfigService {
 //----------------------------------------------------------------------------------------------------------------------
@@ -45,7 +45,6 @@ public abstract class JaxrsServerTestCase<T> extends MockObjectTestCase implemen
 //----------------------------------------------------------------------------------------------------------------------
 
     private static final String BASE_ADDRESS_PATTERN = "http://localhost:%d/%s";
-    private static final int DEFAULT_PORT = 8383;
 
     private JaxrsServer server;
     private String baseAddress;
@@ -101,6 +100,14 @@ public abstract class JaxrsServerTestCase<T> extends MockObjectTestCase implemen
         // Do nothing!
     }
 
+    protected int calculatePort() {
+        try (ServerSocket socket = new ServerSocket(0, 1, InetAddress.getLocalHost())) {
+            return socket.getLocalPort();
+        } catch (IOException e) {
+            throw new IllegalStateException("Unable to allocate port for test case.", e);
+        }
+    }
+
     protected void configureGlobalConfig(MapConfig globalConfig) {
         // Do nothing!
     }
@@ -114,26 +121,19 @@ public abstract class JaxrsServerTestCase<T> extends MockObjectTestCase implemen
     }
 
     protected String createBaseAddress() {
-        return String.format(BASE_ADDRESS_PATTERN, getPort(), getClass().getSimpleName());
+        return String.format(BASE_ADDRESS_PATTERN, calculatePort(), getClass().getSimpleName());
     }
 
     protected T createProxy() {
         return proxyFactory.createProxy(getServiceInterface());
     }
-
-    @SuppressWarnings("unchecked")
+    
     private Class<T> getServiceInterface() {
-        final Map<TypeVariable<?>, Type> arguments = TypeUtils.getTypeArguments(getClass(), JaxrsServerTestCase.class);
-        final TypeVariable<Class<JaxrsServerTestCase>> variable = JaxrsServerTestCase.class.getTypeParameters()[0];
-        return (Class<T>) arguments.get(variable);
+        return Types.getTypeParameter(getClass(), JaxrsServerTestCase.class, 0);
     }
 
     protected WebTarget createWebTarget() {
         return ClientBuilder.newClient().target(getBaseAddress()).property(AsyncHTTPConduit.USE_ASYNC, Boolean.TRUE);
-    }
-
-    protected int getPort() {
-        return DEFAULT_PORT;
     }
 
     @After
@@ -153,6 +153,4 @@ public abstract class JaxrsServerTestCase<T> extends MockObjectTestCase implemen
         baseAddress = createBaseAddress();
         server = factory.createJaxrsServer(getServiceInterface(), createImplementation());
     }
-
-
 }

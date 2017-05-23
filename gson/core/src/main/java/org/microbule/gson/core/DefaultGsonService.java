@@ -38,12 +38,12 @@ import org.slf4j.LoggerFactory;
 
 @Singleton
 @Named("gsonService")
-public class GsonServiceImpl implements GsonService {
+public class DefaultGsonService implements GsonService {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GsonServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultGsonService.class);
     private final List<GsonCustomizer> customizers = new CopyOnWriteArrayList<>();
     private final AtomicReference<Gson> gson = new AtomicReference<>(new GsonBuilder().create());
 
@@ -52,7 +52,7 @@ public class GsonServiceImpl implements GsonService {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Inject
-    public GsonServiceImpl(MicrobuleContainer container) {
+    public DefaultGsonService(MicrobuleContainer container) {
         container.addPluginListener(GsonCustomizer.class, new GsonCustomizerListener());
     }
 

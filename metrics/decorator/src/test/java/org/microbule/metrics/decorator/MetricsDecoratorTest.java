@@ -9,7 +9,7 @@ import javax.ws.rs.core.Response;
 import com.codahale.metrics.Timer;
 import org.junit.Test;
 import org.microbule.container.core.SimpleContainer;
-import org.microbule.gson.core.GsonServiceImpl;
+import org.microbule.gson.core.DefaultGsonService;
 import org.microbule.gson.decorator.GsonProxyDecorator;
 import org.microbule.gson.decorator.GsonServerDecorator;
 import org.microbule.metrics.core.DefaultMetricsService;
@@ -25,7 +25,7 @@ public class MetricsDecoratorTest extends JaxrsServerTestCase<TimedResource> {
 //----------------------------------------------------------------------------------------------------------------------
 
     private DefaultMetricsService metricsService;
-    private GsonServiceImpl gsonService;
+    private DefaultGsonService gsonService;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
@@ -40,7 +40,7 @@ public class MetricsDecoratorTest extends JaxrsServerTestCase<TimedResource> {
         container.addBean(new SlidingWindowTimingStrategy());
         container.addBean(new UniformTimingStrategy());
         container.addBean(new MetricsDecorator(metricsService));
-        gsonService = new GsonServiceImpl(container);
+        gsonService = new DefaultGsonService(container);
         container.addBean(gsonService);
         container.addBean(new MetricsGsonCustomizer());
         container.addBean(new GsonServerDecorator(gsonService));

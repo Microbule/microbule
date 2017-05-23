@@ -32,7 +32,7 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-public class GsonServiceImplTest extends MockObjectTestCase {
+public class DefaultGsonServiceTest extends MockObjectTestCase {
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
@@ -43,7 +43,7 @@ public class GsonServiceImplTest extends MockObjectTestCase {
     @Test
     public void testToJson() {
         final SimpleContainer container = new SimpleContainer();
-        final GsonServiceImpl service = new GsonServiceImpl(container);
+        final DefaultGsonService service = new DefaultGsonService(container);
         container.initialize();
 
         final StringWriter sw = new StringWriter();
@@ -65,7 +65,7 @@ public class GsonServiceImplTest extends MockObjectTestCase {
             return null;
         }).when(customizer).customize(any(GsonBuilder.class));
         final SimpleContainer container = new SimpleContainer();
-        final GsonServiceImpl service = new GsonServiceImpl(container);
+        final DefaultGsonService service = new DefaultGsonService(container);
         container.addBean(customizer);
         container.initialize();
         verify(customizer).customize(any(GsonBuilder.class));

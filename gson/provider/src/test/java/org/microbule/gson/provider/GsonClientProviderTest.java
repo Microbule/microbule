@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.microbule.config.api.Config;
 import org.microbule.container.core.SimpleContainer;
 import org.microbule.gson.api.GsonService;
-import org.microbule.gson.core.GsonServiceImpl;
+import org.microbule.gson.core.DefaultGsonService;
 import org.microbule.spi.JaxrsProxyDecorator;
 import org.microbule.spi.JaxrsServiceDescriptor;
 import org.microbule.test.server.JaxrsServerTestCase;
@@ -20,7 +20,7 @@ public class GsonClientProviderTest extends JaxrsServerTestCase<BadJsonService> 
 
     @Override
     protected void addBeans(SimpleContainer container) {
-        GsonService gsonService = new GsonServiceImpl(container);
+        GsonService gsonService = new DefaultGsonService(container);
         container.addBean(new JaxrsProxyDecorator() {
             @Override
             public String name() {

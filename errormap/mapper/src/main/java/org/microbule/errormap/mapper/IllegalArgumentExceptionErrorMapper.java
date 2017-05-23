@@ -8,12 +8,12 @@ import org.microbule.errormap.spi.ConstantErrorMapper;
 
 @Named("illegalArgumentExceptionMapper")
 @Singleton
-public class IllegalArgumentExceptionMapper extends ConstantErrorMapper {
+public class IllegalArgumentExceptionErrorMapper extends ConstantErrorMapper {
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
 
-    public IllegalArgumentExceptionMapper() {
+    public IllegalArgumentExceptionErrorMapper() {
         super(IllegalArgumentException.class, Response.Status.BAD_REQUEST);
     }
 }
