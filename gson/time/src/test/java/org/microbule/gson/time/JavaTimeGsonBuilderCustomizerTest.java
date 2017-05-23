@@ -19,7 +19,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.microbule.test.core.MicrobuleTestCase;
 
-public class JavaTimeGsonCustomizerTest extends MicrobuleTestCase {
+public class JavaTimeGsonBuilderCustomizerTest extends MicrobuleTestCase {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
@@ -33,7 +33,7 @@ public class JavaTimeGsonCustomizerTest extends MicrobuleTestCase {
     @Before
     public void initGson() {
         GsonBuilder builder = new GsonBuilder();
-        new JavaTimeGsonCustomizer().customize(builder);
+        new JavaTimeGsonBuilderCustomizer().customize(builder);
         gson = builder.serializeNulls().create();
     }
 

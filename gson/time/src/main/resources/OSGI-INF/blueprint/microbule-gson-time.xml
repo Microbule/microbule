@@ -18,8 +18,8 @@
 
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 
-    <bean id="customizer" class="org.microbule.gson.time.JavaTimeGsonCustomizer"/>
+    <bean id="customizer" class="org.microbule.gson.time.JavaTimeGsonBuilderCustomizer"/>
 
-    <service ref="customizer" interface="org.microbule.gson.spi.GsonCustomizer" />
+    <service ref="customizer" interface="org.microbule.gson.spi.GsonBuilderCustomizer" />
 
 </blueprint>

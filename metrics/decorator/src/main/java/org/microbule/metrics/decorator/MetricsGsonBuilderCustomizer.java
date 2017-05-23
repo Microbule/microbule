@@ -13,22 +13,22 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import org.microbule.gson.spi.GsonCustomizer;
+import org.microbule.gson.spi.GsonBuilderCustomizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Named("metricsGsonCustomizer")
+@Named("metricsGsonBuilderCustomizer")
 @Singleton
-public class MetricsGsonCustomizer implements GsonCustomizer {
+public class MetricsGsonBuilderCustomizer implements GsonBuilderCustomizer {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
     private static final double DURATION_FACTOR = 1.0 / TimeUnit.SECONDS.toNanos(1);
-    private static final Logger LOGGER = LoggerFactory.getLogger(MetricsGsonCustomizer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MetricsGsonBuilderCustomizer.class);
 
 //----------------------------------------------------------------------------------------------------------------------
-// GsonCustomizer Implementation
+// GsonBuilderCustomizer Implementation
 //----------------------------------------------------------------------------------------------------------------------
 
     @Override

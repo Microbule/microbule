@@ -19,6 +19,6 @@ package org.microbule.gson.spi;
 
 import com.google.gson.GsonBuilder;
 
-public interface GsonCustomizer {
+public interface GsonBuilderCustomizer {
     void customize(GsonBuilder builder);
 }

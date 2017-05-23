@@ -16,22 +16,22 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import com.google.gson.GsonBuilder;
-import org.microbule.gson.spi.GsonCustomizer;
+import org.microbule.gson.spi.GsonBuilderCustomizer;
 import org.microbule.gson.util.StringValueAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Named("javaTimeGsonCustomizer")
+@Named("javaTimeGsonBuilderCustomizer")
 @Singleton
-public class JavaTimeGsonCustomizer implements GsonCustomizer {
+public class JavaTimeGsonBuilderCustomizer implements GsonBuilderCustomizer {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JavaTimeGsonCustomizer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JavaTimeGsonBuilderCustomizer.class);
 
 //----------------------------------------------------------------------------------------------------------------------
-// GsonCustomizer Implementation
+// GsonBuilderCustomizer Implementation
 //----------------------------------------------------------------------------------------------------------------------
 
 

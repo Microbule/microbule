@@ -23,7 +23,7 @@ import java.io.StringWriter;
 import com.google.gson.GsonBuilder;
 import org.junit.Test;
 import org.microbule.container.core.SimpleContainer;
-import org.microbule.gson.spi.GsonCustomizer;
+import org.microbule.gson.spi.GsonBuilderCustomizer;
 import org.microbule.test.core.MockObjectTestCase;
 import org.mockito.Mock;
 
@@ -38,7 +38,7 @@ public class DefaultGsonServiceTest extends MockObjectTestCase {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Mock
-    private GsonCustomizer customizer;
+    private GsonBuilderCustomizer customizer;
 
     @Test
     public void testToJson() {

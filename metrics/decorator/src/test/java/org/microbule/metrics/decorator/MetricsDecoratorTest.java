@@ -42,7 +42,7 @@ public class MetricsDecoratorTest extends JaxrsServerTestCase<TimedResource> {
         container.addBean(new MetricsDecorator(metricsService));
         gsonService = new DefaultGsonService(container);
         container.addBean(gsonService);
-        container.addBean(new MetricsGsonCustomizer());
+        container.addBean(new MetricsGsonBuilderCustomizer());
         container.addBean(new GsonServerDecorator(gsonService));
         container.addBean(new GsonProxyDecorator(gsonService));
     }

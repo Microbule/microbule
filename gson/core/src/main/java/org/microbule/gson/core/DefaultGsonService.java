@@ -32,7 +32,7 @@ import com.google.gson.GsonBuilder;
 import org.microbule.container.api.MicrobuleContainer;
 import org.microbule.container.api.PluginListener;
 import org.microbule.gson.api.GsonService;
-import org.microbule.gson.spi.GsonCustomizer;
+import org.microbule.gson.spi.GsonBuilderCustomizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,7 +44,7 @@ public class DefaultGsonService implements GsonService {
 //----------------------------------------------------------------------------------------------------------------------
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultGsonService.class);
-    private final List<GsonCustomizer> customizers = new CopyOnWriteArrayList<>();
+    private final List<GsonBuilderCustomizer> customizers = new CopyOnWriteArrayList<>();
     private final AtomicReference<Gson> gson = new AtomicReference<>(new GsonBuilder().create());
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -53,7 +53,7 @@ public class DefaultGsonService implements GsonService {
 
     @Inject
     public DefaultGsonService(MicrobuleContainer container) {
-        container.addPluginListener(GsonCustomizer.class, new GsonCustomizerListener());
+        container.addPluginListener(GsonBuilderCustomizer.class, new GsonCustomizerListener());
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -82,13 +82,13 @@ public class DefaultGsonService implements GsonService {
 // Inner Classes
 //----------------------------------------------------------------------------------------------------------------------
 
-    private class GsonCustomizerListener implements PluginListener<GsonCustomizer> {
+    private class GsonCustomizerListener implements PluginListener<GsonBuilderCustomizer> {
 //----------------------------------------------------------------------------------------------------------------------
 // PluginListener Implementation
 //----------------------------------------------------------------------------------------------------------------------
 
         @Override
-        public boolean registerPlugin(GsonCustomizer plugin) {
+        public boolean registerPlugin(GsonBuilderCustomizer plugin) {
 
             customizers.add(plugin);
             LOGGER.debug("Rebuilding GSON instance to include plugin {}.", plugin);
@@ -97,7 +97,7 @@ public class DefaultGsonService implements GsonService {
         }
 
         @Override
-        public void unregisterPlugin(GsonCustomizer plugin) {
+        public void unregisterPlugin(GsonBuilderCustomizer plugin) {
             customizers.remove(plugin);
             LOGGER.debug("Rebuilding GSON instance without plugin {}.", plugin);
             rebuild();
