@@ -61,7 +61,7 @@ Furthermore, clients using your service can use Microbule-generated type-safe pr
 ```json
 {
   "id": "12345",
-  "firstName": "Mr."
+  "firstName": "Mr.",
   "lastName": "Microbule"
 }
 ```
