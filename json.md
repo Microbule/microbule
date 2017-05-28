@@ -66,6 +66,9 @@ Furthermore, clients using your service can use Microbule-generated type-safe pr
 }
 ```
 
+Likewise, when calling *getPerson()*, Microbule will generate the the JSON response body using the same format.
+
+
 ## Customizing GSON
 
 By default, GSON can do a pretty good job transforming your objects to/from JSON.  There are some times, however, when you will want to customize how GSON handles certain types of fields.  In order to do that, you must implement a *GsonBuilderCustomizer*:
