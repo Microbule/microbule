@@ -54,8 +54,17 @@ public class PersonServiceImpl implements PersonService {
     dao.save(person);
   }
 }
+```
 
-Furthermore, clients using your service can use Microbule-generated type-safe proxies and simply code to your service interface.  Microbule will take care of all of the JSON serialization/deserialization automatically.  
+Furthermore, clients using your service can use Microbule-generated type-safe proxies and simply code to your service interface.  Microbule will take care of all of the JSON serialization/deserialization automatically.  When calling the *addPerson()* method, for instance, Microbule will generate the following JSON request body:
+
+```json
+{
+  "id": "12345",
+  "firstName": "Mr."
+  "lastName": "Microbule"
+}
+```
 
 ## Customizing GSON
 
