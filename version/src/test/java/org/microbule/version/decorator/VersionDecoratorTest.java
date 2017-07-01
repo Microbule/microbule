@@ -7,23 +7,23 @@ import javax.ws.rs.core.Response;
 
 import org.junit.Test;
 import org.microbule.container.core.SimpleContainer;
-import org.microbule.gson.api.GsonService;
-import org.microbule.gson.core.DefaultGsonService;
-import org.microbule.gson.decorator.GsonProxyDecorator;
-import org.microbule.gson.decorator.GsonServerDecorator;
+import org.microbule.jsonb.api.JsonbFactory;
+import org.microbule.jsonb.core.DefaultJsonbFactory;
+import org.microbule.jsonb.decorator.JsonbProxyDecorator;
+import org.microbule.jsonb.decorator.JsonbServerDecorator;
 import org.microbule.test.core.hello.HelloService;
 import org.microbule.test.server.hello.HelloTestCase;
 
 public class VersionDecoratorTest extends HelloTestCase {
 
-    private GsonService gsonService;
+    private JsonbFactory jsonbFactory;
 
     @Override
     protected void addBeans(SimpleContainer container) {
-        gsonService = new DefaultGsonService(container);
-        container.addBean(gsonService);
-        container.addBean(new GsonServerDecorator(gsonService));
-        container.addBean(new GsonProxyDecorator(gsonService));
+        jsonbFactory = new DefaultJsonbFactory(container);
+        container.addBean(jsonbFactory);
+        container.addBean(new JsonbServerDecorator(jsonbFactory));
+        container.addBean(new JsonbProxyDecorator(jsonbFactory));
         container.addBean(new VersionDecorator());
     }
 
@@ -31,7 +31,7 @@ public class VersionDecoratorTest extends HelloTestCase {
     public void testGetVersion() {
         final Response response = createWebTarget().queryParam("_version", "bogus").request(MediaType.APPLICATION_JSON_TYPE).get();
         assertEquals(200, response.getStatus());
-        final VersionResponse versionResponse = gsonService.parse(new StringReader(response.readEntity(String.class)), VersionResponse.class);
+        final VersionResponse versionResponse = jsonbFactory.createJsonb().fromJson(new StringReader(response.readEntity(String.class)), VersionResponse.class);
         final Package pkg = HelloService.class.getPackage();
         assertEquals(pkg.getImplementationVersion(), versionResponse.getVersion());
         assertEquals(pkg.getImplementationTitle(), versionResponse.getTitle());

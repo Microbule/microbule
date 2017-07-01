@@ -51,7 +51,6 @@
         <module>timeout</module>
         <module>circuitbreaker</module>
         <module>tracer</module>
-        <module>gson</module>
         <module>example</module>
         <module>features</module>
         <module>itest</module>
@@ -65,6 +64,7 @@
         <module>scheduler</module>
         <module>metrics</module>
         <module>version</module>
+        <module>jsonb</module>
     </modules>
 
     <properties>
@@ -84,11 +84,13 @@
         <dropwizard.metrics.version>3.2.2</dropwizard.metrics.version>
         <eos.version>1.1.0</eos.version>
         <glassfish.el.version>2.2.6</glassfish.el.version>
-        <gson.version>2.7</gson.version>
         <guava.version>21.0</guava.version>
         <hibernate.validator.version>5.2.4.Final</hibernate.validator.version>
         <javax.el.api.version>2.2.5</javax.el.api.version>
         <jboss.logging.version>3.3.0.Final</jboss.logging.version>
+        <johnzon.version>1.1.1</johnzon.version>
+        <json.api.version>1.1</json.api.version>
+        <json.bind.api.version>1.0</json.bind.api.version>
         <junit.version>4.12</junit.version>
         <karaf.version>4.1.1</karaf.version>
         <mockito.version>2.7.22</mockito.version>
@@ -173,7 +175,12 @@
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.apache.johnzon</groupId>
+            <artifactId>johnzon-jsonb</artifactId>
+            <version>${johnzon.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <pluginManagement>

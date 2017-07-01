@@ -17,14 +17,9 @@
 
 package org.microbule.util.jaxrs;
 
-import java.util.Optional;
-
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
-import com.google.gson.Gson;
 import org.junit.Test;
 import org.microbule.test.core.MockObjectTestCase;
 
@@ -43,58 +38,5 @@ public class WebTargetUtilsTest extends MockObjectTestCase {
     @Test
     public void testIsUtilClass() throws Exception {
         assertIsUtilsClass(WebTargetUtils.class);
-    }
-
-    @Test
-    public void testParseSuccessfulResponse() {
-        Gson gson = new Gson();
-
-        final Response response = Response.ok(gson.toJson(new Person("Slappy", "White"))).type(MediaType.APPLICATION_JSON_TYPE).build();
-        final Optional<Person> personOptional = WebTargetUtils.parseJsonResponse(response, Person.class);
-        assertTrue(personOptional.isPresent());
-        Person person = personOptional.get();
-        assertEquals("Slappy", person.getFirstName());
-        assertEquals("White", person.getLastName());
-    }
-
-    @Test
-    public void testParseUnsuccessfulResponse() {
-        final Response response = Response.serverError().build();
-        final Optional<Person> personOptional = WebTargetUtils.parseJsonResponse(response, Person.class);
-        assertFalse(personOptional.isPresent());
-    }
-
-//----------------------------------------------------------------------------------------------------------------------
-// Inner Classes
-//----------------------------------------------------------------------------------------------------------------------
-
-    public static class Person {
-//----------------------------------------------------------------------------------------------------------------------
-// Fields
-//----------------------------------------------------------------------------------------------------------------------
-
-        private final String firstName;
-        private final String lastName;
-
-//----------------------------------------------------------------------------------------------------------------------
-// Constructors
-//----------------------------------------------------------------------------------------------------------------------
-
-        public Person(String firstName, String lastName) {
-            this.firstName = firstName;
-            this.lastName = lastName;
-        }
-
-//----------------------------------------------------------------------------------------------------------------------
-// Getter/Setter Methods
-//----------------------------------------------------------------------------------------------------------------------
-
-        public String getFirstName() {
-            return firstName;
-        }
-
-        public String getLastName() {
-            return lastName;
-        }
     }
 }

@@ -19,19 +19,14 @@ package org.microbule.util.jaxrs;
 
 import java.util.Optional;
 
+import javax.json.bind.Jsonb;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.google.common.reflect.TypeToken;
+
 
 public final class WebTargetUtils {
-//----------------------------------------------------------------------------------------------------------------------
-// Fields
-//----------------------------------------------------------------------------------------------------------------------
-
-    private static final Gson GSON = new Gson();
-
 //----------------------------------------------------------------------------------------------------------------------
 // Static Methods
 //----------------------------------------------------------------------------------------------------------------------
@@ -44,16 +39,20 @@ public final class WebTargetUtils {
         return answer;
     }
 
-    public static <T> Optional<T> parseJsonResponse(Response response, Class<T> type) {
-        return parseJsonResponse(response, TypeToken.get(type));
-    }
-
-    public static <T> Optional<T> parseJsonResponse(Response response, TypeToken<T> token) {
+    public static <T> Optional<T> parseResponse(Response response, Jsonb jsonb, TypeToken<T> typeToken) {
         if (Response.Status.OK.getStatusCode() == response.getStatus()) {
-            return Optional.of(GSON.fromJson(response.readEntity(String.class), token.getType()));
+            return Optional.of(jsonb.fromJson(response.readEntity(String.class), typeToken.getType()));
         }
         return Optional.empty();
     }
+
+    public static <T> Optional<T> parseResponse(Response response, Jsonb jsonb, Class<T> type) {
+        return parseResponse(response, jsonb, TypeToken.of(type));
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
+// Constructors
+//----------------------------------------------------------------------------------------------------------------------
 
     private WebTargetUtils() {
 

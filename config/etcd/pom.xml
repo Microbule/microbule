@@ -48,13 +48,13 @@
         </dependency>
         <dependency>
             <groupId>org.microbule</groupId>
-            <artifactId>microbule-gson-decorator</artifactId>
+            <artifactId>microbule-jsonb-decorator</artifactId>
             <version>0.3.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.microbule</groupId>
-            <artifactId>microbule-gson-core</artifactId>
+            <artifactId>microbule-jsonb-core</artifactId>
             <version>0.3.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>

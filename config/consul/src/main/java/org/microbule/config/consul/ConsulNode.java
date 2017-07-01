@@ -17,17 +17,17 @@
 
 package org.microbule.config.consul;
 
-import com.google.gson.annotations.SerializedName;
+import javax.json.bind.annotation.JsonbProperty;
 
 public class ConsulNode {
 //----------------------------------------------------------------------------------------------------------------------
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    @SerializedName("Key")
+    @JsonbProperty("Key")
     private final String key;
 
-    @SerializedName("Value")
+    @JsonbProperty("Value")
     private final String value;
 
 //----------------------------------------------------------------------------------------------------------------------

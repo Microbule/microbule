@@ -2,10 +2,9 @@ package org.microbule.config.core;
 
 import java.util.Optional;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
+import javax.json.Json;
+import javax.json.JsonObject;
+
 import org.microbule.config.api.Config;
 
 public class RecordingConfig implements Config {
@@ -21,7 +20,7 @@ public class RecordingConfig implements Config {
 //----------------------------------------------------------------------------------------------------------------------
 
     public RecordingConfig(Config delegate) {
-        this(delegate, new JsonObject());
+        this(delegate, Json.createObjectBuilder().build());
     }
 
     private RecordingConfig(Config delegate, JsonObject recordedJson) {
@@ -37,8 +36,8 @@ public class RecordingConfig implements Config {
     public Config filtered(String... paths) {
         JsonObject filteredJson = recordedJson;
         for (String path : paths) {
-            JsonObject sub = new JsonObject();
-            filteredJson.add(path, sub);
+            JsonObject sub = Json.createObjectBuilder().build();
+            filteredJson.put(path, sub);
             filteredJson = sub;
         }
         return new RecordingConfig(delegate.filtered(paths), filteredJson);
@@ -47,7 +46,7 @@ public class RecordingConfig implements Config {
     @Override
     public Optional<String> value(String key) {
         final Optional<String> value = delegate.value(key);
-        recordedJson.add(key, value.<JsonElement>map(JsonPrimitive::new).orElse(JsonNull.INSTANCE));
+        recordedJson.put(key, value.map(Json::createValue).orElse(null));
         return value;
     }
 

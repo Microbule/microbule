@@ -20,16 +20,19 @@ package org.microbule.config.etcd;
 import java.io.InputStreamReader;
 import java.util.concurrent.atomic.AtomicReference;
 
+import javax.json.bind.JsonbBuilder;
+
 import com.google.common.base.Charsets;
-import com.google.gson.Gson;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.microbule.config.api.Config;
 import org.microbule.config.core.ConfigUtils;
 import org.microbule.container.core.SimpleContainer;
-import org.microbule.gson.core.DefaultGsonService;
-import org.microbule.gson.decorator.GsonProxyDecorator;
-import org.microbule.gson.decorator.GsonServerDecorator;
+import org.microbule.jsonb.api.JsonbFactory;
+import org.microbule.jsonb.core.DefaultJsonbFactory;
+import org.microbule.jsonb.decorator.JsonbProxyDecorator;
+import org.microbule.jsonb.decorator.JsonbServerDecorator;
 import org.microbule.test.server.JaxrsServerTestCase;
 
 public class EtcdConfigProviderTest extends JaxrsServerTestCase<MockEtcdService> {
@@ -45,8 +48,9 @@ public class EtcdConfigProviderTest extends JaxrsServerTestCase<MockEtcdService>
 
     @Override
     protected void addBeans(SimpleContainer container) {
-        container.addBean(new GsonServerDecorator(new DefaultGsonService(container)));
-        container.addBean(new GsonProxyDecorator(new DefaultGsonService(container)));
+        final JsonbFactory jsonbFactory = new DefaultJsonbFactory(container);
+        container.addBean(new JsonbServerDecorator(jsonbFactory));
+        container.addBean(new JsonbProxyDecorator(jsonbFactory));
     }
 
     @Override
@@ -72,7 +76,7 @@ public class EtcdConfigProviderTest extends JaxrsServerTestCase<MockEtcdService>
     }
 
     private <T> T parseResponse(String resourceName, Class<T> type) {
-        return new Gson().fromJson(new InputStreamReader(getClass().getResourceAsStream(resourceName), Charsets.UTF_8), type);
+        return JsonbBuilder.create().fromJson(new InputStreamReader(getClass().getResourceAsStream(resourceName), Charsets.UTF_8), type);
     }
 
 }

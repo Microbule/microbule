@@ -21,17 +21,19 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
+import javax.json.bind.JsonbBuilder;
+
 import com.google.common.base.Charsets;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.google.common.reflect.TypeToken;
 import org.junit.Before;
 import org.junit.Test;
 import org.microbule.config.api.Config;
 import org.microbule.config.core.ConfigUtils;
 import org.microbule.container.core.SimpleContainer;
-import org.microbule.gson.core.DefaultGsonService;
-import org.microbule.gson.decorator.GsonProxyDecorator;
-import org.microbule.gson.decorator.GsonServerDecorator;
+import org.microbule.jsonb.api.JsonbFactory;
+import org.microbule.jsonb.core.DefaultJsonbFactory;
+import org.microbule.jsonb.decorator.JsonbProxyDecorator;
+import org.microbule.jsonb.decorator.JsonbServerDecorator;
 import org.microbule.test.server.JaxrsServerTestCase;
 
 public class ConsulConfigProviderTest extends JaxrsServerTestCase<MockConsulService> {
@@ -39,9 +41,9 @@ public class ConsulConfigProviderTest extends JaxrsServerTestCase<MockConsulServ
 // Fields
 //----------------------------------------------------------------------------------------------------------------------
 
-    private final AtomicReference<List<ConsulNode>> response = new AtomicReference<>();
     private static final TypeToken<List<ConsulNode>> TYPE_TOKEN = new TypeToken<List<ConsulNode>>() {
     };
+    private final AtomicReference<List<ConsulNode>> response = new AtomicReference<>();
 
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
@@ -49,8 +51,9 @@ public class ConsulConfigProviderTest extends JaxrsServerTestCase<MockConsulServ
 
     @Override
     protected void addBeans(SimpleContainer container) {
-        container.addBean(new GsonServerDecorator(new DefaultGsonService(container)));
-        container.addBean(new GsonProxyDecorator(new DefaultGsonService(container)));
+        final JsonbFactory jsonbFactory = new DefaultJsonbFactory(container);
+        container.addBean(new JsonbServerDecorator(jsonbFactory));
+        container.addBean(new JsonbProxyDecorator(jsonbFactory));
     }
 
     @Override
@@ -74,10 +77,9 @@ public class ConsulConfigProviderTest extends JaxrsServerTestCase<MockConsulServ
         final Config config = provider.getConfig("one", "two");
         assertEquals("Microbule", config.value("three").get());
         assertEquals("three, sir", config.value("five").get());
-
     }
 
     private <T> T parseResponse(String resourceName, TypeToken<T> type) {
-        return new Gson().fromJson(new InputStreamReader(getClass().getResourceAsStream(resourceName), Charsets.UTF_8), type.getType());
+        return JsonbBuilder.create().fromJson(new InputStreamReader(getClass().getResourceAsStream(resourceName), Charsets.UTF_8), type.getType());
     }
 }

@@ -24,13 +24,15 @@ import java.util.stream.Stream;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
+import javax.json.bind.Jsonb;
+import javax.json.bind.JsonbBuilder;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.google.common.base.Charsets;
-import com.google.gson.reflect.TypeToken;
+import com.google.common.reflect.TypeToken;
 import org.apache.commons.lang3.StringUtils;
 import org.microbule.config.api.Config;
 import org.microbule.config.core.ConfigUtils;
@@ -58,6 +60,8 @@ public class ConsulConfigProvider implements ConfigProvider {
 
     private final WebTarget baseTarget;
 
+    private final Jsonb jsonb = JsonbBuilder.create();
+
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
 //----------------------------------------------------------------------------------------------------------------------
@@ -78,7 +82,7 @@ public class ConsulConfigProvider implements ConfigProvider {
     public Config getConfig(String... path) {
         final Response response = extend(baseTarget, path).queryParam(RECURSE_PARAM, Boolean.TRUE).request(MediaType.APPLICATION_JSON_TYPE).get();
         final String keyPath = Stream.of(path).collect(Collectors.joining(SEPARATOR)) + SEPARATOR;
-        return WebTargetUtils.parseJsonResponse(response, TYPE_TOKEN)
+        return WebTargetUtils.parseResponse(response, jsonb, TYPE_TOKEN)
                 .map(nodes -> nodes.stream().collect(Collectors.toMap(node -> StringUtils.substringAfter(node.getKey(), keyPath), node -> base64Decode(node.getValue()))))
                 .map(map -> (Config)new MapConfig(map, SEPARATOR))
                 .orElse(EmptyConfig.INSTANCE);

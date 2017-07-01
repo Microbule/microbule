@@ -32,9 +32,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>${gson.version}</version>
+            <groupId>javax.json.bind</groupId>
+            <artifactId>javax.json.bind-api</artifactId>
+            <version>${json.bind.api.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>

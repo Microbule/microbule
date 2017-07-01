@@ -1,6 +1,7 @@
 package org.microbule.core;
 
-import com.google.gson.JsonObject;
+
+import javax.json.JsonObject;
 
 public class CachedJaxrsProxy<T> {
 //----------------------------------------------------------------------------------------------------------------------

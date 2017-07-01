@@ -25,6 +25,8 @@ import java.util.stream.Stream;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
+import javax.json.bind.Jsonb;
+import javax.json.bind.JsonbBuilder;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
@@ -53,6 +55,7 @@ public class EtcdConfigProvider implements ConfigProvider {
     private static final String DEFAULT_BASE_ADDRESS = "http://localhost:2379/v2/keys/microbule";
 
     private final WebTarget baseTarget;
+    private final Jsonb jsonb = JsonbBuilder.create();
 
 //----------------------------------------------------------------------------------------------------------------------
 // Constructors
@@ -84,7 +87,7 @@ public class EtcdConfigProvider implements ConfigProvider {
     public Config getConfig(String... path) {
         final Response response = extend(baseTarget, path).queryParam("recursive", "true").request(MediaType.APPLICATION_JSON_TYPE).get();
         final String keyPath = Stream.of(path).collect(Collectors.joining(SEPARATOR)) + SEPARATOR;
-        final Optional<EtcdResponse> etcdResponse = WebTargetUtils.parseJsonResponse(response, EtcdResponse.class);
+        final Optional<EtcdResponse> etcdResponse = WebTargetUtils.parseResponse(response, jsonb, EtcdResponse.class);
         return etcdResponse.map(r -> {
             Map<String, String> values = new HashMap<>();
             fillMap(values, r.getNode(), keyPath);

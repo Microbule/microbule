@@ -27,7 +27,7 @@
 
     <service ref="decorator" interface="org.microbule.spi.JaxrsServerDecorator"/>
 
-    <bean id="metricsGsonCustomizer" class="org.microbule.metrics.decorator.MetricsGsonBuilderCustomizer"/>
+    <bean id="metricsGsonCustomizer" class="org.microbule.metrics.decorator.MetricsJsonbConfigCustomizer"/>
 
-    <service ref="metricsGsonCustomizer" interface="org.microbule.gson.spi.GsonBuilderCustomizer"/>
+    <service ref="metricsGsonCustomizer" interface="org.microbule.jsonb.spi.JsonbConfigCustomizer"/>
 </blueprint>

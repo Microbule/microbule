@@ -25,7 +25,14 @@
     Main Feature
     ====================================================================================================================
     -->
+
     <feature name="microbule" version="${project.version}">
+        <feature version="${cxf.version}" dependency="true">cxf-jaxrs</feature>
+        <feature version="${cxf.version}" dependency="true">cxf-rs-description-swagger2</feature>
+        <feature version="${project.version}">microbule-no-cxf</feature>
+    </feature>
+
+    <feature name="microbule-no-cxf" version="${project.version}">
         <feature version="${project.version}">microbule-core</feature>
         <feature version="${project.version}">microbule-errormap</feature>
         <feature version="${project.version}">microbule-gzip</feature>
@@ -38,7 +45,7 @@
         <feature version="${project.version}">microbule-timeout</feature>
         <feature version="${project.version}">microbule-tracer</feature>
         <feature version="${project.version}">microbule-circuitbreaker</feature>
-        <feature version="${project.version}">microbule-gson</feature>
+        <feature version="${project.version}">microbule-jsonb</feature>
         <feature version="${project.version}">microbule-metrics</feature>
         <feature version="${project.version}">microbule-version</feature>
     </feature>
@@ -49,14 +56,15 @@
     ====================================================================================================================
     -->
     <feature name="microbule-core" version="${project.version}">
-        <feature version="${cxf.version}" dependency="true">cxf-jaxrs</feature>
-        <feature version="${cxf.version}" dependency="true">cxf-rs-description-swagger2</feature>
+
 
         <bundle dependency="true" start-level="60">
             mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.cglib/${cglib.version}
         </bundle>
+
         <bundle dependency="true" start-level="60">mvn:org.apache.geronimo.specs/geronimo-atinject_1.0_spec/1.0</bundle>
-        <bundle dependency="true" start-level="60">mvn:com.google.code.gson/gson/${gson.version}</bundle>
+        <bundle dependency="true" start-level="60">mvn:javax.json/javax.json-api/${json.api.version}</bundle>
+        <bundle dependency="true" start-level="60">mvn:javax.json.bind/javax.json.bind-api/${json.bind.api.version}</bundle>
         <bundle dependency="true" start-level="60">mvn:com.google.guava/guava/${guava.version}</bundle>
         <bundle dependency="true" start-level="60">mvn:org.apache.commons/commons-lang3/${commons.lang3.version}</bundle>
         <bundle dependency="true" start-level="60">mvn:com.savoirtech.eos/eos-core/${eos.version}</bundle>
@@ -98,14 +106,16 @@
         <bundle start-level="60">mvn:org.microbule/microbule-errormap-mapper/${project.version}</bundle>
     </feature>
 
-    <feature name="microbule-gson" version="${project.version}">
-        <bundle start-level="60">mvn:org.microbule/microbule-gson-api/${project.version}</bundle>
-        <bundle start-level="60">mvn:org.microbule/microbule-gson-spi/${project.version}</bundle>
-        <bundle start-level="60">mvn:org.microbule/microbule-gson-provider/${project.version}</bundle>
-        <bundle start-level="60">mvn:org.microbule/microbule-gson-util/${project.version}</bundle>
-        <bundle start-level="60">mvn:org.microbule/microbule-gson-time/${project.version}</bundle>
-        <bundle start-level="60">mvn:org.microbule/microbule-gson-core/${project.version}</bundle>
-        <bundle start-level="60">mvn:org.microbule/microbule-gson-decorator/${project.version}</bundle>
+    <feature name="microbule-jsonb" version="${project.version}">
+        <bundle dependency="true" start-level="60">mvn:org.apache.johnzon/johnzon-core/${johnzon.version}</bundle>
+        <bundle dependency="true" start-level="60">mvn:org.apache.johnzon/johnzon-mapper/${johnzon.version}</bundle>
+        <bundle dependency="true" start-level="60">mvn:org.apache.johnzon/johnzon-jsonb/${johnzon.version}</bundle>
+
+        <bundle start-level="60">mvn:org.microbule/microbule-jsonb-api/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-jsonb-spi/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-jsonb-provider/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-jsonb-core/${project.version}</bundle>
+        <bundle start-level="60">mvn:org.microbule/microbule-jsonb-decorator/${project.version}</bundle>
     </feature>
 
     <feature name="microbule-metrics" version="${project.version}">

@@ -9,9 +9,9 @@ import javax.ws.rs.core.Response;
 import com.codahale.metrics.Timer;
 import org.junit.Test;
 import org.microbule.container.core.SimpleContainer;
-import org.microbule.gson.core.DefaultGsonService;
-import org.microbule.gson.decorator.GsonProxyDecorator;
-import org.microbule.gson.decorator.GsonServerDecorator;
+import org.microbule.jsonb.core.DefaultJsonbFactory;
+import org.microbule.jsonb.decorator.JsonbProxyDecorator;
+import org.microbule.jsonb.decorator.JsonbServerDecorator;
 import org.microbule.metrics.core.DefaultMetricsService;
 import org.microbule.metrics.core.strategy.ExponentiallyDecayingTimingStrategy;
 import org.microbule.metrics.core.strategy.SlidingTimeWindowTimingStrategy;
@@ -25,7 +25,7 @@ public class MetricsDecoratorTest extends JaxrsServerTestCase<TimedResource> {
 //----------------------------------------------------------------------------------------------------------------------
 
     private DefaultMetricsService metricsService;
-    private DefaultGsonService gsonService;
+    private DefaultJsonbFactory jsonbFactory;
 
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
@@ -40,11 +40,11 @@ public class MetricsDecoratorTest extends JaxrsServerTestCase<TimedResource> {
         container.addBean(new SlidingWindowTimingStrategy());
         container.addBean(new UniformTimingStrategy());
         container.addBean(new MetricsDecorator(metricsService));
-        gsonService = new DefaultGsonService(container);
-        container.addBean(gsonService);
-        container.addBean(new MetricsGsonBuilderCustomizer());
-        container.addBean(new GsonServerDecorator(gsonService));
-        container.addBean(new GsonProxyDecorator(gsonService));
+        jsonbFactory = new DefaultJsonbFactory(container);
+        container.addBean(jsonbFactory);
+        container.addBean(new MetricsJsonbConfigCustomizer());
+        container.addBean(new JsonbServerDecorator(jsonbFactory));
+        container.addBean(new JsonbProxyDecorator(jsonbFactory));
     }
 
     @Override
@@ -72,7 +72,7 @@ public class MetricsDecoratorTest extends JaxrsServerTestCase<TimedResource> {
     public void testMetricsFilter() {
         Response response = createWebTarget().queryParam("_metrics", "").request(MediaType.APPLICATION_JSON_TYPE).get();
         assertEquals(200, response.getStatus());
-        MetricsResponse metricsResponse = gsonService.parse(new StringReader(response.readEntity(String.class)), MetricsResponse.class);
+        MetricsResponse metricsResponse = jsonbFactory.createJsonb().fromJson(new StringReader(response.readEntity(String.class)), MetricsResponse.class);
 
         metricsResponse.getTimers().forEach((k,v) -> {
             assertTrue(k.startsWith("TimedResource"));
